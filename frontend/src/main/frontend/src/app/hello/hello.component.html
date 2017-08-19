@@ -1,0 +1,47 @@
+
+  <div style="text-align:center">
+    <a href="https://jsonplaceholder.typicode.com/posts">
+      JSON Data for Tests
+    </a>
+  </div>
+
+  <div style="text-align:center">
+    <a href="http://localhost:8091/hello?name=FOKO&surname=  SINDJOUNG">
+      Go to Spring using the get method
+    </a>
+  </div>
+
+  <div style="text-align:left" >
+    <br><br><br>
+    <font color="blue">Got to Spring app using the post method</font>
+    <h1>Hello Form</h1>
+    <form  [formGroup]="helloForm" (ngSubmit)="onSubmit();" >
+      <div >
+        <label for="name">Name</label>
+        <input type="text"  formControlName="name"  placeholder="name" required>
+      </div>
+ 
+      <div >
+        <label for="surname">Surname</label>
+        <input type="text"  placeholder="surname" formControlName="surname" >
+      </div>
+ 
+      <button type="submit" >Submit</button>
+ 
+    </form>
+</div>
+
+<div style="text-align:left" [hidden]="!submitted">
+  <h2>You submitted the following:</h2>
+  <div class="row">
+   <h3>Name: <font color="red">{{ valrecu.name }}</font></h3>
+  </div>
+  <div class="row">
+    <h3>Surname: <font color="red">{{ valrecu.surname }}</font></h3>
+  </div>
+  <h2>The application Type is</h2>
+      <h3> <font color="red">{{ valrecu.application_type }}</font></h3>
+  <br>
+  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+</div>
+

@@ -1,15 +1,9 @@
 package com.bocobi2.rencontre;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.bocobi2.rencontre.model.Customer;
-import com.bocobi2.rencontre.repositories.CustomerRepository;
 
 //import org.springframework.boot.context.web.SpringBootServletInitializer;
 
@@ -18,8 +12,6 @@ public class OrientationApplication extends SpringBootServletInitializer   {
 
 	
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-		CustomerRepository repo = context.getBean(CustomerRepository.class);
 		SpringApplication.run(OrientationApplication.class, args);
 	}
 

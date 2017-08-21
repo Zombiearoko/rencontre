@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<mongo:template db-factory-ref=""/>
+	<mongo:db-factory id="mongoDbFactory" dbname="testdb" mongo-ref="mongoClient"/>
+	<mongo:mongo-client id="mongoClient" credentials="books:password@testdb">
+		<mongo:client-options connect-timeout="1000"/>
+	</mongo:mongo-client>
+	
+	<mongo:repositories base-package="com.bocobi2.rencontre.repositories"></mongo:repositories>
+	<repository:jackson2-popular location="customers.js"></repository:jackson2-popular>
+</beans>

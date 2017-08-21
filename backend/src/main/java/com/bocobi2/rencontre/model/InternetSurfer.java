@@ -10,5 +10,17 @@ public class InternetSurfer {
 	public InternetSurfer() {
 		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * @return the emailAdress
+	 */
+	public String getEmailAdress() {
+		return emailAdress;
+	}
+	/**
+	 * @param emailAdress the emailAdress to set
+	 */
+	public void setEmailAdress(String emailAdress) {
+		this.emailAdress = emailAdress;
+	}
 
 }

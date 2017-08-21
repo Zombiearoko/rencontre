@@ -18,8 +18,7 @@ public class OrientationApplication extends SpringBootServletInitializer   {
 
 	
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-		CustomerRepository repo = context.getBean(CustomerRepository.class);
+		
 		SpringApplication.run(OrientationApplication.class, args);
 	}
 

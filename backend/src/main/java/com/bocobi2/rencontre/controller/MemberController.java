@@ -1,12 +1,14 @@
 	package com.bocobi2.rencontre.controller;
 	
 	import java.io.File;
-	import java.util.HashMap;
+import java.io.IOException;
+import java.util.HashMap;
 	import java.util.Map;
 	
 	import javax.mail.internet.MimeMessage;
 	import javax.servlet.ServletContext;
-	import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 	import javax.servlet.http.HttpServletRequest;
 	import javax.servlet.http.HttpSession;
 	import javax.servlet.http.Part;
@@ -23,7 +25,10 @@
 	
 	import com.bocobi2.rencontre.model.Customer;
 	import com.bocobi2.rencontre.model.Member;
-	import com.bocobi2.rencontre.repositories.MemberRepository;
+import com.bocobi2.rencontre.model.Testimony;
+import com.bocobi2.rencontre.repositories.MemberBufferRepository;
+import com.bocobi2.rencontre.repositories.MemberRepository;
+import com.bocobi2.rencontre.repositories.TestimonyRepository;
 	
 	
 	@RestController
@@ -131,7 +136,12 @@
 					Part part=null;
 					if(!fileWay.exists()) fileWay.mkdir();
 					String fileName=SAVE_DIR_PICTURE + File.separator + nom;
-					part.write(SAVE_DIR_PICTURE + File.separator + nom);
+					try {
+						part.write(SAVE_DIR_PICTURE + File.separator + nom);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					Member member= new Member();
 					member.setPseudonym(pseudonym);
 					member.setEmailAdress(emailAdress);
@@ -196,7 +206,8 @@
 		@RequestMapping(value="/ConfirmRegistration", method = {RequestMethod.POST, RequestMethod.GET} )
 		@ResponseBody
 		public JSONObject  confirmRegistration(HttpServletRequest request ){
-			JSONObject resultConfirmRegistration;
+			JSONObject resultConfirmRegistration=new JSONObject();
+			
 			String pseudonym= request.getParameter("user");
 			
 			Member memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
@@ -207,6 +218,7 @@
 			}catch(Exception ex){
 				resultConfirmRegistration.put("StatusConfirm", "Failed");
 			}
+			return resultConfirmRegistration;
 		}
 		/**
 		 * connexion of the member
@@ -257,7 +269,7 @@
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/addTestimony", method={RequestMethod.GET, RequestMethod.POST})
-		public JSONObject addTestimony(HttpServletRequest requestTestimony){
+		public JSONObject addTestimony(HttpServletRequest requestTestimony) {
 			JSONObject resultTestimony = new JSONObject();
 			
 			//String resultTestimony;
@@ -273,16 +285,25 @@
 						Part part=null;
 						if(!fileWay.exists()) fileWay.mkdir();
 						
-						part=requestTestimony.getPart("file");
+						try {
+							part=requestTestimony.getPart("file");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ServletException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						try{
+							
 							String fileName=SAVE_DIR_TESTIMONY + File.separator + nom;
 							part.write(SAVE_DIR_TESTIMONY + File.separator + nom);
 							Testimony testimony=new Testimony();
 							testimony.setTestimonyType(testimonyType);
 							testimony.setTestimonyContent(fileName);
 							testimonyRepository.insert(testimony);
-							resultTestimony="{StatusAddTestimony: OK}";
-				
+							resultTestimony.put("StatusAddTestimony", "OK");
+							
 						}catch (Exception ex){
 								ex.printStackTrace();
 								resultTestimony.put("StatusAddTestimony", "Failed adding");

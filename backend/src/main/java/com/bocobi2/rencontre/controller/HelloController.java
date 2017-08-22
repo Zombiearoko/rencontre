@@ -36,7 +36,7 @@ public class HelloController {
 		param.put("name", name);
 		param.put("surname", surname);
 		param.put("application_type", "Spring");
-
+		System.out.println(param.toJSONString());
 		System.out.println(param);
 		return param;
 	}
@@ -49,7 +49,7 @@ public class HelloController {
 		param.put("name", name);
 		param.put("surname", surname);
 		param.put("application_type", "Spring");
-
+		System.out.println(param.toJSONString());
 		System.out.println(param);
 		return param;
 	}

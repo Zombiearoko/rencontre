@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="member")
@@ -21,12 +22,17 @@ public class Member extends InternetSurfer {
 	private String picture;
 	
 	private Subscription subscription;
+	
+	@DBRef
 	private Profile profile;
 	
+	@DBRef
 	private List<Message> messages;
 	
+	@DBRef
 	private List<Testimony> testimonies;
 	
+	@DBRef
 	private Status status;
 	
 	

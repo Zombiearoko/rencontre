@@ -22,17 +22,6 @@ public class InternetSurfer {
 	public void setImpression(Impression impression) {
 		this.impression = impression;
 	}
-	/**
-	 * @return the emailAdress
-	 */
-	public String getEmailAdress() {
-		return emailAdress;
-	}
-	/**
-	 * @param emailAdress the emailAdress to set
-	 */
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
-	}
+	
 
 }

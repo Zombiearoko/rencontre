@@ -11,4 +11,5 @@ public interface MemberBufferRepository extends MongoRepository<Member, String> 
 	public Member findByPseudonym(String pseudonym);
 	public List<Member> findByEmailAdress(String emailAdress);
 	
+	
 }

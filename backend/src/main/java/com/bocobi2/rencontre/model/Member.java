@@ -32,7 +32,7 @@ public class Member extends InternetSurfer {
 	
 	
 	public Member() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

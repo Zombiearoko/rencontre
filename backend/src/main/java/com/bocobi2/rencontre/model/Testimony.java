@@ -15,16 +15,6 @@ public class Testimony {
 	private String testimonyContent;
 	private String author;
 	
-	
-
-	public Testimony(String testimonyType, String testimonyContent, String author) {
-		
-		this.testimonyType = testimonyType;
-		this.testimonyContent = testimonyContent;
-		this.author = author;
-	}
-
-
 
 	/**
 	 * @param testimonyType

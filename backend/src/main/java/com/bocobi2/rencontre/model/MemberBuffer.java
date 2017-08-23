@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="member")
-public class Member extends InternetSurfer {
+@Document(collection="memberBuffer")
+public class MemberBuffer {
 
 	@Id
 	@Indexed
@@ -37,10 +37,11 @@ public class Member extends InternetSurfer {
 	
 	
 	
-	public Member() {
+	public MemberBuffer() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
 
 
 	/**
@@ -56,7 +57,7 @@ public class Member extends InternetSurfer {
 	 * @param testimonies
 	 * @param status
 	 */
-	public Member(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
+	public MemberBuffer(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
 			String picture, Subscription subscription, Profile profile, List<Message> messages,
 			List<Testimony> testimonies, Status status) {
 		super();
@@ -72,6 +73,7 @@ public class Member extends InternetSurfer {
 		this.testimonies = testimonies;
 		this.status = status;
 	}
+
 
 
 
@@ -276,4 +278,7 @@ public class Member extends InternetSurfer {
 	}
 	
 
+	
+	
+	
 }

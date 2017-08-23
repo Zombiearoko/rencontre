@@ -1,4 +1,4 @@
-package com.bocobi2.rencontre.model;
+																																																																																																																																																																																																																																																																																																			package com.bocobi2.rencontre.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

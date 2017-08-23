@@ -10,6 +10,6 @@ import com.bocobi2.rencontre.model.MemberBuffer;
 public interface MemberBufferRepository extends MongoRepository<MemberBuffer, String> {
 	public MemberBuffer findByPseudonym(String pseudonym);
 	public List<MemberBuffer> findByEmailAdress(String emailAdress);
-
+	
 	
 }

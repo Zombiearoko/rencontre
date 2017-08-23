@@ -2,12 +2,25 @@ package com.bocobi2.rencontre.model;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="Message")
 public class Message {
 
+	@Id
 	private String idMessage;
+	
 	private String messageContent;
+	
+	@Indexed
 	private String sender;
+	
+	@Indexed
 	private String receiver;
+	
+	@Indexed
 	private Date sendingDate;
 	
 	public Message() {

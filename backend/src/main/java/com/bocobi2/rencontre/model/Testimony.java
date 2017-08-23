@@ -8,12 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Testimony {
 
 	@Id
-	private String id;
+	private String idTestimony;
 	
 	@Indexed
 	private String testimonyType;
+	private String testimonyName;
 	private String testimonyContent;
-	
+
 
 	/**
 	 * @param testimonyType
@@ -70,10 +71,32 @@ public class Testimony {
 
 
 	/**
-	 * @return the id
+	 * @return the testimonyName
 	 */
-	public String getId() {
-		return id;
+	public String getTestimonyName() {
+		return testimonyName;
 	}
+
+
+
+	/**
+	 * @param testimonyName the testimonyName to set
+	 */
+	public void setTestimonyName(String testimonyName) {
+		this.testimonyName = testimonyName;
+	}
+
+
+
+	/**
+	 * @return the idTestimony
+	 */
+	public String getIdTestimony() {
+		return idTestimony;
+	}
+
+
+
+	
 
 }

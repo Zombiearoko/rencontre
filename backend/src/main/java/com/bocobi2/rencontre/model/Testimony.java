@@ -13,7 +13,18 @@ public class Testimony {
 	@Indexed
 	private String testimonyType;
 	private String testimonyContent;
+	private String author;
 	
+	
+
+	public Testimony(String testimonyType, String testimonyContent, String author) {
+		
+		this.testimonyType = testimonyType;
+		this.testimonyContent = testimonyContent;
+		this.author = author;
+	}
+
+
 
 	/**
 	 * @param testimonyType
@@ -65,6 +76,18 @@ public class Testimony {
 	 */
 	public void setTestimonyContent(String testimonyContent) {
 		this.testimonyContent = testimonyContent;
+	}
+
+
+
+	public String getAuthor() {
+		return author;
+	}
+
+
+
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 

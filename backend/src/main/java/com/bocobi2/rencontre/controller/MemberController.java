@@ -2,8 +2,10 @@
 	
 	import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-	import java.util.Map;
+import java.util.List;
+import java.util.Map;
 	
 	import javax.mail.internet.MimeMessage;
 	import javax.servlet.ServletContext;
@@ -15,6 +17,7 @@ import javax.servlet.annotation.MultipartConfig;
 	
 	import org.json.simple.JSONObject;
 	import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 	import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 	
 	import com.bocobi2.rencontre.model.Customer;
 	import com.bocobi2.rencontre.model.Member;
+import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
@@ -50,8 +54,10 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@Autowired
 		TestimonyRepository testimonyRepository;
 		
+		
+		
 		@Autowired
-		private JavaMailSender sender;
+		private MailSender sender;
 		
 		/*****(value="/registrationForm", method = {RequestMethod.POST, RequestMethod.GET})
 		public ModelAndView  registrationFormGet(HttpServletRequest request){
@@ -113,7 +119,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 			
 					File fileWay= new File(SAVE_DIR_PICTURE);
-					String nom="picture"+pseudonym;
+					String nom="picture"+pseudonym+"png";
 					Part part=null;
 					if(!fileWay.exists()) fileWay.mkdir();
 					try {
@@ -121,7 +127,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						String fileName=SAVE_DIR_PICTURE + File.separator + nom;
 						part.write(SAVE_DIR_PICTURE + File.separator + nom);
 					
-						Member member= new Member();
+						MemberBuffer member= new MemberBuffer();
 						member.setPseudonym(pseudonym);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
@@ -140,18 +146,18 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						//resultRegistration.put("RegistrationStatus", "OK");
 							
 							memberBufferRepository.insert(member);
-						        
-								MimeMessage message = null;
-								 MimeMessageHelper helper = new MimeMessageHelper(message,true);
-							     helper.setSubject("Hi");
-							      //helper.setFrom("customerserivces@yourshop.com");
-							       helper.setTo(pseudonym);
-							        String content  = ""+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym();
-							            // Add an inline resource.
-							            // use the true flag to indicate you need a multipart message
-							         helper.setText("<html><body><p>" + content + "</p><img src='cid:company-logo'></body></html>", true);
-							         sender.send(message);
-						        
+							
+							SimpleMailMessage message = new SimpleMailMessage();
+							 String content  = "Thanks to create yours count in our website<br/>"
+							 		+ "Now click here"+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+"to validate your E-mail adress";
+					          String subject="confirm your E-mail adress"; 
+					          String from="saphirmfogo@gmail.com";
+							message.setFrom(from);
+							message.setTo(emailAdress);
+							message.setSubject(subject);
+							message.setText(content);
+							sender.send(message);
+				
 						        resultSendMail.put("SendStatus", "OK"); 
 							
 							    }catch(Exception ex) {
@@ -173,6 +179,9 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 		public JSONObject  registrationGet(HttpServletRequest request ){
 			
+			/*
+			 * Variable de la notification par mail nous utiliserons le serveur de messagerie SMTP
+			 */
 			JSONObject resultRegistration = new JSONObject();
 			JSONObject resultSendMail = new JSONObject();
 		    FormFieldController formField= new FormFieldController ();
@@ -211,7 +220,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 			
 					File fileWay= new File(SAVE_DIR_PICTURE);
-					String nom="picture"+pseudonym;
+					String nom="picture"+pseudonym+".png";
 					Part part=null;
 					if(!fileWay.exists()) fileWay.mkdir();
 					try {
@@ -219,7 +228,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						String fileName=SAVE_DIR_PICTURE + File.separator + nom;
 						part.write(SAVE_DIR_PICTURE + File.separator + nom);
 					
-						Member member= new Member();
+						MemberBuffer member= new MemberBuffer();
 						member.setPseudonym(pseudonym);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
@@ -238,18 +247,18 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						//resultRegistration.put("RegistrationStatus", "OK");
 							
 							memberBufferRepository.insert(member);
-						        
-								MimeMessage message = null;
-								 MimeMessageHelper helper = new MimeMessageHelper(message,true);
-							     helper.setSubject("Hi");
-							      //helper.setFrom("customerserivces@yourshop.com");
-							       helper.setTo(pseudonym);
-							        String content  = ""+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym();
-							            // Add an inline resource.
-							            // use the true flag to indicate you need a multipart message
-							         helper.setText("<html><body><p>" + content + "</p><img src='cid:company-logo'></body></html>", true);
-							         sender.send(message);
-						        
+							
+							SimpleMailMessage message = new SimpleMailMessage();
+							 String content  = "Thanks to create yours count in our website<br/>"
+							 		+ "Now click here"+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+"to validate your E-mail adress";
+					          String subject="confirm your E-mail adress"; 
+					          String from="saphirmfogo@gmail.com";
+							message.setFrom(from);
+							message.setTo(emailAdress);
+							message.setSubject(subject);
+							message.setText(content);
+							sender.send(message);
+				
 						        resultSendMail.put("SendStatus", "OK"); 
 							
 							    }catch(Exception ex) {
@@ -258,10 +267,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							
 							        }
 						
-						
-				
 			return resultSendMail;
-			
 		}
 		/**
 		 * end registration
@@ -281,9 +287,16 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 			
 			String pseudonym= request.getParameter("user");
 			
-			Member memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
+			MemberBuffer memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
 			try{
-			memberRepository.insert(memberBuffer);
+				Member member=new Member();
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+			memberRepository.insert(member);
 			memberBufferRepository.delete(memberBuffer);
 			resultConfirmRegistration.put("StatusConfirm", "OK");
 			}catch(Exception ex){
@@ -302,9 +315,16 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 			
 			String pseudonym= request.getParameter("user");
 			
-			Member memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
+			MemberBuffer memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
 			try{
-				memberRepository.insert(memberBuffer);
+				Member member=new Member();
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+			memberRepository.insert(member);
 				memberBufferRepository.delete(memberBuffer);
 				resultConfirmRegistration.put("StatusConfirm", "OK");
 			}catch(Exception ex){
@@ -330,17 +350,20 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 			//recuperation des champs de connexion
 			String pseudonym= requestConnexion.getParameter("pseudonym");
 			String password= requestConnexion.getParameter("password");
+			System.out.println("-------------------------------");
+			System.out.println(pseudonym);
+			System.out.println("-------------------------------");
+		
+			System.out.println("-------------------------------");
+			System.out.println(password);
 			//recherche du membre dans la base de donnees
-			for (Member member : memberRepository.findAll()) {
-				if(member.getPseudonym().equals(pseudonym)){
+			try{
+				Member member =new Member();
+				member=memberRepository.findByPseudonym(pseudonym);
+				if(member!=null){
 					if(member.getPassword().equals(password)){
-						
-						/**Le membre ayant le mot de passe "password" et pseudo "pseudonym" a ete trouve 
-						 * on l'ajoute s une session
-						 */
 						session.setAttribute("Member", member);
 						connexionResult.put("StatusConnexion", "OK");
-						
 					}else{
 						session.setAttribute("Member", null);
 						connexionResult.put("StatusConnexion", "Failed");
@@ -350,7 +373,11 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 					connexionResult.put("StatusConnexion", "Failed");
 					connexionResult.put("Raison", "Failed pseudo");
 				}
-				}
+			}catch(Exception ex){
+				connexionResult.put("StatusConnexion", "Failed");
+				connexionResult.put("Raison", "Member doesn't exists");
+			}
+			
 			
 			return connexionResult;
 			
@@ -369,17 +396,20 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 			//recuperation des champs de connexion
 			String pseudonym= requestConnexion.getParameter("pseudonym");
 			String password= requestConnexion.getParameter("password");
+			System.out.println("-------------------------------");
+			System.out.println(pseudonym);
+			System.out.println("-------------------------------");
+		
+			System.out.println("-------------------------------");
+			System.out.println(password);
 			//recherche du membre dans la base de donnees
-			for (Member member : memberRepository.findAll()) {
-				if(member.getPseudonym().equals(pseudonym)){
+			try{
+				Member member =new Member();
+				member=memberRepository.findByPseudonym(pseudonym);
+				if(member!=null){
 					if(member.getPassword().equals(password)){
-						
-						/**Le membre ayant le mot de passe "password" et pseudo "pseudonym" a ete trouve 
-						 * on l'ajoute s une session
-						 */
 						session.setAttribute("Member", member);
 						connexionResult.put("StatusConnexion", "OK");
-						
 					}else{
 						session.setAttribute("Member", null);
 						connexionResult.put("StatusConnexion", "Failed");
@@ -389,11 +419,16 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 					connexionResult.put("StatusConnexion", "Failed");
 					connexionResult.put("Raison", "Failed pseudo");
 				}
-				}
+			}catch(Exception ex){
+				connexionResult.put("StatusConnexion", "Failed");
+				connexionResult.put("Raison", "Member doesn't exists");
+			}
+			
 			
 			return connexionResult;
 			
 		}
+		
 		/*
 		 * end connexion
 		 */
@@ -407,19 +442,22 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/addTestimony", method= RequestMethod.POST)
 		public JSONObject addTestimonyPost(HttpServletRequest requestTestimony) throws IOException, ServletException {
+			HttpSession session= requestTestimony.getSession();
+			Member member= (Member) session.getAttribute("Member");
 			JSONObject resultTestimony = new JSONObject();
 			
 			//String resultTestimony;
 			
 			String testimonyType=requestTestimony.getParameter("testimonyType");
+			String author=requestTestimony.getParameter("author");
 			
 			
 						//int i=0;
 			if(testimonyType.equals("videos")){
 				
-				//HttpSession memberSession=requestTestimony.getSession();
+				
 				File fileWay= new File(SAVE_DIR_TESTIMONY);
-				String nom="testimony";
+				String name="testimony";
 				Part part=null;
 				if(!fileWay.exists()) fileWay.mkdir();
 				
@@ -429,12 +467,22 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						
 						try{
 							
-							String fileName=SAVE_DIR_TESTIMONY + File.separator + nom;
-							part.write(SAVE_DIR_TESTIMONY + File.separator + nom);
+							String fileName=SAVE_DIR_TESTIMONY + File.separator + name;
+							part.write(SAVE_DIR_TESTIMONY + File.separator + name);
 							Testimony testimony=new Testimony();
 							testimony.setTestimonyType(testimonyType);
 							testimony.setTestimonyContent(fileName);
+							testimony.setAuthor(member.getPseudonym());
+							//member=memberRepository.findByPseudonym(author);
+							//testimony.setAuthor(member.getPseudonym());
 							testimonyRepository.insert(testimony);
+							//List<Testimony> testimonydb= testimonyRepository.findByTestimonyType("videos");
+							//List<Testimony> tes = new ArrayList<Testimony>();
+							//tes.add(testimonydb);
+							//member.setTestimonies(testimonydb);
+							member.getTestimonies().add(testimony);
+							memberRepository.save(member);
+							
 							resultTestimony.put("StatusAddTestimony", "OK");
 							
 						}catch (Exception ex){
@@ -448,8 +496,9 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 					Testimony testimony=new Testimony();
 					testimony.setTestimonyType(testimonyType);
 					testimony.setTestimonyContent(testimonyContent);
-					
+					testimony.setAuthor(member.getPseudonym());
 					testimonyRepository.insert(testimony);
+					member.getTestimonies().add(testimony);
 					resultTestimony.put("StatusAddTestimony", "OK");
 					
 				}catch (Exception ex){
@@ -467,6 +516,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/addTestimony", method=RequestMethod.GET)
 		public JSONObject addTestimonyGet(HttpServletRequest requestTestimony) {
+			
 			JSONObject resultTestimony = new JSONObject();
 			
 			//String resultTestimony;
@@ -478,14 +528,14 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 			if(testimonyType.equals("videos")){
 				HttpSession memberSession=requestTestimony.getSession();
 						File fileWay= new File(SAVE_DIR_TESTIMONY);
-						String nom="testimony"+((Member)memberSession.getAttribute("Member")).getPseudonym()+".avis";
+						String name="testimony"+((Member)memberSession.getAttribute("Member")).getPseudonym()+".avi";
 						Part part=null;
 						if(!fileWay.exists()) fileWay.mkdir();
 						
 						try{
 							part=requestTestimony.getPart("testimony");
-							String fileName=SAVE_DIR_TESTIMONY + File.separator + nom;
-							part.write(SAVE_DIR_TESTIMONY + File.separator + nom);
+							String fileName=SAVE_DIR_TESTIMONY + File.separator + name;
+							part.write(SAVE_DIR_TESTIMONY + File.separator + name);
 							Testimony testimony=new Testimony();
 							testimony.setTestimonyType(testimonyType);
 							testimony.setTestimonyContent(fileName);

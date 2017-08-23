@@ -40,13 +40,30 @@
 			<version>1.4.7.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<!-- ce que j'ai ajoute -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>1.4.7.RELEASE</version>
+			<version>1.5.6.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
+		 <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>3.2.8.RELEASE</version>
+		</dependency>
+		<dependency>
+		   <groupId>javax.mail</groupId>
+		   <artifactId>mail</artifactId>
+		   <version>1.4.7</version>
+		</dependency>
+		<!-- <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>12.1.0</version>
+        </dependency>
+		
+		  fin de ce que j'ai ajoute  -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

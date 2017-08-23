@@ -26,8 +26,11 @@ public class InternetSurferController {
 	/**
 	 * Start visualize testimony
 	 */
-	@RequestMapping(value="/visualizeVideoTestimony", method={RequestMethod.GET, RequestMethod.POST})
-	public List<JSONObject> visualizeVideoTestimony(HttpServletRequest request){
+	/*
+	 * Version Post
+	 */
+	@RequestMapping(value="/visualizeVideoTestimony", method= RequestMethod.POST)
+	public List<JSONObject> visualizeVideoTestimonyPost(HttpServletRequest request){
 		//JSONObject listOfTestimony = new JSONObject();
 		List<JSONObject> listOfTestimony = new ArrayList<JSONObject>();
 		JSONObject objectTestimony;
@@ -40,9 +43,37 @@ public class InternetSurferController {
 		
 		return listOfTestimony;
 	}
+	/*
+	 * Version Get
+	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/visualizeWriteTestimony", method={RequestMethod.GET, RequestMethod.POST})
-	public List<JSONObject> visualizeWriteTestimony(HttpServletRequest request){
+	@RequestMapping(value="/visualizeVideoTestimony", method=RequestMethod.GET)
+	public List<JSONObject> visualizeVideoTestimonyGet(HttpServletRequest request){
+		//JSONObject listOfTestimony = new JSONObject();
+		List<JSONObject> listOfTestimony = new ArrayList<JSONObject>();
+		JSONObject objectTestimony=new JSONObject();
+		for(Testimony testimony: testimonyRepository.findByTestimonyType("videos")){
+			objectTestimony.put("Content", testimony.getTestimonyContent());
+			objectTestimony.put("Type", testimony.getTestimonyType());
+			listOfTestimony.add(objectTestimony);
+		}
+		
+		return listOfTestimony;
+	}
+	/*
+	 * End visualize testimony videos
+	 */
+	/**
+	 * start visualition testimony write
+	 * @param request
+	 * @return
+	 */
+	/*
+	 * Version POST
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/visualizeWriteTestimony", method= RequestMethod.POST)
+	public List<JSONObject> visualizeWriteTestimonyPost(HttpServletRequest request){
 		
 		List<JSONObject> listOfTestimony=new ArrayList<JSONObject>();;
 		JSONObject objectTestimony=new JSONObject();
@@ -55,6 +86,23 @@ public class InternetSurferController {
 		return listOfTestimony;
 	}
 	/*
-	 * end visualize testimony
+	 * Version GET
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/visualizeWriteTestimony", method=RequestMethod.GET)
+	public List<JSONObject> visualizeWriteTestimonyGet(HttpServletRequest request){
+		
+		List<JSONObject> listOfTestimony=new ArrayList<JSONObject>();;
+		JSONObject objectTestimony=new JSONObject();
+		for(Testimony testimony: testimonyRepository.findByTestimonyType("write")){
+			objectTestimony.put("Content", testimony.getTestimonyContent());
+			objectTestimony.put("Type", testimony.getTestimonyType());
+			 listOfTestimony.add(objectTestimony);
+		}
+		
+		return listOfTestimony;
+	}
+	/*
+	 * end visualize testimony write
 	 */
 }

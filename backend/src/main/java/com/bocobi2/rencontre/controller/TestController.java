@@ -2,13 +2,16 @@ package com.bocobi2.rencontre.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequestWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+//import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bocobi2.rencontre.model.Customer;
 import com.bocobi2.rencontre.repositories.CustomerRepository;
+
 
 @RestController
 public class TestController {
@@ -24,7 +27,7 @@ public class TestController {
 
 	@RequestMapping(value = "/1", method = RequestMethod.GET)
 	//public ModelAndView helloWorld( ModelMap model ) {
-	public String helloWorld( HttpServletRequest model ) {
+	public String helloWorld( HttpServletRequestWrapper model ) {
 		customerRepository.deleteAll();
 
 		// save a couple of customers

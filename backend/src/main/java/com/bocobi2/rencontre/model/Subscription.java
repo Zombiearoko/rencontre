@@ -106,5 +106,15 @@ public class Subscription {
 	public void setIdSubscription(String idSubscription) {
 		this.idSubscription = idSubscription;
 	}
- 
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "{\nidSubscription:" + idSubscription + ",\n paymentMethod:" + paymentMethod
+				+ ",\n paymentMethodName:" + paymentMethodName + ",\n subscriptionDate:" + subscriptionDate + ",\n contrat:"
+				+ contrat.toString() + "\n}";
+	}
+	
 }

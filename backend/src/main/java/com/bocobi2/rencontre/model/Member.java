@@ -1,11 +1,18 @@
 package com.bocobi2.rencontre.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.bocobi2.rencontre.repositories.SubscriptionRepository;
 
 
 @Document(collection="member")
@@ -276,5 +283,23 @@ public class Member extends InternetSurfer {
 		return 0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String messagesList = "";
+		for(Message m:messages){
+			messagesList += m.toString()+",\n";
+		}
+		String testimoniesList = "";
+		for(Testimony t:testimonies){
+			testimoniesList += t.toString()+",\n";
+		}
+		return "Member: {\npseudonym : " + pseudonym + ",\n password : " + password + ",\n phoneNumber : " + phoneNumber
+				+ ",\n birthDate : " + birthDate + ",\n gender : " + gender + ",\n picture : " + picture + ",\n subscription : "
+				+ subscription.toString() + ",\n profile:" + profile.toString() + ",\n messages : [" + messagesList + "],\n testimonies : [" + testimoniesList
+				+ "],\n status : " + status.toString() + "\n}";
+	}
 
 }

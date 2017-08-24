@@ -20,10 +20,11 @@ public class Testimony {
 	 * @param testimonyType
 	 * @param testimonyContent
 	 */
-	public Testimony(String testimonyType, String testimonyContent) {
+	public Testimony(String testimonyType, String testimonyContent, String author) {
 		super();
 		this.testimonyType = testimonyType;
 		this.testimonyContent = testimonyContent;
+		this.author = author;
 	}
 
 	
@@ -89,4 +90,15 @@ public class Testimony {
 		return id;
 	}
 
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "{id:" + id + ",\n testimonyType:" + testimonyType + ",\n testimonyContent:" + testimonyContent
+				+ ",\n author:" + author + "\n}";
+	}
+	
 }

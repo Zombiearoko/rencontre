@@ -17,7 +17,7 @@ import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
 
 @RestController
-@RequestMapping(value="/InternetSurferController")
+@RequestMapping(value="/InternetSurfer")
 public class InternetSurferController {
 
 	@Autowired
@@ -71,7 +71,7 @@ public class InternetSurferController {
 	@RequestMapping(value="/visualizeWriteTestimony", method= RequestMethod.POST)
 	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyPost(HttpServletRequest request){
 		
-List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("write");
 		
 		if(listOfTestimony.isEmpty()){
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -85,7 +85,7 @@ List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("video
 	@RequestMapping(value="/visualizeWriteTestimony", method=RequestMethod.GET)
 	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyGet(HttpServletRequest request){
 		
-		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("write");
 		
 		if(listOfTestimony.isEmpty()){
 			return new ResponseEntity(HttpStatus.NO_CONTENT);

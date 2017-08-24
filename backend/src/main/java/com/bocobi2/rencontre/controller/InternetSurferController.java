@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,36 +32,30 @@ public class InternetSurferController {
 	 * Version Post
 	 */
 	@RequestMapping(value="/visualizeVideoTestimony", method= RequestMethod.POST)
-	public List<JSONObject> visualizeVideoTestimonyPost(HttpServletRequest request){
+	public ResponseEntity<List<Testimony>>  visualizeVideoTestimonyPost(HttpServletRequest request){
 		//JSONObject listOfTestimony = new JSONObject();
-		List<JSONObject> listOfTestimony = new ArrayList<JSONObject>();
-		JSONObject objectTestimony;
-		for(Testimony testimony: testimonyRepository.findByTestimonyType("videos")){
-			objectTestimony=new JSONObject();
-			objectTestimony.put("Content", testimony.getTestimonyContent());
-			objectTestimony.put("Type", testimony.getTestimonyType());
-			listOfTestimony.add(objectTestimony);
-		}
+		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
 		
-		return listOfTestimony;
+		if(listOfTestimony.isEmpty()){
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		 return new ResponseEntity<List<Testimony>>(listOfTestimony, HttpStatus.OK);
 	}
 	/*
 	 * Version Get
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/visualizeVideoTestimony", method=RequestMethod.GET)
-	public List<JSONObject> visualizeVideoTestimonyGet(HttpServletRequest request){
+	public ResponseEntity<List<Testimony>>  visualizeVideoTestimonyGet(HttpServletRequest request){
 		//JSONObject listOfTestimony = new JSONObject();
-		List<JSONObject> listOfTestimony = new ArrayList<JSONObject>();
-		JSONObject objectTestimony=new JSONObject();
-		for(Testimony testimony: testimonyRepository.findByTestimonyType("videos")){
-			objectTestimony.put("Content", testimony.getTestimonyContent());
-			objectTestimony.put("Type", testimony.getTestimonyType());
-			listOfTestimony.add(objectTestimony);
-		}
+		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
 		
-		return listOfTestimony;
+		if(listOfTestimony.isEmpty()){
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		 return new ResponseEntity<List<Testimony>>(listOfTestimony, HttpStatus.OK);
 	}
+	
 	/*
 	 * End visualize testimony videos
 	 */
@@ -73,36 +69,31 @@ public class InternetSurferController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/visualizeWriteTestimony", method= RequestMethod.POST)
-	public List<JSONObject> visualizeWriteTestimonyPost(HttpServletRequest request){
+	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyPost(HttpServletRequest request){
 		
-		List<JSONObject> listOfTestimony=new ArrayList<JSONObject>();;
-		JSONObject objectTestimony=new JSONObject();
-		for(Testimony testimony: testimonyRepository.findByTestimonyType("write")){
-			objectTestimony.put("Content", testimony.getTestimonyContent());
-			objectTestimony.put("Type", testimony.getTestimonyType());
-			 listOfTestimony.add(objectTestimony);
+List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+		
+		if(listOfTestimony.isEmpty()){
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		
-		return listOfTestimony;
+		 return new ResponseEntity<List<Testimony>>(listOfTestimony, HttpStatus.OK);
 	}
 	/*
 	 * Version GET
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/visualizeWriteTestimony", method=RequestMethod.GET)
-	public List<JSONObject> visualizeWriteTestimonyGet(HttpServletRequest request){
+	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyGet(HttpServletRequest request){
 		
-		List<JSONObject> listOfTestimony=new ArrayList<JSONObject>();;
-		JSONObject objectTestimony=new JSONObject();
-		for(Testimony testimony: testimonyRepository.findByTestimonyType("write")){
-			objectTestimony.put("Content", testimony.getTestimonyContent());
-			objectTestimony.put("Type", testimony.getTestimonyType());
-			 listOfTestimony.add(objectTestimony);
+		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+		
+		if(listOfTestimony.isEmpty()){
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		
-		return listOfTestimony;
+		 return new ResponseEntity<List<Testimony>>(listOfTestimony, HttpStatus.OK);
+	}
 	}
 	/*
 	 * end visualize testimony write
 	 */
-}
+

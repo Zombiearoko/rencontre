@@ -10,7 +10,7 @@ public class Contrat {
 	private String idContrat;
 	private Double price;
 	private int contratDuration;
-	private int contratName;
+	private String contratName;
 	
 	public Contrat() {
 		// TODO Auto-generated constructor stub
@@ -21,7 +21,7 @@ public class Contrat {
 	 * @param contratDuration
 	 * @param contratName
 	 */
-	public Contrat(Double price, int contratDuration, int contratName) {
+	public Contrat(Double price, int contratDuration, String contratName) {
 		super();
 		this.price = price;
 		this.contratDuration = contratDuration;
@@ -59,14 +59,14 @@ public class Contrat {
 	/**
 	 * @return the contratName
 	 */
-	public int getContratName() {
+	public String getContratName() {
 		return contratName;
 	}
 
 	/**
 	 * @param contratName the contratName to set
 	 */
-	public void setContratName(int contratName) {
+	public void setContratName(String contratName) {
 		this.contratName = contratName;
 	}
 
@@ -75,6 +75,15 @@ public class Contrat {
 	 */
 	public String getIdContrat() {
 		return idContrat;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "{\nidContrat:" + idContrat + ",\n price:" + price + ",\n contratDuration:" + contratDuration
+				+ ",\n contratName:" + contratName + "\n}";
 	}
 	
 }

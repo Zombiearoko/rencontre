@@ -28,6 +28,20 @@ public class Message {
 	}
 	
 	/**
+	 * @param messageContent
+	 * @param sender
+	 * @param receiver
+	 * @param sendingDate
+	 */
+	public Message(String messageContent, String sender, String receiver, Date sendingDate) {
+		super();
+		this.messageContent = messageContent;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.sendingDate = sendingDate;
+	}
+
+	/**
 	 * @return the messageContent
 	 */
 	public String getMessageContent() {
@@ -81,6 +95,15 @@ public class Message {
 	 */
 	public String getIdMessage() {
 		return idMessage;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "{\nidMessage:" + idMessage + ",\n messageContent:" + messageContent + ",\n sender:" + sender
+				+ ",\n receiver:" + receiver + ",\n sendingDate:" + sendingDate + "\n}";
 	}
 	
 

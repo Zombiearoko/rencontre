@@ -3,6 +3,7 @@
 	import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,12 @@ import javax.servlet.annotation.MultipartConfig;
 	import javax.servlet.http.Part;
 	
 	import org.json.simple.JSONObject;
-	import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,8 +33,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.ResponseBody;
 	import org.springframework.web.bind.annotation.RestController;
 	import org.springframework.web.servlet.ModelAndView;
-	
-	import com.bocobi2.rencontre.model.Customer;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.bocobi2.rencontre.model.Customer;
 	import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.Testimony;
@@ -55,18 +62,52 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		TestimonyRepository testimonyRepository;
 		
 		
-		
 		@Autowired
 		private MailSender sender;
 		
-		/*****(value="/registrationForm", method = {RequestMethod.POST, RequestMethod.GET})
-		public ModelAndView  registrationFormGet(HttpServletRequest request){
+		public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+		
+	/**
+	 * choix du type de rencontre
+	 */
+		/**
+		 * VERSION POST
+		 * @param request
+		 * @param ucBuilder
+		 * @return
+		 */
+		@RequestMapping(value="/choiseRencontre", method = RequestMethod.POST)
+	    public ResponseEntity<?>  choiseRencontrePost(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
 			
-			ModelAndView model =new ModelAndView("http://localalhost:8091/InscriptionMembre");
+			String bithDate= request.getParameter("bithDate");
+			String gender=  request.getParameter("gender");
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			if(bithDate.regionMatches(year, "1980", year, 50)){
+				
+				 return new ResponseEntity(HttpStatus.OK);
+			}
 			
-			return model;
+			 return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		/**
+		 * VERSION GET
+		 */
+		@RequestMapping(value="/choiseRencontre", method = RequestMethod.GET)
+	    public ResponseEntity<?>  choiseRencontreGet(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
 			
-		}****/
+			String bithDate= request.getParameter("bithDate");
+			String gender=  request.getParameter("gender");
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			if(bithDate.regionMatches(year, "1980", year, 50)){
+				
+				 return new ResponseEntity(HttpStatus.OK);
+			}
+			
+			 return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		
 		/**** registration member in the data base
 		 * methode qui gere l'enregistrement d'un membre dans la bd 
 		 * 
@@ -76,31 +117,19 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/registration", method = RequestMethod.POST)
-		
-		public JSONObject  registrationPost(HttpServletRequest request ){
-			/*
-			 * Variable de la notification par mail nous utiliserons le serveur de messagerie SMTP
-			 */
-			JSONObject resultRegistration = new JSONObject();
-			JSONObject resultSendMail = new JSONObject();
-		    FormFieldController formField= new FormFieldController ();
-			/**
-			 * Variables d'erreur et de succes
-			 */
-			//String resultRegistration;
+	    public ResponseEntity<?>  registrationPost(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
 			
-			//String failedSaved= null;
-			Map<String, String> errors = new HashMap<String, String>();
 			/*
 			 * recuperation des donnees du formulaire
 			 */
-			String gender=  request.getParameter("gender");
+			
 			String pseudonym=  request.getParameter("pseudonym");
 			String emailAdress=  request.getParameter("emailAdress");
 			String password=  request.getParameter("password");
 			String confirmPassword=  request.getParameter("confirmPassword");
 			String phoneNumber=  request.getParameter("phoneNumber");
 			//String picture= request.getParameter("picture");
+			MemberBuffer member= new MemberBuffer();
 			/***
 			 * Reste les champs de la classe profil a recuperer!!!!!!!!!!!!!
 			 * ceci je le ferrai apres avoir pris la liste des champs a Mr Foko ou a Mr Sofeu!!!!!!!
@@ -127,11 +156,10 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						String fileName=SAVE_DIR_PICTURE + File.separator + nom;
 						part.write(SAVE_DIR_PICTURE + File.separator + nom);
 					
-						MemberBuffer member= new MemberBuffer();
+						
 						member.setPseudonym(pseudonym);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
-						member.setGender(gender);
 						member.setPassword(password);
 						member.setPicture(fileName);
 					/***
@@ -158,50 +186,41 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							message.setText(content);
 							sender.send(message);
 				
-						        resultSendMail.put("SendStatus", "OK"); 
+							 HttpHeaders headers = new HttpHeaders();
+						        headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
+						        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							
 							    }catch(Exception ex) {
 							        	
-							        	resultSendMail.put("SendStatus", ex.getMessage());	 
+							    	logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						            return new ResponseEntity(logger,HttpStatus.CONFLICT);
+						        }
 							
 							        }
 						
 						
 				
-			return resultSendMail;
 			
-		}
+			
+		
 		/*
 		 * Version GET
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/registration", method = RequestMethod.GET)
-		
-		public JSONObject  registrationGet(HttpServletRequest request ){
+	    public ResponseEntity<?>  registrationGet(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
 			
-			/*
-			 * Variable de la notification par mail nous utiliserons le serveur de messagerie SMTP
-			 */
-			JSONObject resultRegistration = new JSONObject();
-			JSONObject resultSendMail = new JSONObject();
-		    FormFieldController formField= new FormFieldController ();
-			/**
-			 * Variables d'erreur et de succes
-			 */
-			//String resultRegistration;
-			
-			//String failedSaved= null;
-			Map<String, String> errors = new HashMap<String, String>();
 			/*
 			 * recuperation des donnees du formulaire
 			 */
-			String gender=  request.getParameter("gender");
+			
 			String pseudonym=  request.getParameter("pseudonym");
 			String emailAdress=  request.getParameter("emailAdress");
 			String password=  request.getParameter("password");
 			String confirmPassword=  request.getParameter("confirmPassword");
 			String phoneNumber=  request.getParameter("phoneNumber");
 			//String picture= request.getParameter("picture");
+			MemberBuffer member= new MemberBuffer();
 			/***
 			 * Reste les champs de la classe profil a recuperer!!!!!!!!!!!!!
 			 * ceci je le ferrai apres avoir pris la liste des champs a Mr Foko ou a Mr Sofeu!!!!!!!
@@ -220,7 +239,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 			
 					File fileWay= new File(SAVE_DIR_PICTURE);
-					String nom="picture"+pseudonym+".png";
+					String nom="picture"+pseudonym+"png";
 					Part part=null;
 					if(!fileWay.exists()) fileWay.mkdir();
 					try {
@@ -228,11 +247,10 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						String fileName=SAVE_DIR_PICTURE + File.separator + nom;
 						part.write(SAVE_DIR_PICTURE + File.separator + nom);
 					
-						MemberBuffer member= new MemberBuffer();
+						
 						member.setPseudonym(pseudonym);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
-						member.setGender(gender);
 						member.setPassword(password);
 						member.setPicture(fileName);
 					/***
@@ -259,15 +277,15 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							message.setText(content);
 							sender.send(message);
 				
-						        resultSendMail.put("SendStatus", "OK"); 
+							 HttpHeaders headers = new HttpHeaders();
+						        headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
+						        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							
 							    }catch(Exception ex) {
 							        	
-							        	resultSendMail.put("SendStatus", ex.getMessage());	 
-							
-							        }
-						
-			return resultSendMail;
+							    	logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						            return new ResponseEntity(logger,HttpStatus.CONFLICT);
+						        }
 		}
 		/**
 		 * end registration
@@ -281,15 +299,16 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/ConfirmRegistration", method =RequestMethod.POST )
 		@ResponseBody
-		public JSONObject  confirmRegistrationPost(HttpServletRequest request ){
+		public  ResponseEntity<?>  confirmRegistrationPost(HttpServletRequest request ){
 			
-			JSONObject resultConfirmRegistration=new JSONObject();
+			
 			
 			String pseudonym= request.getParameter("user");
 			
 			MemberBuffer memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
+			Member member=new Member();
 			try{
-				Member member=new Member();
+				
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
@@ -298,11 +317,12 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 				member.setPicture(memberBuffer.getPicture());
 			memberRepository.insert(member);
 			memberBufferRepository.delete(memberBuffer);
-			resultConfirmRegistration.put("StatusConfirm", "OK");
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
 			}catch(Exception ex){
-				resultConfirmRegistration.put("StatusConfirm", "Failed");
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+	            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 			}
-			return resultConfirmRegistration;
+			
 		}
 		/*
 		 * Version Get
@@ -310,14 +330,15 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/ConfirmRegistration", method =RequestMethod.GET )
 		@ResponseBody
-		public JSONObject  confirmRegistrationGet(HttpServletRequest request ){
-			JSONObject resultConfirmRegistration=new JSONObject();
+		public ResponseEntity<?>   confirmRegistrationGet(HttpServletRequest request ){
 			
-			String pseudonym= request.getParameter("user");
+			
+String pseudonym= request.getParameter("user");
 			
 			MemberBuffer memberBuffer= memberBufferRepository.findByPseudonym(pseudonym);
+			Member member=new Member();
 			try{
-				Member member=new Member();
+				
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
@@ -325,12 +346,12 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 				member.setPassword(memberBuffer.getPassword());
 				member.setPicture(memberBuffer.getPicture());
 			memberRepository.insert(member);
-				memberBufferRepository.delete(memberBuffer);
-				resultConfirmRegistration.put("StatusConfirm", "OK");
+			memberBufferRepository.delete(memberBuffer);
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
 			}catch(Exception ex){
-				resultConfirmRegistration.put("StatusConfirm", "Failed");
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+	            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 			}
-			return resultConfirmRegistration;
 		}
 		/**
 		 * connexion of the member
@@ -342,8 +363,8 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/Connexion", method= RequestMethod.POST)
-		public JSONObject connexionMemberPost(HttpServletRequest requestConnexion){
-			JSONObject connexionResult = new JSONObject();
+		public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion){
+		
 			HttpSession session = requestConnexion.getSession();
 			String failedValue;
 			//String connexionResult;
@@ -363,23 +384,24 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 				if(member!=null){
 					if(member.getPassword().equals(password)){
 						session.setAttribute("Member", member);
-						connexionResult.put("StatusConnexion", "OK");
+						return new ResponseEntity<Member>(member, HttpStatus.OK);
 					}else{
 						session.setAttribute("Member", null);
-						connexionResult.put("StatusConnexion", "Failed");
-						connexionResult.put("Raison", "Failed password");
+						logger.error("Member with password {} not found.", password);
+			            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
 					}
 				}else{
-					connexionResult.put("StatusConnexion", "Failed");
-					connexionResult.put("Raison", "Failed pseudo");
+					logger.error("Member with password {} not found.", pseudonym);
+		            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
+		 
 				}
 			}catch(Exception ex){
-				connexionResult.put("StatusConnexion", "Failed");
-				connexionResult.put("Raison", "Member doesn't exists");
+				logger.error("Member with pseudonym {} not found.", pseudonym);
+	            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
 			}
 			
 			
-			return connexionResult;
+			
 			
 		}
 		
@@ -388,8 +410,8 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/Connexion", method=RequestMethod.GET)
-		public JSONObject connexionMemberGet(HttpServletRequest requestConnexion){
-			JSONObject connexionResult = new JSONObject();
+		public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion){
+			
 			HttpSession session = requestConnexion.getSession();
 			String failedValue;
 			//String connexionResult;
@@ -409,23 +431,23 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 				if(member!=null){
 					if(member.getPassword().equals(password)){
 						session.setAttribute("Member", member);
-						connexionResult.put("StatusConnexion", "OK");
+						return new ResponseEntity<Member>(member, HttpStatus.OK);
 					}else{
 						session.setAttribute("Member", null);
-						connexionResult.put("StatusConnexion", "Failed");
-						connexionResult.put("Raison", "Failed password");
+						logger.error("Member with password {} not found.", password);
+			            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
 					}
 				}else{
-					connexionResult.put("StatusConnexion", "Failed");
-					connexionResult.put("Raison", "Failed pseudo");
+					logger.error("Member with password {} not found.", pseudonym);
+		            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
+		 
 				}
 			}catch(Exception ex){
-				connexionResult.put("StatusConnexion", "Failed");
-				connexionResult.put("Raison", "Member doesn't exists");
+				logger.error("Member with pseudonym {} not found.", pseudonym);
+	            return new ResponseEntity(logger, HttpStatus.NOT_FOUND);
 			}
 			
 			
-			return connexionResult;
 			
 		}
 		
@@ -441,35 +463,33 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/addTestimony", method= RequestMethod.POST)
-		public JSONObject addTestimonyPost(HttpServletRequest requestTestimony) throws IOException, ServletException {
+		public  ResponseEntity<?> addTestimonyPost(HttpServletRequest requestTestimony, UriComponentsBuilder ucBuilder) throws IOException, ServletException {
 			HttpSession session= requestTestimony.getSession();
 			Member member= (Member) session.getAttribute("Member");
-			JSONObject resultTestimony = new JSONObject();
 			
+			Testimony testimony=new Testimony();
 			//String resultTestimony;
 			
 			String testimonyType=requestTestimony.getParameter("testimonyType");
-			String author=requestTestimony.getParameter("author");
+			//String author=requestTestimony.getParameter("author");
 			
 			
-						//int i=0;
-			if(testimonyType.equals("videos")){
-				
-				
-				File fileWay= new File(SAVE_DIR_TESTIMONY);
-				String name="testimony";
-				Part part=null;
-				if(!fileWay.exists()) fileWay.mkdir();
-				
-				part=requestTestimony.getPart("file");
-				
-				
 						
+			if(testimonyType.equalsIgnoreCase("videos")){
+				
+				
+						File fileWay= new File(SAVE_DIR_TESTIMONY);
+						String name="testimony";
+						Part part=null;
+						if(!fileWay.exists()) fileWay.mkdir();
+						
+						part=requestTestimony.getPart("testimony");
+				
 						try{
 							
 							String fileName=SAVE_DIR_TESTIMONY + File.separator + name;
 							part.write(SAVE_DIR_TESTIMONY + File.separator + name);
-							Testimony testimony=new Testimony();
+							
 							testimony.setTestimonyType(testimonyType);
 							testimony.setTestimonyContent(fileName);
 							testimony.setAuthor(member.getPseudonym());
@@ -483,88 +503,128 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							member.getTestimonies().add(testimony);
 							memberRepository.save(member);
 							
-							resultTestimony.put("StatusAddTestimony", "OK");
+							HttpHeaders headers = new HttpHeaders();
+					        headers.setLocation(ucBuilder.path("/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
+							
+					        
+					        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							
 						}catch (Exception ex){
 								ex.printStackTrace();
-								resultTestimony.put("StatusAddTestimony", "Failed adding");
+								logger.error("Unable to create. A User with name {} already exist", testimony.getTestimonyContent());
+					            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 				}
 			}else{
 				String testimonyContent= requestTestimony.getParameter("testimonyContent");
 				try{
 					
-					Testimony testimony=new Testimony();
+					
 					testimony.setTestimonyType(testimonyType);
 					testimony.setTestimonyContent(testimonyContent);
 					testimony.setAuthor(member.getPseudonym());
 					testimonyRepository.insert(testimony);
 					member.getTestimonies().add(testimony);
-					resultTestimony.put("StatusAddTestimony", "OK");
+					
+					HttpHeaders headers = new HttpHeaders();
+			        headers.setLocation(ucBuilder.path("/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
+					
+			        
+			        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 					
 				}catch (Exception ex){
 						ex.printStackTrace();
-						resultTestimony.put("StatusAddTestimony", "Failed adding");
+						logger.error("Unable to create. A User with name {} already exist", testimony.getTestimonyContent());
+			            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 						
 		}
 			}			
 			
-			return resultTestimony;
+			
 		}
 		/*
 		 * Version Get
 		 */
 		@SuppressWarnings("unchecked")
 		@RequestMapping(value="/addTestimony", method=RequestMethod.GET)
-		public JSONObject addTestimonyGet(HttpServletRequest requestTestimony) {
+		public ResponseEntity<?> addTestimonyGet(HttpServletRequest requestTestimony, UriComponentsBuilder ucBuilder) throws IOException, ServletException {
 			
-			JSONObject resultTestimony = new JSONObject();
+			HttpSession session= requestTestimony.getSession();
+			Member member= (Member) session.getAttribute("Member");
 			
+			Testimony testimony=new Testimony();
 			//String resultTestimony;
 			
 			String testimonyType=requestTestimony.getParameter("testimonyType");
+			String author=requestTestimony.getParameter("author");
 			
 			
-						//int i=0;
-			if(testimonyType.equals("videos")){
-				HttpSession memberSession=requestTestimony.getSession();
-						File fileWay= new File(SAVE_DIR_TESTIMONY);
-						String name="testimony"+((Member)memberSession.getAttribute("Member")).getPseudonym()+".avi";
-						Part part=null;
-						if(!fileWay.exists()) fileWay.mkdir();
+						
+			if(testimonyType.equalsIgnoreCase("videos")){
+				
+				
+				File fileWay= new File(SAVE_DIR_TESTIMONY);
+				String name="testimony";
+				Part part=null;
+				if(!fileWay.exists()) fileWay.mkdir();
+				
+				part=requestTestimony.getPart("testimony");
+				
+				
 						
 						try{
-							part=requestTestimony.getPart("testimony");
+							
 							String fileName=SAVE_DIR_TESTIMONY + File.separator + name;
 							part.write(SAVE_DIR_TESTIMONY + File.separator + name);
-							Testimony testimony=new Testimony();
+							
 							testimony.setTestimonyType(testimonyType);
 							testimony.setTestimonyContent(fileName);
+							testimony.setAuthor(member.getPseudonym());
+							//member=memberRepository.findByPseudonym(author);
+							//testimony.setAuthor(member.getPseudonym());
 							testimonyRepository.insert(testimony);
-							resultTestimony.put("StatusAddTestimony", "OK");
+							//List<Testimony> testimonydb= testimonyRepository.findByTestimonyType("videos");
+							//List<Testimony> tes = new ArrayList<Testimony>();
+							//tes.add(testimonydb);
+							//member.setTestimonies(testimonydb);
+							member.getTestimonies().add(testimony);
+							memberRepository.save(member);
+							
+							HttpHeaders headers = new HttpHeaders();
+					        headers.setLocation(ucBuilder.path("/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
+							
+					        
+					        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							
 						}catch (Exception ex){
 								ex.printStackTrace();
-								resultTestimony.put("StatusAddTestimony", "Failed adding");
+								logger.error("Unable to create. A User with name {} already exist", testimony.getTestimonyContent());
+					            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 				}
 			}else{
 				String testimonyContent= requestTestimony.getParameter("testimonyContent");
 				try{
 					
-					Testimony testimony=new Testimony();
+					
 					testimony.setTestimonyType(testimonyType);
 					testimony.setTestimonyContent(testimonyContent);
-					
+					testimony.setAuthor(member.getPseudonym());
 					testimonyRepository.insert(testimony);
-					resultTestimony.put("StatusAddTestimony", "OK");
+					member.getTestimonies().add(testimony);
+					
+					HttpHeaders headers = new HttpHeaders();
+			        headers.setLocation(ucBuilder.path("/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
+					
+			        
+			        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 					
 				}catch (Exception ex){
 						ex.printStackTrace();
-						resultTestimony.put("StatusAddTestimony", "Failed adding");
+						logger.error("Unable to create. A User with name {} already exist", testimony.getTestimonyContent());
+			            return new ResponseEntity(logger,HttpStatus.CONFLICT);
 						
 		}
 			}			
 			
-			return resultTestimony;
 		}
 		/*
 		 * end add testimony

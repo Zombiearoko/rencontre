@@ -4,13 +4,20 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Properties;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +44,8 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 	
 	@RestController
 	@RequestMapping("/Member")
+	//@Resource(name="myMessageQueue",type="javax.jms.ConnectionFactory")
+	
 	@MultipartConfig(fileSizeThreshold=1024*1024*2,maxFileSize=1024*1024*10,maxRequestSize=1024*1024*50)
 	public class MemberController {
 		
@@ -57,6 +66,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 		@Autowired
 		private MailSender sender;
+		
 		
 		
 		
@@ -113,6 +123,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 * methode qui gere l'enregistrement d'un membre dans la bd 
 		 * 
 		 */
+		@SuppressWarnings("unchecked")
 		/*
 		 * Version POST
 		 */
@@ -164,6 +175,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						member.setPhoneNumber(phoneNumber);
 						member.setPassword(password);
 						member.setPicture(fileName);
+					
 					/***
 					 * Enregistrement du membre dans une zone tampon de la base de donnees
 					 * Notification de l'utilisateur par mail pour confirmer l'email et la creaction du compte
@@ -172,29 +184,66 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 					 */
 					
 						//enregistrement dans la zone tampon
+					
+						Properties properties = new Properties();
+						properties.put("mail.smtp.host", "smtp.gmail.com");
+						properties.put("mail.smtp.auth", "true");
+						properties.put("mail.smtp.starttls.enable", "true");
+						properties.put("mail.smtp.starttls.required", "true");
+						properties.put("mail.smtp.connectiontimeout", "5000");
+						properties.put("mail.smtp.timeout", "5000");
+						properties.put("mail.smtp.writetimeout", "5000");
+						Session session = Session.getInstance(properties, null);
 						
-							SimpleMailMessage message = new SimpleMailMessage();
-							 String content  = "Thanks to create yours count in our website<br/>"
-							 		+ "Now click here"+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+"to validate your E-mail adress";
+						
+						String content1  = "Thanks to create your count in our website"
+							 		+  " Now  click here " + "http://192.168.8.101:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
+					          String subject1="confirm your E-mail adress"; 
+					         // String form="saphirmfogo@gmail.com";
+						MimeMessage msg = new MimeMessage(session);
+						///msg.setFrom(new InternetAddress(form));
+						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+						msg.setSubject(subject1); 
+						msg.setText(content1); 
+						msg.setSentDate(new Date()); 
+						
+						Transport transport = session.getTransport("smtp");
+						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+						transport.sendMessage(msg, msg.getAllRecipients()); 
+						transport.close();
+						
+						
+							/***SimpleMailMessage message = new SimpleMailMessage();
+							 String content  = "Thanks to create yours count in our website"
+							 		+ "Now click here " + "http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
 					          String subject="confirm your E-mail adress"; 
 					          String from="saphirmfogo@gmail.com";
 							message.setFrom(from);
 							message.setTo(emailAdress);
 							message.setSubject(subject);
 							message.setText(content);
-							sender.send(message);
-							memberBufferRepository.insert(member);
-							 //HttpHeaders headers = new HttpHeaders();
-						        //headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
-						        
-						        return new ResponseEntity<String>( HttpStatus.CREATED);
+							sender.send(message);***/
+							String mess="ok";
+							if(mess.equals("ok")){
+								memberBufferRepository.insert(member);
+								 HttpHeaders headers = new HttpHeaders();
+							        headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
+							        
+							        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+							}else{
+								logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						    	 return new ResponseEntity(new MemberErrorType("the email is not validate" ),HttpStatus.NOT_FOUND);
+							}
 							
-							    }catch(Exception ex) {
-							        	
-							    	logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-							    	 return new ResponseEntity(new MemberErrorType("Unable to create. "
-							            		+ "A Member with name "+member.getPseudonym()+" already exist" ),HttpStatus.CONFLICT);
-						        }
+							
+}catch(Exception ex) {
+				        System.out.println(ex.getMessage());
+				    	
+				    	logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+				    	 return new ResponseEntity(new MemberErrorType("Unable to create. "
+				            		+ "A Member with name "+member.getPseudonym()+" already exist" ),HttpStatus.CONFLICT);
+			        }  
+							    
 							
 							        }
 						
@@ -353,9 +402,9 @@ String pseudonym= request.getParameter("user");
 			memberBufferRepository.delete(memberBuffer);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
 			}catch(Exception ex){
-				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", pseudonym);
 				 return new ResponseEntity(new MemberErrorType("Unable to create. "
-		            		+ "A Member with name "+member.getPseudonym()+" already exist" ),HttpStatus.CONFLICT);
+		            		+ "A Member with name "+pseudonym+" already exist" ),HttpStatus.CONFLICT);
 			}
 		}
 		/**
@@ -646,9 +695,6 @@ String pseudonym= request.getParameter("user");
 		 * end add testimony
 		 */
 		
-		/**
-		 * Start  paiement frais d'abonnement
-		 */
 		
 	
 	}

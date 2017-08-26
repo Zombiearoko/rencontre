@@ -57,6 +57,26 @@
 		   <artifactId>mail</artifactId>
 		   <version>1.4.7</version>
 		</dependency>
+		<dependency>
+      <groupId>javax.jms</groupId>
+      <artifactId>jms-api</artifactId>
+      <version>1.1-rev-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-core</artifactId>
+      <version>5.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.28</version>
+    </dependency>
 		<!-- <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
@@ -99,6 +119,26 @@
 
 	<build>
 		<plugins>
+		<!-- moi -->
+		<plugin>
+        <groupId>org.apache.activemq.tooling</groupId>
+        <artifactId>maven-activemq-plugin</artifactId>
+        <version>5.4.2</version>
+        <configuration>
+          <configUri>xbean:file:./conf/activemq.xml</configUri>
+          <fork>false</fork>
+          <systemProperties>
+            <property>
+              <name>javax.net.ssl.keyStorePassword</name>
+              <value>password</value>
+            </property>
+            <property>
+              <name>org.apache.activemq.default.directory.prefix</name>
+              <value>./target/</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

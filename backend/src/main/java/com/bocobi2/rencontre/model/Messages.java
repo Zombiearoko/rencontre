@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="Message")
-public class Message {
+public class Messages {
 
 	@Id
 	private String idMessage;
@@ -23,7 +23,7 @@ public class Message {
 	@Indexed
 	private Date sendingDate;
 	
-	public Message() {
+	public Messages() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -33,7 +33,7 @@ public class Message {
 	 * @param receiver
 	 * @param sendingDate
 	 */
-	public Message(String messageContent, String sender, String receiver, Date sendingDate) {
+	public Messages(String messageContent, String sender, String receiver, Date sendingDate) {
 		super();
 		this.messageContent = messageContent;
 		this.sender = sender;

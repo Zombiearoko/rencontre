@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.bocobi2.rencontre.model.Message;
+import com.bocobi2.rencontre.model.Messages;
 
-public interface MessageRepository extends MongoRepository<Message, String> {
+public interface MessageRepository extends MongoRepository<Messages, String> {
 	
-	public List<Message> findBySender(String sender);
-	public List<Message> findByReceiver(String receiver);
+	public List<Messages> findBySender(String sender);
+	public List<Messages> findByReceiver(String receiver);
 	
 }

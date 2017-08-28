@@ -29,7 +29,7 @@ public class MemberBuffer {
 	private Profile profile;
 	
 	@DBRef
-	private List<Messages> messages;
+	private List<Message> messages;
 	
 	@DBRef
 	private List<Testimony> testimonies;
@@ -60,7 +60,7 @@ public class MemberBuffer {
 	 * @param status
 	 */
 	public MemberBuffer(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
-			String picture, Subscription subscription, Profile profile, List<Messages> messages,
+			String picture, Subscription subscription, Profile profile, List<Message> messages,
 			List<Testimony> testimonies, Status status) {
 		super();
 		this.pseudonym = pseudonym;
@@ -226,7 +226,7 @@ public class MemberBuffer {
 	/**
 	 * @return the messages
 	 */
-	public List<Messages> getMessages() {
+	public List<Message> getMessages() {
 		return messages;
 	}
 
@@ -235,7 +235,7 @@ public class MemberBuffer {
 	/**
 	 * @param messages the messages to set
 	 */
-	public void setMessages(List<Messages> messages) {
+	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
 

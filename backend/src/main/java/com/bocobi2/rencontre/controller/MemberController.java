@@ -21,12 +21,22 @@ import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,14 +46,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
+import com.bocobi2.rencontre.model.Message;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
+import com.bocobi2.rencontre.repositories.MessageRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
+
 	
-	
+@CrossOrigin(origins = "*")
 	@RestController
-	@RequestMapping("/Member")
+	@RequestMapping("/rencontre/Member")
 	//@Resource(name="myMessageQueue",type="javax.jms.ConnectionFactory")
 	
 	@MultipartConfig(fileSizeThreshold=1024*1024*2,maxFileSize=1024*1024*10,maxRequestSize=1024*1024*50)
@@ -67,7 +80,8 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		@Autowired
 		private MailSender sender;
 		
-		
+		@Autowired
+		MessageRepository messageRepository;
 		
 		
 	/**
@@ -197,7 +211,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						
 						
 						String content1  = "Thanks to create your count in our website"
-							 		+  " Now  click here " + "http://192.168.8.101:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
+							 		+  " Now  click here " + "http://192.168.8.101:8091/rencontre/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
 					          String subject1="confirm your E-mail adress"; 
 					         // String form="saphirmfogo@gmail.com";
 						MimeMessage msg = new MimeMessage(session);
@@ -227,7 +241,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							if(mess.equals("ok")){
 								memberBufferRepository.insert(member);
 								 HttpHeaders headers = new HttpHeaders();
-							        headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
+							        headers.setLocation(ucBuilder.path("/rencontre/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
 							        
 							        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							}else{
@@ -319,7 +333,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							
 							SimpleMailMessage message = new SimpleMailMessage();
 							 String content  = "Thanks to create yours count in our website<br/>"
-							 		+ "Now click here"+"http://localhost:8091/Member/ConfirmRegistration?user="+member.getPseudonym()+"to validate your E-mail adress";
+							 		+ "Now click here"+"http://localhost:8091/rencontre/Member/ConfirmRegistration?user="+member.getPseudonym()+"to validate your E-mail adress";
 					          String subject="confirm your E-mail adress"; 
 					          String from="saphirmfogo@gmail.com";
 							message.setFrom(from);
@@ -329,7 +343,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 							sender.send(message);
 				
 							 HttpHeaders headers = new HttpHeaders();
-						        headers.setLocation(ucBuilder.path("/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
+						        headers.setLocation(ucBuilder.path("/rencontre/Member/registration/{pseudonym}").buildAndExpand(member.getPseudonym()).toUri());
 						        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 							
 							    }catch(Exception ex) {
@@ -676,7 +690,7 @@ String pseudonym= request.getParameter("user");
 					member.getTestimonies().add(testimony);
 					
 					HttpHeaders headers = new HttpHeaders();
-			        headers.setLocation(ucBuilder.path("/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
+			        headers.setLocation(ucBuilder.path("/rencontre/Member/addTestimony/{id}").buildAndExpand(testimony.getId()).toUri());
 					
 			        
 			        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -695,6 +709,145 @@ String pseudonym= request.getParameter("user");
 		 * end add testimony
 		 */
 		
-		
-	
+		/**
+		 * Start send message
+		 */
+		/*
+		 * VERSION POST
+		 */
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/sendMessage", method=RequestMethod.POST)
+		public ResponseEntity<?> sendMessagePost(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws Exception {
+			
+			String messageContent = request.getParameter("messageContent");
+			String topicExchange= request.getParameter("topicExchange");
+			String receiver = request.getParameter("receiver");
+			String sender = request.getParameter("sender");
+			Date date =new Date();
+			System.out.println(date.getDay()+"/"+date.getMonth()+"/"+date.getYear()+ "A" +date.getHours()+":"+date.getMinutes());
+			//HttpSession sessionMember = request.getSession();
+			//Member member= (Member) sessionMember.getAttribute("Member");
+
+			try{
+				ConnectionFactory cf = new CachingConnectionFactory();
+
+				// set up the queue, exchange, binding on the broker
+				RabbitAdmin admin = new RabbitAdmin(cf);
+				Queue queue = new Queue("myQueue");
+				admin.declareQueue(queue);
+				TopicExchange exchange = new TopicExchange(topicExchange);
+				admin.declareExchange(exchange);
+				//admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("foo.*"));
+				admin.declareBinding(
+					BindingBuilder.bind(queue).to(exchange).with(receiver));
+
+				// set up the listener and container
+				SimpleMessageListenerContainer container =
+						new SimpleMessageListenerContainer(cf);
+				Object listener = new Object() {
+					public void handleMessage(String foo) {
+						System.out.println(foo);
+					}
+				};
+				MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
+				container.setMessageListener(adapter);
+				container.setQueueNames("myQueue");
+				container.start();
+
+				// send something
+				RabbitTemplate template = new RabbitTemplate(cf);
+				template.convertAndSend(topicExchange, receiver, messageContent);
+				Message messageDb =new Message();
+				//messageDb.setSender(member.getPseudonym()); une session n'existe pas encore
+				messageDb.setSender(sender);
+				messageDb.setReceiver(receiver);
+				messageDb.setMessageContent(messageContent);
+				messageRepository.insert(messageDb);
+				
+				Thread.sleep(1000);
+				container.stop();
+				
+				return new ResponseEntity<Message>(messageDb, HttpStatus.OK);
+				//HttpHeaders headers = new HttpHeaders();
+		        //headers.setLocation(ucBuilder.path("/rencontre/Member/sendMessage/{id}").buildAndExpand(messageDb.getIdMessage()).toUri());
+		        //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+				
+			}catch(Exception e){
+				logger.error("Unable to send sender. A message can't be send");
+				return new ResponseEntity(new MemberErrorType("Unable to send. A message can't be send"),HttpStatus.CONFLICT);
+				
+			}
+
+			
+			
+		}
+		/*
+		 * VERSION Get
+		 */
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/sendMessage", method=RequestMethod.GET)
+		public ResponseEntity<?> sendMessageGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws Exception {
+			
+			String messageContent = request.getParameter("messageContent");
+			String topicExchange= request.getParameter("topicExchange");
+			String receiver = request.getParameter("receiver");
+			String sender = request.getParameter("sender");
+			Date date =new Date();
+			System.out.println(date.getDay()+"/"+date.getMonth()+"/"+date.getYear()+ "A" +date.getHours()+":"+date.getMinutes());
+			//HttpSession sessionMember = request.getSession();
+			//Member member= (Member) sessionMember.getAttribute("Member");
+
+			try{
+				ConnectionFactory cf = new CachingConnectionFactory();
+
+				// set up the queue, exchange, binding on the broker
+				RabbitAdmin admin = new RabbitAdmin(cf);
+				Queue queue = new Queue("myQueue");
+				admin.declareQueue(queue);
+				TopicExchange exchange = new TopicExchange(topicExchange);
+				admin.declareExchange(exchange);
+				//admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("foo.*"));
+				admin.declareBinding(
+					BindingBuilder.bind(queue).to(exchange).with(receiver));
+
+				// set up the listener and container
+				SimpleMessageListenerContainer container =
+						new SimpleMessageListenerContainer(cf);
+				Object listener = new Object() {
+					public void handleMessage(String foo) {
+						System.out.println(foo);
+					}
+				};
+				MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
+				container.setMessageListener(adapter);
+				container.setQueueNames("myQueue");
+				container.start();
+
+				// send something
+				RabbitTemplate template = new RabbitTemplate(cf);
+				template.convertAndSend(topicExchange, receiver, messageContent);
+				Message messageDb =new Message();
+				//messageDb.setSender(member.getPseudonym()); une session n'existe pas encore
+				messageDb.setSender(sender);
+				messageDb.setReceiver(receiver);
+				messageDb.setMessageContent(messageContent);
+				messageRepository.insert(messageDb);
+				
+				Thread.sleep(1000);
+				container.stop();
+				
+				return new ResponseEntity<Message>(messageDb, HttpStatus.OK);
+				//HttpHeaders headers = new HttpHeaders();
+		        //headers.setLocation(ucBuilder.path("/rencontre/Member/sendMessage/{id}").buildAndExpand(messageDb.getIdMessage()).toUri());
+		        //return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+				
+			}catch(Exception e){
+				logger.error("Unable to send sender. A message can't be send");
+				return new ResponseEntity(new MemberErrorType("Unable to send. A message can't be send"),HttpStatus.CONFLICT);
+				
+			}
+
+			
+			
+		}
 	}

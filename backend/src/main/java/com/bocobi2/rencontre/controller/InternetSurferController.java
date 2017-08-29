@@ -1,14 +1,16 @@
+
 package com.bocobi2.rencontre.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
 
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value="/InternetSurferController")
+@RequestMapping(value="/InternetSurfer")
 public class InternetSurferController {
 
 	@Autowired
@@ -71,7 +74,7 @@ public class InternetSurferController {
 	@RequestMapping(value="/visualizeWriteTestimony", method= RequestMethod.POST)
 	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyPost(HttpServletRequest request){
 		
-List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("write");
 		
 		if(listOfTestimony.isEmpty()){
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -85,7 +88,7 @@ List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("video
 	@RequestMapping(value="/visualizeWriteTestimony", method=RequestMethod.GET)
 	public ResponseEntity<List<Testimony>>  visualizeWriteTestimonyGet(HttpServletRequest request){
 		
-		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("videos");
+		List<Testimony> listOfTestimony = testimonyRepository.findByTestimonyType("write");
 		
 		if(listOfTestimony.isEmpty()){
 			return new ResponseEntity(HttpStatus.NO_CONTENT);

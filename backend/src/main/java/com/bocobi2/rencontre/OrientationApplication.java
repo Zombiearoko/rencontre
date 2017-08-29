@@ -9,7 +9,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.bocobi2.rencontre.model.Customer;
-import com.bocobi2.rencontre.model.Test;
+//import com.bocobi2.rencontre.model.Test;
 import com.bocobi2.rencontre.repositories.CustomerRepository;
 
 //import org.springframework.boot.context.web.SpringBootServletInitializer;

@@ -21,6 +21,9 @@ public class Message {
 	private String receiver;
 	
 	@Indexed
+	private String StatusMessage = "Non lu";
+	
+	@Indexed
 	private Date sendingDate;
 	
 	public Message() {
@@ -95,6 +98,20 @@ public class Message {
 	 */
 	public String getIdMessage() {
 		return idMessage;
+	}
+
+	/**
+	 * @return the messageStatus
+	 */
+	public String getStatusMessage() {
+		return StatusMessage;
+	}
+
+	/**
+	 * @param messageStatus the messageStatus to set
+	 */
+	public void setStatusMessage(String messageStatus) {
+		this.StatusMessage = messageStatus;
 	}
 
 	/* (non-Javadoc)

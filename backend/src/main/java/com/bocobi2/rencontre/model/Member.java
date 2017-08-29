@@ -38,6 +38,9 @@ public class Member extends InternetSurfer {
 	private List<Message> messages;
 	
 	@DBRef
+	private List<Conversation> conversations;
+	
+	@DBRef
 	private List<Testimony> testimonies;
 	
 	@DBRef

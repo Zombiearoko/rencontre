@@ -10,5 +10,6 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 	
 	public List<Message> findBySender(String sender);
 	public List<Message> findByReceiver(String receiver);
+	public List<Message> findByStatusMessage(String status);
 	
 }

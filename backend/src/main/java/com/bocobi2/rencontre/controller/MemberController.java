@@ -3,6 +3,8 @@
 	
 import java.io.File;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,18 +38,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bocobi2.rencontre.model.Conversation;
 import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Message;
 import com.bocobi2.rencontre.model.Testimony;
+import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
@@ -82,6 +88,12 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		
 		@Autowired
 		MessageRepository messageRepository;
+		
+		@Autowired
+		ConversationRepository conversationRepository;
+		
+		 @Autowired
+		 private SimpMessagingTemplate webSocket;
 		
 		
 	/**
@@ -211,7 +223,7 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 						
 						
 						String content1  = "Thanks to create your count in our website"
-							 		+  " Now  click here " + "http://192.168.8.101:8091/rencontre/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
+							 		+  " Now  click here " + "http://localhost/rencontre/Member/ConfirmRegistration?user="+member.getPseudonym()+ " to validate your E-mail adress";
 					          String subject1="confirm your E-mail adress"; 
 					         // String form="saphirmfogo@gmail.com";
 						MimeMessage msg = new MimeMessage(session);
@@ -714,7 +726,7 @@ String pseudonym= request.getParameter("user");
 		 */
 		/*
 		 * VERSION POST
-		 */
+		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/sendMessage", method=RequestMethod.POST)
 		public ResponseEntity<?> sendMessagePost(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws Exception {
@@ -783,7 +795,7 @@ String pseudonym= request.getParameter("user");
 		}
 		/*
 		 * VERSION Get
-		 */
+		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/sendMessage", method=RequestMethod.GET)
 		public ResponseEntity<?> sendMessageGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws Exception {
@@ -843,6 +855,71 @@ String pseudonym= request.getParameter("user");
 				
 			}catch(Exception e){
 				logger.error("Unable to send sender. A message can't be send");
+				return new ResponseEntity(new MemberErrorType("Unable to send. A message can't be send"),HttpStatus.CONFLICT);
+				
+			}
+
+			
+			
+		} */
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/sendMessage", method=RequestMethod.POST)
+		public ResponseEntity<?> sendMessagePost(HttpServletRequest request) throws Exception {
+			
+			String messageContent = request.getParameter("messageContent");
+			String topicExchange= request.getParameter("topicExchange");
+			String receiver = request.getParameter("receiver");
+			String sender = request.getParameter("sender");
+			//HttpSession sessionMember = request.getSession();
+			//Member member= (Member) sessionMember.getAttribute("Member");
+			String idConversation=sender+"&"+receiver;
+			Message messageDb =new Message();
+			Conversation conversation =new Conversation();
+			try{
+				
+				//messageDb.setSender(member.getPseudonym()); une session n'existe pas encore
+				messageDb.setSendingDate(OffsetDateTime.now());
+				messageDb.setSender(sender);
+				messageDb.setReceiver(receiver);
+				messageDb.setMessageContent(messageContent);
+				messageDb.setStatusMessage("Non lu");
+				
+				messageRepository.insert(messageDb);
+				webSocket.convertAndSend(messageDb);
+				
+				conversation=conversationRepository.findOne(idConversation);
+				
+			if(conversation!=null){
+				List<Message> messages= messageRepository.findByParticipant(sender, receiver);
+				
+				conversation.setMessages(messages);
+				conversation.setStatusConversation("Non lu");
+				conversation.setIdConversation(idConversation);
+				
+				conversationRepository.save(conversation);
+				
+				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
+			}else{
+				List<Message> messages = new ArrayList<Message>();
+				messages.add(messageDb);
+				List<String> members=new ArrayList<String>();
+				members.add(sender);
+				members.add(receiver);
+		
+				conversation.setMembres(members);
+				conversation.setMessages(messages);
+				conversation.setStatusConversation("Non lu");
+				conversation.setIdConversation(idConversation);
+			
+				conversationRepository.insert(conversation);
+				
+				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
+			}
+					
+				
+			}catch(Exception ex){
+				logger.error("Unable to send message. A message can't be send");
 				return new ResponseEntity(new MemberErrorType("Unable to send. A message can't be send"),HttpStatus.CONFLICT);
 				
 			}

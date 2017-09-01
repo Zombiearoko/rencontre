@@ -1,5 +1,6 @@
 package com.bocobi2.rencontre.repositories;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,6 +13,7 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 	public List<Message> findBySender(String sender);
 	public List<Message> findByReceiver(String receiver);
 	public List<Message> findByStatusMessage(String status);
+	public List<Message> findBySenderOrderByReceiver(String sender);
 	
 	@Query("{'sender':?0, 'receiver':?1}")
 	public List<Message> finByParticipant(String sender, String receiver);

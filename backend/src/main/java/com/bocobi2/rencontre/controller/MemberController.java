@@ -3,6 +3,7 @@
 	
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,9 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-
-
-
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.BindingBuilder;
@@ -33,12 +32,16 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +61,8 @@ import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
+import com.mongodb.Cursor;
+import com.mongodb.MongoClient;
 
 	
 @CrossOrigin(origins = "*")
@@ -96,6 +101,9 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 		 private SimpMessagingTemplate webSocket;
 		
 		
+	public MemberController(SimpMessagingTemplate webSocket) {
+			this.webSocket = webSocket;
+		}
 	/**
 	 * choix du type de rencontre
 	 */
@@ -863,6 +871,19 @@ String pseudonym= request.getParameter("user");
 			
 		} */
 		
+		
+		/*public OutputMessage send(Message message) throws Exception {
+		    String sendingDate= new SimpleDateFormat("HH:mm").format(new Date());
+		    return new OutputMessage(message.getSender(), message.getMessageContent(), sendingDate);
+		}*/
+		
+		MongoClient m= new MongoClient();
+		@Autowired
+	    private MongoDbFactory connectionFactory;
+		
+		//@MessageMapping("/chat")
+		@SendTo("/topic/messages")
+		@Async
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/sendMessage", method=RequestMethod.POST)
 		public ResponseEntity<?> sendMessagePost(HttpServletRequest request) throws Exception {
@@ -871,6 +892,7 @@ String pseudonym= request.getParameter("user");
 			String topicExchange= request.getParameter("topicExchange");
 			String receiver = request.getParameter("receiver");
 			String sender = request.getParameter("sender");
+			String sendingDate= new SimpleDateFormat("HH:mm").format(new Date());
 			//HttpSession sessionMember = request.getSession();
 			//Member member= (Member) sessionMember.getAttribute("Member");
 			String idConversation=sender+"&"+receiver;
@@ -879,46 +901,49 @@ String pseudonym= request.getParameter("user");
 			try{
 				
 				//messageDb.setSender(member.getPseudonym()); une session n'existe pas encore
-				messageDb.setSendingDate(OffsetDateTime.now());
+				messageDb.setSendingDate(DateTime.now());
 				messageDb.setSender(sender);
 				messageDb.setReceiver(receiver);
 				messageDb.setMessageContent(messageContent);
 				messageDb.setStatusMessage("Non lu");
 				
 				messageRepository.insert(messageDb);
-				webSocket.convertAndSend(messageDb);
 				
-				conversation=conversationRepository.findOne(idConversation);
 				
-			if(conversation!=null){
-				List<Message> messages= messageRepository.findByParticipant(sender, receiver);
-				
-				conversation.setMessages(messages);
-				conversation.setStatusConversation("Non lu");
-				conversation.setIdConversation(idConversation);
-				
-				conversationRepository.save(conversation);
-				
-				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
-			}else{
-				List<Message> messages = new ArrayList<Message>();
-				messages.add(messageDb);
-				List<String> members=new ArrayList<String>();
-				members.add(sender);
-				members.add(receiver);
-		
-				conversation.setMembres(members);
-				conversation.setMessages(messages);
-				conversation.setStatusConversation("Non lu");
-				conversation.setIdConversation(idConversation);
-			
-				conversationRepository.insert(conversation);
-				
-				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
-			}
+					if(conversationRepository.exists(idConversation)){
+						List<Message> messages=messageRepository.findBySenderOrderByReceiver(sender);
+						System.out.println(messages);
+						System.out.println("je suis le if");
+						conversation.setMessages(messages);
+						conversation.setStatusConversation("Non lu");
+						conversation.setIdConversation(idConversation);
+						
+						conversationRepository.save(conversation);
+						this.webSocket.convertAndSend("/topic/sendMessage",messageDb);
+						return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
+					}else{
+						
+						List<Message> messages = new ArrayList<Message>();
+						messages.add(messageDb);
+						List<String> members=new ArrayList<String>();
+						members.add(sender);
+						members.add(receiver);
+						System.out.println(members);
+						conversation.setIdConversation(idConversation);
+						conversation.setMembres(members);
+						conversation.setMessages(messages);
+						conversation.setStatusConversation("Non lu");
 					
-				
+						
+						conversationRepository.insert(conversation);
+						System.out.println("je suis le else");
+						this.webSocket.convertAndSend("/topic/sendMessage",messageDb);
+						return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
+					}
+					
+					
 			}catch(Exception ex){
+				System.out.println(ex.getMessage());
 				logger.error("Unable to send message. A message can't be send");
 				return new ResponseEntity(new MemberErrorType("Unable to send. A message can't be send"),HttpStatus.CONFLICT);
 				
@@ -927,4 +952,36 @@ String pseudonym= request.getParameter("user");
 			
 			
 		}
+		/***@RequestMapping(method = RequestMethod.POST)
+	    public Message postMessage(@RequestBody Message chatMessage, HttpServletRequest request) {
+			String messageContent = request.getParameter("messageContent");
+			String receiver = request.getParameter("receiver");
+			String sender = request.getParameter("sender");
+			//HttpSession sessionMember = request.getSession();
+			//Member member= (Member) sessionMember.getAttribute("Member");
+			
+			chatMessage.setSendingDate(OffsetDateTime.now());
+			chatMessage.setMessageContent(messageContent);
+			chatMessage.setReceiver(receiver);
+			chatMessage.setSender(sender);
+			chatMessage.setStatusMessage("Non lu");
+			
+			messageRepository.insert(chatMessage);
+	        logger.info("Insert {}", chatMessage);
+	        return chatMessage;
+	    }
+
+	    @RequestMapping(method = RequestMethod.GET)
+	    public List<Message> getMessages( HttpServletRequest request) {
+	    	String receiver = request.getParameter("receiver");
+	    	List<Message> message=messageRepository.findBySenderOrderByReceiver(receiver).count(20).orderBy("sendingDate");
+	        List<Message> messages = r.db("chat").table("messages")
+	                .orderBy().optArg("index", r.desc("time"))
+	                .limit(20)
+	                .orderBy("time")
+	                .run(connectionFactory.createConnection(), ChatMessage.class);
+
+	        return messages;
+	    }*****/
+		
 	}

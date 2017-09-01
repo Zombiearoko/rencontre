@@ -3,7 +3,15 @@
    The test Page
 </head>
 <body>
-<a href="/api/hello?name=FOKO">Click</a>
-Hello {{name}}, You are the best.
+<!-- <a href="/api/hello?name=FOKO">Click</a> -->
+<a href="https://pixabay.com/api/?key=6289658-6b7db564f44599b2608f3d310/?hits.likes=39&pretty=true">Click</a>
+
+Hello {{name}}, Pour voir l'api qui est qui est aussi affiché en détail.
+<ul>
+    <li *ngFor="let Image of data.hits">
+        <img src="{{Image.userImageURL}}" />
+ 
+    </li>
+</ul>
 </body>
 </html>

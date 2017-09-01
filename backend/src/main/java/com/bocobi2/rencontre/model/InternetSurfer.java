@@ -22,5 +22,6 @@ public class InternetSurfer {
 	public void setImpression(Impression impression) {
 		this.impression = impression;
 	}
+	
 
 }

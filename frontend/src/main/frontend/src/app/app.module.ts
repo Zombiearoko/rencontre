@@ -21,6 +21,6 @@ import { HelloComponent } from './hello/hello.component';
   providers: [
   	 RestProvider
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [HomePage]
 })
 export class AppModule { }

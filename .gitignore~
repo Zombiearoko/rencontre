@@ -1,0 +1,79 @@
+<<<<<<< HEAD
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+frontend/target/*
+frontend/.setting/*
+frontend/.classpath
+frontend/.project
+frontend/src/main/frontend/e2e/*
+frontend/src/main/frontend/node_modules/*
+backend/target/*
+backend/.setting
+backend/.classpath
+backend/.project
+mvnw
+mvnw.cmd
+
+###F:\BOCOBI2\rencontre\backend\src\main\java\com\bocobi2\rencontre\model\Test.java
+=======
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+frontend/target/*
+frontend/.setting/*
+frontend/.classpath
+frontend/.project
+frontend/src/main/frontend/e2e/*
+frontend/src/main/frontend/node_modules/*
+backend/target/*
+backend/.setting
+backend/.classpath
+backend/.project
+mvnw
+mvnw.cmd
+
+###F:\BOCOBI2\rencontre\backend\src\main\java\com\bocobi2\rencontre\model\Test.java
+>>>>>>> 18849ec63beb8c43ad888b8071e65fb08115bb6b

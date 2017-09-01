@@ -1,7 +1,9 @@
 package com.bocobi2.rencontre.model;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,7 +26,7 @@ public class Message {
 	private String StatusMessage = "Non lu";
 	
 	@Indexed
-	private Date sendingDate;
+	private DateTime sendingDate;
 	
 	public Message() {
 		// TODO Auto-generated constructor stub
@@ -36,7 +38,7 @@ public class Message {
 	 * @param receiver
 	 * @param sendingDate
 	 */
-	public Message(String messageContent, String sender, String receiver, Date sendingDate) {
+	public Message(String messageContent, String sender, String receiver, DateTime sendingDate) {
 		super();
 		this.messageContent = messageContent;
 		this.sender = sender;
@@ -83,13 +85,13 @@ public class Message {
 	/**
 	 * @return the sendingDate
 	 */
-	public Date getSendingDate() {
+	public DateTime getSendingDate() {
 		return sendingDate;
 	}
 	/**
 	 * @param sendingDate the sendingDate to set
 	 */
-	public void setSendingDate(Date sendingDate) {
+	public void setSendingDate(DateTime sendingDate) {
 		this.sendingDate = sendingDate;
 	}
 	

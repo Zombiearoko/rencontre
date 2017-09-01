@@ -10,6 +10,8 @@ import com.bocobi2.rencontre.model.Conversation;
 public interface ConversationRepository extends MongoRepository<Conversation, String> {
 
 	public List<Conversation> findByStatusConversation(String status);
-	public List<Conversation> findByMemberPseudonyme(String memberPseudonyme);
+
+	public Conversation findByIdConversation(String idConversation);
+
 	
 }

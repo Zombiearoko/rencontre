@@ -20,7 +20,7 @@ public class Conversation {
 	@Indexed
 	private String statusConversation;
 	
-	@DBRef
+	//@DBRef
 	@Indexed
 	private List<String> members;	
 	

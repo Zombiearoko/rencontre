@@ -24,6 +24,8 @@ public class Conversation {
 	@Indexed
 	private List<String> members;	
 	
+	private int newMessageNumber;
+	
 	public Conversation() {
 		// TODO Auto-generated constructor stub
 		
@@ -31,6 +33,16 @@ public class Conversation {
 	
 	
 	
+	public Conversation(List<Message> messages, String statusConversation, List<String> members, int newMessageNumber) {
+		super();
+		this.messages = messages;
+		this.statusConversation = statusConversation;
+		this.members = members;
+		this.newMessageNumber = newMessageNumber;
+	}
+
+
+
 	/**
 	 * @param idConversation
 	 * @param messages
@@ -100,6 +112,25 @@ public class Conversation {
 		this.members = membres;
 	}
 	
+	public int getNewMessageNumber() {
+		return newMessageNumber;
+	}
+
+
+
+	public void setNewMessageNumber() {
+		int counter=0;
+		for(Message message:messages){
+			if(message.getStatusMessage().equals("Non lu")){
+				counter++;
+			}
+		}
+		this.newMessageNumber = counter;
+		
+	}
+
+
+
 	//Méthode pour ajouter un méssage à la conversation
 	public void addMessage(Message message){
 		
@@ -112,5 +143,15 @@ public class Conversation {
 	
 	public void isMember(String pseudonyme){
 		members.contains(pseudonyme);
+	}
+	public int countNewMessage(){
+		int counter=0;
+		for(Message message:messages){
+			if(message.getStatusMessage().equals("Non lu")){
+				counter++;
+			}
+		}
+		return counter;
+		
 	}
 }

@@ -101,7 +101,7 @@ public class MemberController {
 	 * Version POST
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/Connexion", method = RequestMethod.POST)
+	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
 
 		HttpSession session = requestConnexion.getSession();
@@ -150,7 +150,7 @@ public class MemberController {
 	 * version Get
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/Connexion", method = RequestMethod.GET)
+	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
 		HttpSession session = requestConnexion.getSession();
@@ -349,7 +349,8 @@ public class MemberController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/addTestimony", method = RequestMethod.GET)
-	public ResponseEntity<?> addTestimonyGet(HttpServletRequest requestTestimony, UriComponentsBuilder ucBuilder)
+	public ResponseEntity<?> addTestimonyGet(HttpServletRequest requestTestimony
+			, UriComponentsBuilder ucBuilder)
 			throws IOException, ServletException {
 
 		HttpSession session = requestTestimony.getSession();

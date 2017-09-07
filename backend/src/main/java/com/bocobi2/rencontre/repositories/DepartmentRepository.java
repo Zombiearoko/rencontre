@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.bocobi2.rencontre.model.Department;
 
 public interface DepartmentRepository extends MongoRepository<Department, String> {
-
+		public Department findByDepartmentName(String departmentName);
 }

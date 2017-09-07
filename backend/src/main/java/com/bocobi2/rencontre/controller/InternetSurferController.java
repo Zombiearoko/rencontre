@@ -179,9 +179,8 @@ public class InternetSurferController {
 			properties.put("mail.smtp.writetimeout", "5000");
 			Session session = Session.getInstance(properties, null);
 
-			String content1 = "Thanks to create your count in our website \n Now,  on this link to activate E-mail adress :  "
-					+ ""
-					+ "  http://localhost:8091/rencontre/InternetSurfer/ConfirmRegistration?user=" + member.getPseudonym()
+			String content1 = "Thanks to create your count in our website \n"
+					+ " Now,lick on this link to activate E-mail adress: http://localhost:8091/rencontre/InternetSurfer/ConfirmRegistration?user=Sofeu ?user=" + member.getPseudonym()
 					;
 			String subject1 = "confirm your E-mail adress";
 			// String form="saphirmfogo@gmail.com";
@@ -349,7 +348,7 @@ public class InternetSurferController {
 	 * Version POST
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/ConfirmRegistration", method = RequestMethod.POST)
+	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> confirmRegistrationPost(HttpServletRequest request) {
 
@@ -386,7 +385,7 @@ public class InternetSurferController {
 	 * Version Get
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/ConfirmRegistration", method = RequestMethod.GET)
+	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> confirmRegistrationGet(HttpServletRequest request) {
 

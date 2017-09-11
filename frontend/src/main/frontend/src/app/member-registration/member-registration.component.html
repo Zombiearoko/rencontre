@@ -1,0 +1,150 @@
+<div class="separator"></div>
+<!-- Header -->
+<header class="intro-header">
+    <div class="container">
+        <div class="intro-message">
+            <h1>Prêt pour la création de votre compte, veillez remplir les champs suivants </h1>
+            <hr class="intro-divider">
+        </div>
+    </div>
+</header>
+<div class="separators"></div>
+  <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/3.3.7/css/font-awesome.min.css" rel="stylesheet">   -->
+
+<body>
+  <!-- <a href="/api/hello?name=FOKO">Click</a> -->
+  <a href="http://jsonplaceholder.typicode.com/posts">Click</a>
+  
+  Hello {{name}}, Pour voir l'api qui est qui est aussi affiché en détail.
+  <div *ngFor="let item of collectionJson">
+    <h1  *ngIf="item.id == 1">{{item.id}}, bienvenu</h1>
+   
+  </div>
+  
+  </body>
+
+<!-- Page Content -->
+ <div class="container-fluid">
+    
+
+        <div class="container">
+            <div class="cadre ">
+                <form (ngSubmit)="onSubmit(clientForm.value);" [formGroup]="clientForm" id="clientForm"  >
+                            <div class="form-group">
+                                
+                                    <label for="pseudonym"  >Pseudo</label>
+                                    <div class="cols-lg-8">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier " />
+                                        </div>
+                                    </div>
+                                    
+                                     <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+                                     <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
+                                     
+                            </div>
+                        
+<!--                         
+                        <span class="text-danger" [hidden]="clientForm.controls.pseudonym.invalid && clientForm.controls.pseudonym.untouched && clientForm.controls.pseudonym.pristine">*</span> -->
+                        <div class="form-group">
+                            <label for="birthDay"  >Birthdate</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="birthDate" name="birthDate" id="birthDate" placeholder=" your birthDate hier" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">choice your gender</label>
+                            <select class="form-control" id="gender" name="gender" formControlName="gender">
+                              <option>Man</option>
+                              <option>Woman</option>
+                              
+                            </select>
+                          </div>
+                        <div class="form-group">
+                            <label for="email"  >Email</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" " />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tel"  >Phone Nomber</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="title" placeholder=" " />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password"  >PassWord</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label for="confirmPassword"  >confirm the passWord</label>
+                                <div class="cols-lg-8">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder=" " >
+                                    </div>
+                                </div>
+                                <!-- <br>TODO: remove this: {{spy.className}} -->
+                        </div>
+                        <div class="form-group">
+                                <label for="picture">Example file input</label>
+                                <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
+                              </div>
+
+                                <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+
+                            <!-- <a [routerLink]="['../sessionCostumer']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">creer compte</button> </a>  -->
+                            <button class="btn btn-danger ">Leave</button>
+                        
+                </form>
+                <p>Form value: {{ clientForm.value | json }}</p>
+                <p>Form status: {{ clientForm.status | json }}</p>
+            </div>
+      
+    </div>
+
+</div>
+<div class="clear-both"></div>
+<aside class="banner">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-6 my-auto">
+                <h2>suivre des sites profesionnelles</h2>
+            </div>
+            <div class="col-lg-6 my-auto">
+                <ul class="list-inline banner-social-buttons">
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-secondary btn-lg">
+                            <i class="fa fa-github fa-fw"></i>
+                            <span class="network-name">Github</span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-secondary btn-lg">
+                            <i class="fa fa-linkedin fa-fw"></i>
+                            <span class="network-name">Linkedin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+ </aside>  
+
+<!-- /.banner -->

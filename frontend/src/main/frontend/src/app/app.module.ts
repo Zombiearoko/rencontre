@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { RestProvider } from '../providers/rest/rest';
 import { HomePage } from '../pages/home/home';
 import { HelloComponent } from './hello/hello.component';
+import { MemberRegistrationComponent } from './member-registration/member-registration.component';
 @NgModule({
   declarations: [
     AppComponent,
      HomePage,
-     HelloComponent
+     HelloComponent,
+     MemberRegistrationComponent
   ],
   imports: [
    BrowserModule,
@@ -21,6 +23,6 @@ import { HelloComponent } from './hello/hello.component';
   providers: [
   	 RestProvider
   ],
-  bootstrap: [HomePage]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

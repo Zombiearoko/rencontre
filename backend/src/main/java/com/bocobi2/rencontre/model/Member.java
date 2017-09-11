@@ -1,19 +1,22 @@
 package com.bocobi2.rencontre.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.bocobi2.rencontre.repositories.SubscriptionRepository;
-
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.gridfs.*;
+import com.mongodb.client.gridfs.model.*;
+import org.bson.*;
+import org.bson.types.ObjectId;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
+import static com.mongodb.client.model.Filters.eq;
 
 @Document(collection="member")
 public class Member extends InternetSurfer {
@@ -305,4 +308,25 @@ public class Member extends InternetSurfer {
 				+ "],\n status : " + status.toString() + "\n}";
 	}
 
+	
+/*	public static void main(String args[]){
+		// Get the input stream
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase myDatabase = mongoClient.getDatabase("mydb");
+
+		// Create a gridFSBucket using the default bucket name "fs"
+		GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase);
+		try {
+		    InputStream streamToUploadFrom = new FileInputStream(new File("/tmp/mongodb-tutorial.pdf"));
+		    // Create some custom options
+		    GridFSUploadOptions options = new GridFSUploadOptions()
+		                                        .chunkSizeBytes(358400)
+		                                        .metadata(new org.bson.Document("type", "presentation"));
+
+		    ObjectId fileId = gridFSBucket.uploadFromStream("mongodb-tutorial", streamToUploadFrom, options);
+		} catch (FileNotFoundException e){
+		   // handle exception
+		}
+
+	}*/
 }

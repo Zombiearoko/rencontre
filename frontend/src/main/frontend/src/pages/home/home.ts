@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { Response,HttpModule,RequestOptions,RequestMethod,RequestOptionsArgs,Http,Headers } from '@angular/http';
 //import { RegisterPage } from '../register/register';
@@ -41,4 +42,28 @@ export class HomePage {
   //  });
     }
 
+=======
+import { Component } from '@angular/core';
+
+//import { RegisterPage } from '../register/register';
+import { RestProvider } from '../../providers/rest/rest';
+@Component({
+  selector: 'app-root',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  public name:string='rrr';
+  data: any = {};
+    constructor(public rest:RestProvider) {
+       this.getImages();
+    }
+    public getImages(){
+      let nom=this.name;
+      this.rest.getUser().subscribe((data)=>{
+      console.log(data);
+      alert("merrrde je n'arrive pas enore à appeler a affiche champs des objects de l'api voir home.html"  );
+        nom=data;
+    });
+    }
+>>>>>>> 1aab8853c67f650c7d1775e7066f376605967a87
   }

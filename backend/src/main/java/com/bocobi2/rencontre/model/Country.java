@@ -2,6 +2,8 @@ package com.bocobi2.rencontre.model;
 
 import java.util.List;
 
+import javax.swing.plaf.synth.Region;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;

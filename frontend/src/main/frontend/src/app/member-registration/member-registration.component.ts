@@ -39,7 +39,8 @@ submitted = false;
     'confirmPassword': [null, Validators.compose([Validators.required, Validators.minLength(6)])],
     'phoneNumber': [null, Validators.compose([Validators.required])],
     'gender': [null, Validators.compose([Validators.required])],
-    'customerPicture': [null, Validators.required]
+    // 'customerPicture': [null, Validators.required]
+    'customerPicture': ''
     });
     
   }
@@ -56,6 +57,8 @@ onsubmit(post){
   this.password = post.password;
   this.confirmPassword = post.confirmPassword;
   this.picture = post.picture;
+  const Image = this.customer_picture.nativeElement;
+  
  
  
   const url = 'http://localhost:8091/rencontre/Member/registration' +'?pseudonym='

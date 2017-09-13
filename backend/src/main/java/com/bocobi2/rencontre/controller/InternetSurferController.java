@@ -44,7 +44,7 @@ public class InternetSurferController {
 	public static final Logger logger = LoggerFactory.getLogger(InternetSurferController.class);
 	
 	
-	private static final String SAVE_DIR_PICTURE = "/home/saphir/test1/workspaceGit/rencontre/backend/src/main/resources/UploadFile/UploadPicture";
+	 private static final String SAVE_DIR_PICTURE = "/home/saphir/test1/workspaceGit/rencontre/backend/src/main/resources/UploadFile/UploadPicture";
 
 
 	
@@ -139,15 +139,15 @@ public class InternetSurferController {
 		System.out.println(phoneNumber);
 		System.out.println("-------------------------------");
 
-		File fileWay = new File(SAVE_DIR_PICTURE);
-		String nom = "picture" + pseudonym + ".png";
-		Part part = null;
-		if (!fileWay.exists())
-			fileWay.mkdir();
+		//File fileWay = new File(SAVE_DIR_PICTURE);
+		//String nom = "picture" + pseudonym + ".png";
+		//Part part = null;
+		//if (!fileWay.exists())
+			//fileWay.mkdir();
 		try {
-			part = request.getPart("picture");
-			String fileName = SAVE_DIR_PICTURE + File.separator + nom;
-			part.write(SAVE_DIR_PICTURE + File.separator + nom);
+			//part = request.getPart("picture");
+			//String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+			//part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
 			member.setGender(gender);
 			member.setBirthDate(birthDate);
@@ -155,7 +155,7 @@ public class InternetSurferController {
 			member.setEmailAdress(emailAdress);
 			member.setPhoneNumber(phoneNumber);
 			member.setPassword(password);
-			member.setPicture(fileName);
+			//member.setPicture(fileName);
 
 			/***
 			 * Enregistrement du membre dans une zone tampon de la base de
@@ -257,15 +257,15 @@ public class InternetSurferController {
 		System.out.println(phoneNumber);
 		System.out.println("-------------------------------");
 
-		File fileWay = new File(SAVE_DIR_PICTURE);
-		String nom = "picture" + pseudonym + ".png";
-		Part part = null;
-		if (!fileWay.exists())
-			fileWay.mkdir();
+		//File fileWay = new File(SAVE_DIR_PICTURE);
+		///String nom = "picture" + pseudonym + ".png";
+		//Part part = null;
+		//if (!fileWay.exists())
+			//fileWay.mkdir();
 		try {
-			part = request.getPart("picture");
-			String fileName = SAVE_DIR_PICTURE + File.separator + nom;
-			part.write(SAVE_DIR_PICTURE + File.separator + nom);
+			//part = request.getPart("picture");
+			// fileName = SAVE_DIR_PICTURE + File.separator + nom;
+			//part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
 			member.setGender(gender);
 			member.setBirthDate(birthDate);
@@ -273,7 +273,7 @@ public class InternetSurferController {
 			member.setEmailAdress(emailAdress);
 			member.setPhoneNumber(phoneNumber);
 			member.setPassword(password);
-			member.setPicture(fileName);
+			//member.setPicture(fileName);
 
 			/***
 			 * Enregistrement du membre dans une zone tampon de la base de

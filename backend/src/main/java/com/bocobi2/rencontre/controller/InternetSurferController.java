@@ -180,7 +180,7 @@ public class InternetSurferController {
 			Session session = Session.getInstance(properties, null);
 
 			String content1 = "Thanks to create your count in our website \n"
-					+ " Now,lick on this link to activate E-mail adress: http://localhost:8091/rencontre/InternetSurfer/ConfirmRegistration?user=Sofeu ?user=" + member.getPseudonym()
+					+ " Now,lick on this link to activate E-mail adress: http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user=" + member.getPseudonym()
 					;
 			String subject1 = "confirm your E-mail adress";
 			// String form="saphirmfogo@gmail.com";
@@ -298,7 +298,7 @@ public class InternetSurferController {
 			Session session = Session.getInstance(properties, null);
 
 			String content1 = "Thanks to create your count in our website" + " Now  click here "
-					+ "http://localhost:8091/rencontre/InternetSurfer/ConfirmRegistration?user=" + member.getPseudonym()
+					+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user=" + member.getPseudonym()
 					+ " to validate your E-mail adress";
 			String subject1 = "confirm your E-mail adress";
 			// String form="saphirmfogo@gmail.com";

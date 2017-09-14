@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { Response,HttpModule,RequestOptions,RequestMethod,RequestOptionsArgs,Http,Headers } from '@angular/http';
 //import { RegisterPage } from '../register/register';
@@ -42,6 +41,9 @@ export class HomePage {
   //  });
     }
 
+<<<<<<< HEAD
+  }
+=======
 =======
 import { Component } from '@angular/core';
 
@@ -87,3 +89,4 @@ public name:string='rrr';
 >>>>>>> 1aab8853c67f650c7d1775e7066f376605967a87
   }
 >>>>>>> 8552e6d2a3486e9043b9acd79d193c37f796eb88
+>>>>>>> 9244047c072cc895dabb3332a3971842ed06610c

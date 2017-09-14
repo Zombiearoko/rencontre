@@ -12,24 +12,14 @@
   <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/3.3.7/css/font-awesome.min.css" rel="stylesheet">   -->
 
 <body>
-  <!-- <a href="/api/hello?name=FOKO">Click</a> -->
-  <a href="http://jsonplaceholder.typicode.com/posts">Click</a>
-  
   Hello {{name}}, Pour voir l'api qui est qui est aussi affiché en détail.
-  <div *ngFor="let item of collectionJson">
-    <h1  *ngIf="item.id == 1">{{item.id}}, bienvenu</h1>
-   
-  </div>
-  
   </body>
 
 <!-- Page Content -->
  <div class="container-fluid">
-    
-
         <div class="container">
             <div class="cadre ">
-                <form (ngSubmit)="onSubmit(clientForm.value);" [formGroup]="clientForm" id="clientForm"  >
+                <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
                             <div class="form-group">
                                 
                                     <label for="pseudonym"  >Pseudo</label>
@@ -43,10 +33,7 @@
                                      <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
                                      
                             </div>
-                        
-<!--                         
-                        <span class="text-danger" [hidden]="clientForm.controls.pseudonym.invalid && clientForm.controls.pseudonym.untouched && clientForm.controls.pseudonym.pristine">*</span> -->
-                        <div class="form-group">
+                          <div class="form-group">
                             <label for="birthDay"  >Birthdate</label>
                             <div class="cols-lg-8">
                                 <div class="input-group">
@@ -75,7 +62,7 @@
                             <label for="tel"  >Phone Nomber</label>
                             <div class="cols-lg-8">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="title" placeholder=" " />
+                                    <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" " />
                                 </div>
                             </div>
                         </div>

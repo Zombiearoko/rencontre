@@ -46,28 +46,27 @@ import { Injectable } from '@angular/core';
             
         }
     
-        public postAccount(pseudonym, emailAdress, password, phoneNumber,  gender, birthDate, picture) {
+        public postAccount(pseudonym, birthDate,  gender, emailAdress, phoneNumber, password, confirmPassword) {
           const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({  headers: headers1 });
           const object = {
            pseudonym: pseudonym,
+           birthDate: birthDate,
            gender: gender,
-            birthDate: birthDate,
-            emailAdress: emailAdress,
+           emailAdress: emailAdress,
+           phoneNumber: phoneNumber,
            password: password,
-            phoneNumber: phoneNumber,
-            pictre:picture
+           confirmPassWord: confirmPassword
+         
           
           };
-        const url = 'http://localhost:8091/customer/registration' +  '?pseudonym='
-        + pseudonym + '&gender=' +gender +'&birthDate=' + birthDate + '&phoneNumber='
-        + phoneNumber + '&emailAdress=' + emailAdress + '&password=' + password + '&picture=' + picture ;
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym +'&birthDate=' + birthDate + '&gender=' +gender + '&emailAdress=' + emailAdress + '&phoneNumber=' + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword;
           const url2 = 'https://jsonplaceholder.typicode.com/posts';
           const urlSaph = 'http://192.168.8.105:8091/rencontre/Member/registration';
           const urlInno = 'http://localhost:8092/customer/addCustomer';
         return  this.http.post(url, object, options)
-                  .do((res: Response ) => console.log(res.json()))
-                  .map((res: Response ) => res.json());
+                  // .do((res: Response ) => console.log(res.json()))
+                  // .map((res: Response ) => res.json());
     }
               public   getAccount() {
     

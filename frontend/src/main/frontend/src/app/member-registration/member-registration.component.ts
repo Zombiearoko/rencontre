@@ -53,10 +53,10 @@ onSubmit(post){
   this.phoneNumber = post.phoneNumber;
   this.password = post.password;
   this.confirmPassword = post.confirmPassword;
-  // this.picture = value.picture;
-  const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + post.pseudonym + '&birthDate=' + post.birthDate + '&gender=' + post.gender + '&emailAdress=' + post.emailAdress + '&phoneNumber=' + post.phoneNumber + '&password=' + post.password + '&confirmPassWord=' + post.confirmPassword;
+  this.picture = post.picture;
+  const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + post.pseudonym + '&birthDate=' + post.birthDate + '&gender=' + post.gender + '&emailAdress=' + post.emailAdress + '&phoneNumber=' + post.phoneNumber + '&password=' + post.password + '&confirmPassWord=' + post.confirmPassword + post.picture;
   console.log(this.pseudonym);
-  this.rest.postAccount(this.pseudonym, this.birthDate , this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword)
+  this.rest.postAccount(this.pseudonym, this.birthDate , this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.picture)
   .subscribe((data) => {
         console.log(this.pseudonym);
         console.log(this.gender);

@@ -46,7 +46,7 @@ import { Injectable } from '@angular/core';
             
         }
     
-        public postAccount(pseudonym, birthDate,  gender, emailAdress, phoneNumber, password, confirmPassword) {
+        public postAccount(pseudonym, birthDate,  gender, emailAdress, phoneNumber, password, confirmPassword, picture) {
           const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({  headers: headers1 });
           const object = {
@@ -56,11 +56,12 @@ import { Injectable } from '@angular/core';
            emailAdress: emailAdress,
            phoneNumber: phoneNumber,
            password: password,
-           confirmPassWord: confirmPassword
+           confirmPassWord: confirmPassword,
+           picture: picture
          
           
           };
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym +'&birthDate=' + birthDate + '&gender=' +gender + '&emailAdress=' + emailAdress + '&phoneNumber=' + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword;
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym +'&birthDate=' + birthDate + '&gender=' +gender + '&emailAdress=' + emailAdress + '&phoneNumber=' + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + picture;
           const url2 = 'https://jsonplaceholder.typicode.com/posts';
           const urlSaph = 'http://192.168.8.105:8091/rencontre/Member/registration';
           const urlInno = 'http://localhost:8092/customer/addCustomer';

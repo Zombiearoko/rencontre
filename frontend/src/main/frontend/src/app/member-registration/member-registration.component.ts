@@ -44,31 +44,22 @@ submitted = false;
     });
     
   }
-
-  
-  
-onsubmit(post){
+onSubmit(post){
 
   this.pseudonym = post.pseudonym;
-  this.gender = post.gender;
   this.birthDate = post.birthDate;
-  this.phoneNumber = post.phoneNumber;
+  this.gender = post.gender;
   this.emailAdress = post.emailAdress;
+  this.phoneNumber = post.phoneNumber;
   this.password = post.password;
   this.confirmPassword = post.confirmPassword;
   this.picture = post.picture;
-  const Image = this.customer_picture.nativeElement;
-  
- 
- 
-  const url = 'http://localhost:8091/rencontre/Member/registration' +'?pseudonym='
-  + this.pseudonym + '&gender=' +this.gender +'&birthDate=' + this.birthDate + '&phoneNumber='
-  + this.phoneNumber + '&emailAdress=' + this.emailAdress + '&password=' + this.password + '&confirmPassWord=' 
-  + this.confirmPassword + '&picture=' + this.picture;
+  const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + post.pseudonym + '&birthDate=' + post.birthDate + '&gender=' + post.gender + '&emailAdress=' + post.emailAdress + '&phoneNumber=' + post.phoneNumber + '&password=' + post.password + '&confirmPassWord=' + post.confirmPassword + post.picture;
   console.log(this.pseudonym);
-  this.rest.postAccount(this.pseudonym , this.gender,  this.emailAdress, this.password, this.phoneNumber, this.birthDate, this.picture )
+  this.rest.postAccount(this.pseudonym, this.birthDate , this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.picture)
   .subscribe((data) => {
         console.log(this.pseudonym);
+        console.log(this.gender);
         this.submitted = true;
        });
   this.http.get(url).subscribe((resp)=>{
@@ -77,9 +68,6 @@ onsubmit(post){
   console.log(this.collectionJson);
 });
 
-
-
-  
 }
   ngOnInit() {
     

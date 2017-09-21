@@ -38,6 +38,10 @@ public class Member extends InternetSurfer {
 	private Profile profile;
 	
 	@DBRef
+	private List<TypeMeeting> typeMeeting;
+
+
+	@DBRef
 	private List<Message> messages;
 	
 	@DBRef
@@ -70,9 +74,10 @@ public class Member extends InternetSurfer {
 	 * @param testimonies
 	 * @param status
 	 */
+	
 	public Member(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
-			String picture, Subscription subscription, Profile profile, List<Message> messages,
-			List<Testimony> testimonies, Status status) {
+			String picture, Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
+			List<Conversation> conversations, List<Testimony> testimonies, Status status) {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
@@ -82,9 +87,35 @@ public class Member extends InternetSurfer {
 		this.picture = picture;
 		this.subscription = subscription;
 		this.profile = profile;
+		this.typeMeeting = typeMeeting;
 		this.messages = messages;
+		this.conversations = conversations;
 		this.testimonies = testimonies;
 		this.status = status;
+	}
+
+
+
+	public List<TypeMeeting> getTypeMeeting() {
+		return typeMeeting;
+	}
+
+
+
+	public void setTypeMeeting(List<TypeMeeting> list) {
+		this.typeMeeting = list;
+	}
+
+
+
+	public List<Conversation> getConversations() {
+		return conversations;
+	}
+
+
+
+	public void setConversations(List<Conversation> conversations) {
+		this.conversations = conversations;
 	}
 
 

@@ -93,59 +93,8 @@ public class MemberController {
 
 	@Autowired
 	MessageRepository messageRepository;
-
-	/**
-	 * connexion of the member
-	 * 
-	 * cette methode permet de connecter un membre dans une session
-	 */
-
-	/**
-	 * VERSION POST
-	 * @param request
-	 * @param ucBuilder
-	 * @return
-	 */
-	@RequestMapping(value="/choiseRencontre", method = RequestMethod.POST)
-	public ResponseEntity<?>  choiseRencontrePost(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
-
-		String birthDate= request.getParameter("bithDate");
-		String gender=  request.getParameter("gender");
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int birthYear=0;
-		try{
-			birthYear= new Integer(birthDate);
-			int age= year-birthYear;
-			if(age<18){
-				String  typeMeeting="Amicale";
-			}else{
-				String  typeMeeting=request.getParameter("typeMeeting");
-			}
-		}catch(NumberFormatException numberEx){
-
-		}
-
-		return new ResponseEntity(HttpStatus.NO_CONTENT);
-	}
-	/**
-	 * VERSION GET
-	 */
-	/*@RequestMapping(value="/choiseRencontre", method = RequestMethod.GET)
-	    public ResponseEntity<?>  choiseRencontreGet(HttpServletRequest request,UriComponentsBuilder ucBuilder ){
-
-			String bithDate= request.getParameter("bithDate");
-			String gender=  request.getParameter("gender");
-			Calendar calendar = Calendar.getInstance();
-			int year = calendar.get(Calendar.YEAR);
-			if(bithDate.regionMatches(year, "1980", year, 50)){
-
-				 return new ResponseEntity(HttpStatus.OK);
-			}
-
-			 return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}*/
-
+	
+	
 	/**** registration member in the data base
 	 * methode qui gere l'enregistrement d'un membre dans la bd 
 	 * 

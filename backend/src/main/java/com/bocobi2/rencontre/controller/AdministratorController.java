@@ -24,11 +24,13 @@ import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
+import com.bocobi2.rencontre.model.TypeMeeting;
 import com.bocobi2.rencontre.repositories.AdministratorRepository;
 import com.bocobi2.rencontre.repositories.CountryRepository;
 import com.bocobi2.rencontre.repositories.DepartmentRepository;
 import com.bocobi2.rencontre.repositories.LocalityRepository;
 import com.bocobi2.rencontre.repositories.TownRepository;
+import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -51,6 +53,9 @@ public class AdministratorController {
 
 	@Autowired
 	LocalityRepository localitytRepository;
+	
+	@Autowired
+	TypeMeetingRepository typeMeetingRepository;
 
 	/**
 	 * connexion of the member
@@ -159,6 +164,41 @@ public class AdministratorController {
 	 * method to add country
 	 */
 
+	
+	/*
+	 * Version Post
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/typeMeeting", method = RequestMethod.POST)
+	public ResponseEntity<?> addTypeMeetingPost(HttpServletRequest request) {
+
+		String meetingName = request.getParameter("meetingName");
+		//typeMeetingRepository.deleteAll();
+		TypeMeeting typeMeeting =new TypeMeeting();
+		if(typeMeetingRepository.findByMeetingName(meetingName)!=null){
+			logger.error("Unable to create. the type of Meetingwith name {} already exist", meetingName);
+			return new ResponseEntity(
+					new MemberErrorType(
+							"Unable to create. " + " the type of Meeting with name " + "" + meetingName + " already exist"),
+					HttpStatus.CONFLICT);
+		}else{
+			
+			typeMeeting.setMeetingName(meetingName);
+			typeMeetingRepository.deleteAll();
+			typeMeetingRepository.insert(typeMeeting);
+			return new ResponseEntity<TypeMeeting>(typeMeeting, HttpStatus.CREATED);
+		}
+		
+		
+
+	}
+
+	
+	
+	
+	
+	
+	
 	/*
 	 * Version Post
 	 */

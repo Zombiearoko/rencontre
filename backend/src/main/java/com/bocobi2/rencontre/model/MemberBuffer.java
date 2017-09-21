@@ -13,6 +13,10 @@ public class MemberBuffer {
 	@Id
 	@Indexed
 	private String pseudonym;
+	
+	private String firstName;
+	private String profession;
+	private String schoolName;
 	private String password;
 	
 	private String phoneNumber;
@@ -24,6 +28,10 @@ public class MemberBuffer {
 	private String emailAdress;
 	
 	private Subscription subscription;
+	
+	@DBRef
+	private List<TypeMeeting> typeMeeting;
+
 	
 	@DBRef
 	private Profile profile;
@@ -46,35 +54,44 @@ public class MemberBuffer {
 	
 
 
-	/**
-	 * @param pseudonym
-	 * @param password
-	 * @param phoneNumber
-	 * @param birthDate
-	 * @param gender
-	 * @param picture
-	 * @param subscription
-	 * @param profile
-	 * @param messages
-	 * @param testimonies
-	 * @param status
-	 */
-	public MemberBuffer(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
-			String picture, Subscription subscription, Profile profile, List<Message> messages,
+
+
+
+
+	
+	
+
+
+	public MemberBuffer(String pseudonym, String firstName, String profession, String schoolName, String password,
+			String phoneNumber, String birthDate, String gender, String picture, String emailAdress,
+			Subscription subscription, List<TypeMeeting> typeMeeting, Profile profile, List<Message> messages,
 			List<Testimony> testimonies, Status status) {
 		super();
 		this.pseudonym = pseudonym;
+		this.firstName = firstName;
+		this.profession = profession;
+		this.schoolName = schoolName;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 		this.birthDate = birthDate;
 		this.gender = gender;
 		this.picture = picture;
+		this.emailAdress = emailAdress;
 		this.subscription = subscription;
+		this.typeMeeting = typeMeeting;
 		this.profile = profile;
 		this.messages = messages;
 		this.testimonies = testimonies;
 		this.status = status;
 	}
+
+
+
+
+
+
+
+
 
 
 
@@ -85,6 +102,11 @@ public class MemberBuffer {
 	public String getPseudonym() {
 		return pseudonym;
 	}
+
+
+
+	
+
 
 
 
@@ -285,11 +307,67 @@ public class MemberBuffer {
 
 
 
+	public List<TypeMeeting> getTypeMeeting() {
+		return typeMeeting;
+	}
+
+
+
+
+	public void setTypeMeeting(List<TypeMeeting> typeMeeting) {
+		this.typeMeeting = typeMeeting;
+	}
+
+
+
+
 	/**
 	 * @param emailAdress the emailAdress to set
 	 */
 	public void setEmailAdress(String emailAdress) {
 		this.emailAdress = emailAdress;
+	}
+
+
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+
+	public String getProfession() {
+		return profession;
+	}
+
+
+
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+
+
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+
+
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
 

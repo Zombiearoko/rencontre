@@ -16,17 +16,21 @@ public class Department {
 	private String departmentName;
 	
 	@DBRef
-	private List<Town> town;
+	private Region region;
 	
 	public Department() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Department( String departmentName, List<Town> town) {
-		
+	
+
+	public Department(String departmentName, Region region) {
+		super();
 		this.departmentName = departmentName;
-		this.town = town;
+		this.region = region;
 	}
+
+
 
 	/**
 	 * @return the departmentName
@@ -50,12 +54,18 @@ public class Department {
 		this.idDepartment = idDepartment;
 	}
 
-	public List<Town> getTown() {
-		return town;
+
+
+	public Region getRegion() {
+		return region;
 	}
 
-	public void setTown(List<Town> town) {
-		this.town = town;
+
+
+	public void setRegion(Region region) {
+		this.region = region;
 	}
+
+	
 
 }

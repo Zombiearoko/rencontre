@@ -1,6 +1,6 @@
 package com.bocobi2.rencontre.model;
 
-import java.util.List;
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -17,18 +17,18 @@ public class Region {
 	private String regionName;
 	
 	@DBRef
-	private List<Department> department;
+	private Country country;
 
 	public Region() {
-		super();
 		
 	}
 
-	public Region(String regionName, List<Department> department) {
-		super();
+	public Region(String regionName, Country country) {
 		this.regionName = regionName;
-		this.department = department;
+		this.country = country;
 	}
+
+
 
 	public String getIdRegion() {
 		return idRegion;
@@ -46,13 +46,15 @@ public class Region {
 		this.regionName = regionName;
 	}
 
-	public List<Department> getDepartment() {
-		return department;
+	public Country getCountry() {
+		return country;
 	}
 
-	public void setDepartment(List<Department> department) {
-		this.department = department;
+	public void setCountry(Country country) {
+		this.country = country;
 	}
+
+	
 	
 	
 	

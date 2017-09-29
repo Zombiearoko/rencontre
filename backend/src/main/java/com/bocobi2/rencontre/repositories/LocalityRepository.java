@@ -11,4 +11,6 @@ public interface LocalityRepository extends MongoRepository<Locality, String> {
 	public Locality findByCountry(Country country);
 	public Town findByTown(Town town);
 	public Department findByDepartment(Department department);
+	
+	public Locality findByIdLocalite(String idLocalite);
 }

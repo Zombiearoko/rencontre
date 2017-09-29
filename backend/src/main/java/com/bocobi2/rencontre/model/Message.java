@@ -1,7 +1,6 @@
 package com.bocobi2.rencontre.model;
 
-import java.time.OffsetDateTime;
-import java.util.Date;
+
 
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
@@ -121,8 +120,12 @@ public class Message {
 	 */
 	@Override
 	public String toString() {
-		return "{\nidMessage:" + idMessage + ",\n messageContent:" + messageContent + ",\n sender:" + sender
-				+ ",\n receiver:" + receiver + ",\n sendingDate:" + sendingDate + "\n}";
+		return "{\nidMessage:" + idMessage + 
+				",\n messageContent:" + messageContent + 
+				",\n sender:" + sender
+				+ ",\n receiver:" + receiver + 
+				",\n sendingDate:" + sendingDate +
+				"\n}";
 	}
 	
 

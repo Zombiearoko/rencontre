@@ -27,16 +27,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bocobi2.rencontre.model.AcademicDatingInformation;
+import com.bocobi2.rencontre.model.Borough;
+import com.bocobi2.rencontre.model.ChooseMeeting;
+import com.bocobi2.rencontre.model.ComeLocality;
+import com.bocobi2.rencontre.model.Concession;
+import com.bocobi2.rencontre.model.Country;
+import com.bocobi2.rencontre.model.DatingInformation;
+import com.bocobi2.rencontre.model.Department;
+import com.bocobi2.rencontre.model.FriendlyDatingInformation;
+import com.bocobi2.rencontre.model.Locality;
 import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
+import com.bocobi2.rencontre.model.ProfessionalMeetingInformation;
+import com.bocobi2.rencontre.model.Region;
 import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
+import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
+import com.bocobi2.rencontre.repositories.BoroughRepository;
+import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
+import com.bocobi2.rencontre.repositories.ComeLocalityRepository;
+import com.bocobi2.rencontre.repositories.ConcessionRepository;
+import com.bocobi2.rencontre.repositories.CountryRepository;
+import com.bocobi2.rencontre.repositories.DepartmentRepository;
+import com.bocobi2.rencontre.repositories.LocalityRepository;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
+import com.bocobi2.rencontre.repositories.RegionRepository;
 import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
+import com.bocobi2.rencontre.repositories.TownRepository;
 import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
 
 @CrossOrigin(origins = "*")
@@ -62,6 +84,33 @@ public class InternetSurferController {
 
 	@Autowired
 	TypeMeetingRepository typeMeetingRepository;
+
+	@Autowired
+	ChooseMeetingRepository chooseMeetingRepository;
+	
+	@Autowired
+	CountryRepository countryRepository;
+	
+	@Autowired
+	RegionRepository regionRepository;
+	
+	@Autowired
+	DepartmentRepository departmentRepository;
+	
+	@Autowired
+	BoroughRepository boroughRepository;
+
+	@Autowired
+	TownRepository townRepository;
+	
+	@Autowired
+	ConcessionRepository concessionRepository;
+	
+	@Autowired
+	LocalityRepository localityRepository;
+	
+	@Autowired
+	ComeLocalityRepository comeLocalityRepository;
 
 	/**
 	 * choix du type de rencontre
@@ -134,271 +183,460 @@ public class InternetSurferController {
 		 * recuperation des donnees du formulaire
 		 */
 		String meetingName = request.getParameter("meetingName");
+		String pseudonym = request.getParameter("pseudonym");
+		String birthDate = request.getParameter("bithDate");
+		String gender = request.getParameter("gender");
+		String emailAdress = request.getParameter("emailAdress");
+		String password = request.getParameter("password");
+		String phoneNumber = request.getParameter("phoneNumber");
+		
+
+		// File fileWay = new File(SAVE_DIR_PICTURE);
+		// String nom = "picture" + pseudonym + ".png";
+		// Part part = null;
+		// if (!fileWay.exists())
+		// fileWay.mkdir();
+
+		System.out.println("-------------------------------");
+		System.out.println(pseudonym);
+		System.out.println("-------------------------------");
+		System.out.println(emailAdress);
+		System.out.println("-------------------------------");
+		System.out.println(password);
+		System.out.println("-------------------------------");
+		System.out.println("-------------------------------");
+		System.out.println(phoneNumber);
+		System.out.println("-------------------------------");
 
 		if (meetingName.equals("Amoureuse")) {
 
-			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String birthDate = request.getParameter("bithDate");
-			String gender = request.getParameter("gender");
-			String pseudonym = request.getParameter("pseudonym");
-			String emailAdress = request.getParameter("emailAdress");
-			String password = request.getParameter("password");
-			String phoneNumber = request.getParameter("phoneNumber");
-
+			String fatherName = request.getParameter("fatherName");
+			String motherName = request.getParameter("motherName");
+			String countryName= request.getParameter("countryName");
+			String regionName = request.getParameter("regionName");
+			String departmentName= request.getParameter("departmentName");
+			String boroughName =request.getParameter("boroughName");
+			String townName= request.getParameter("townName");
+			String concessionName= request .getParameter("concessionName");
+			
+			
+			
+			Country countryDB = countryRepository.findByCountryName(countryName);
+			Region regionDB =regionRepository.findByRegionName(regionName);
+			Department departmentDB = departmentRepository.findByDepartmentName(departmentName);
+			Borough boroughDB =boroughRepository.findByBoroughName(boroughName);
+			//Town town = townRepository.findByTownName(townName);
+			//Concession concession= concessionRepository.findByConcessionName(concessionName);
+			
+			
+			Town town =new Town();
+			Concession concession = new Concession();
+			
+			try {
+				town.setTownName(townName);
+				town.setBorough(boroughDB);
+				
+				townRepository.save(town);
+				
+			
+			} catch (Exception ex) {
+				logger.error("Unable to create. A Town with name {} already exist", townName);
+				return new ResponseEntity(
+						new MemberErrorType(
+								"Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+						HttpStatus.CONFLICT);
+			}
+			
+			Town townDB = townRepository.findByTownName(townName);
+			
+			try {
+				concession.setConcessionName(concessionName);
+				concession.setTown(townDB);
+				
+				concessionRepository.save(concession);
+				
+				
+			} catch (Exception ex) {
+				logger.error("Unable to create. A Concession with name {} already exist", concessionName);
+				return new ResponseEntity(
+						new MemberErrorType(
+								"Unable to create. " + "A Concession with name " + "" + concessionName + " already exist"),
+						HttpStatus.CONFLICT);
+			}
+			Concession concessionDB = concessionRepository.findByConcessionName(concessionName);
+			
+			String idLocality=countryName+regionName+departmentName+boroughName+townName+concessionName;
+			
+			Locality locality =new Locality();
+			
+			locality.setIdLocalite(idLocality);
+			locality.setCountry(countryDB);
+			locality.setRegion(regionDB);
+			locality.setDepartment(departmentDB);
+			locality.setBorough(boroughDB);
+			locality.setTown(townDB);
+			locality.setConcession(concessionDB);
+			
+			localityRepository.save(locality);
+			
+			Locality localityDB= localityRepository.findByIdLocalite(idLocality);
+			
+			String idLocalityDB= localityDB.getIdLocalite();
+			
+			
+			
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
 			MemberBuffer member = new MemberBuffer();
+			DatingInformation datingInformation = new DatingInformation();
 
-			System.out.println("-------------------------------");
-			System.out.println(pseudonym);
-			System.out.println("-------------------------------");
-			System.out.println(emailAdress);
-			System.out.println("-------------------------------");
-			System.out.println(password);
-			System.out.println("-------------------------------");
-			System.out.println("-------------------------------");
-			System.out.println(phoneNumber);
-			System.out.println("-------------------------------");
+			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
 
-			// File fileWay = new File(SAVE_DIR_PICTURE);
-			// String nom = "picture" + pseudonym + ".png";
-			// Part part = null;
-			// if (!fileWay.exists())
-			// fileWay.mkdir();
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
 				// part = request.getPart("picture");
 				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
 				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
-				MemberBuffer memberBD = memberBufferRepository.findByPseudonym(pseudonym);
-				if (memberBD != null) {
-					List<TypeMeeting> listTypeMeetingif = memberBD.getTypeMeeting();
-					for (TypeMeeting type : listTypeMeetingif) {
-						if (type.equals(typeMeeting)) {
 
-							// logger.error("Unable to create. A Member with
-							// name {} already exist", member.getPseudonym());
-							return new ResponseEntity(
-									new MemberErrorType("the email is already created in this type meeting"),
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
+
+					// ChooseMeeting chooseMeetingBd
+					// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
+
+						datingInformation.setFatherName(fatherName);
+						datingInformation.setMotherName(motherName);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
+
+						member.setDatingInformation(datingInformation);
+
+						try {
+							
+
+							String idComeLocality=pseudonym+idLocality;
+							
+							if(comeLocalityRepository.exists(idComeLocality)){
+								
+								return new ResponseEntity(
+										new MemberErrorType("this locality is already exist"),
+										HttpStatus.NOT_FOUND);
+							}
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+							
+							ComeLocality comeLocality = new ComeLocality();
+							
+							comeLocality.setId(idComeLocality);
+							
+							comeLocalityRepository.save(comeLocality);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
 									HttpStatus.NOT_FOUND);
+
 						}
 					}
-					try {
-						listTypeMeeting.add(typeMeeting);
-
-						member.setTypeMeeting(listTypeMeeting);
-						member.setGender(gender);
-						member.setBirthDate(birthDate);
-						member.setPseudonym(pseudonym);
-						member.setEmailAdress(emailAdress);
-						member.setPhoneNumber(phoneNumber);
-						member.setPassword(password);
-						// member.setPicture(fileName);
-
-						// enregistrement dans la zone tampon
-
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ member.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
-
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
-
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(member);
-
-						return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-
-						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
-								HttpStatus.NOT_FOUND);
-
-					}
-
 				} else {
-					List<TypeMeeting> listTypeMeetingMember = new ArrayList<TypeMeeting>();
-					listTypeMeetingMember.add(typeMeeting);
 
-					try {
+					// ChooseMeeting chooseMeetingBd
+					// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
-						member.setTypeMeeting(listTypeMeeting);
+						return new ResponseEntity(
+								new MemberErrorType("this pseudonym is already using, please choose an another own"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						// Member memberBD =
+						// memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						//chooseMeetingRepository.deleteAll();
+						chooseMeetingRepository.save(chooseMeeting);
+
+						datingInformation.setFatherName(fatherName);
+						datingInformation.setMotherName(motherName);
+
+						member.setPseudonym(pseudonym);
 						member.setGender(gender);
 						member.setBirthDate(birthDate);
-						member.setPseudonym(pseudonym);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
 						member.setPassword(password);
 						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(null);
+						member.setAcademicDatingInformation(null);
+						member.setProfessionalMeetingInformation(null);
 
-						// enregistrement dans la zone tampon
+						member.setDatingInformation(datingInformation);
 
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ member.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
+						try {
+String idComeLocality=pseudonym+idLocality;
+							
+							if(comeLocalityRepository.exists(idComeLocality)){
+								
+								return new ResponseEntity(
+										new MemberErrorType("this locality is already exist"),
+										HttpStatus.NOT_FOUND);
+							}
+							// enregistrement dans la zone tampon
 
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
 
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.insert(member);
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
 
-						return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+							
+							ComeLocality comeLocality = new ComeLocality();
+							
+							comeLocality.setId(idComeLocality);
+							
+							comeLocalityRepository.save(comeLocality);
 
-						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
-								HttpStatus.NOT_FOUND);
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
 
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
 					}
-
 				}
-
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
 				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
-			}
+				return new ResponseEntity(new MemberErrorType("the email is not validate1"), HttpStatus.NOT_FOUND);
 
-		} else if (meetingName.equals("Proffesionnelle")) {
+			}
+			
+			
+
+		} else if (meetingName.equals("Professionnelle")) {
+
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String profession = request.getParameter("profession");
+			String levelStudy = request.getParameter("levelStudy");
+
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			ProfessionalMeetingInformation professionalMeeting = new ProfessionalMeetingInformation();
 
 			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String password = request.getParameter("password");
-			String emailAdress = request.getParameter("emailAdress");
-			String profession = request.getParameter("profession");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				MemberBuffer memberBD = memberBufferRepository.findByPseudonym(pseudonym);
-				if (memberBD != null) {
-					List<TypeMeeting> listTypeMeetingif = memberBD.getTypeMeeting();
-					for (TypeMeeting type : listTypeMeetingif) {
-						if (type.equals(typeMeeting)) {
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-							// logger.error("Unable to create. A Member with
-							// name {} already exist", member.getPseudonym());
-							return new ResponseEntity(
-									new MemberErrorType("the email is already created in this type meeting"),
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
+
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
+
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
+
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
+
+						professionalMeeting.setFirstName(firstName);
+						professionalMeeting.setLastName(lastName);
+						professionalMeeting.setLevelStudy(levelStudy);
+						professionalMeeting.setProfession(profession);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setProfessionalMeetingInformation(professionalMeeting);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
 									HttpStatus.NOT_FOUND);
+
 						}
 					}
-					try {
-						listTypeMeeting.add(typeMeeting);
-
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						memberBuffer.setProfession(profession);
-
-						// enregistrement dans la zone tampon
-
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
-
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
-
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
-
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
-
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
-								HttpStatus.NOT_FOUND);
-
-					}
 				} else {
-					List<TypeMeeting> listTypeMeetingMember = new ArrayList<TypeMeeting>();
-					listTypeMeetingMember.add(typeMeeting);
 
 					try {
 
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						memberBuffer.setProfession(profession);
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
-						// enregistrement dans la zone tampon
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
 
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
+							professionalMeeting.setFirstName(firstName);
+							professionalMeeting.setLastName(lastName);
+							professionalMeeting.setLevelStudy(levelStudy);
+							professionalMeeting.setProfession(profession);
 
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setFriendlyDatingInformatio(null);
+							member.setAcademicDatingInformation(null);
+							member.setDatingInformation(null);
 
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
+							member.setProfessionalMeetingInformation(professionalMeeting);
 
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+							try {
+								// enregistrement dans la zone tampon
 
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
 					} catch (Exception ex) {
 						System.out.println(ex.getMessage());
 
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
@@ -407,126 +645,175 @@ public class InternetSurferController {
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		} else if (meetingName.equals("Academique")) {
 
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String schoolName = request.getParameter("schoolName");
+			String levelStudy = request.getParameter("levelStudy");
+
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			AcademicDatingInformation academicDatingInformation = new AcademicDatingInformation();
 
 			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String password = request.getParameter("password");
-			String emailAdress = request.getParameter("emailAdress");
-			String schoolName = request.getParameter("schoolName");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				MemberBuffer memberBD = memberBufferRepository.findByPseudonym(pseudonym);
-				if (memberBD != null) {
-					List<TypeMeeting> listTypeMeetingif = memberBD.getTypeMeeting();
-					for (TypeMeeting type : listTypeMeetingif) {
-						if (type.equals(typeMeeting)) {
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-							// logger.error("Unable to create. A Member with
-							// name {} already exist", member.getPseudonym());
-							return new ResponseEntity(
-									new MemberErrorType("the email is already created in this type meeting"),
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
+
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
+
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
+
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
+
+						academicDatingInformation.setFirstName(firstName);
+						academicDatingInformation.setLastName(lastName);
+						academicDatingInformation.setLevelStudy(levelStudy);
+						academicDatingInformation.setSchoolName(schoolName);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setAcademicDatingInformation(academicDatingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
 									HttpStatus.NOT_FOUND);
+
 						}
 					}
-					try {
-						listTypeMeeting.add(typeMeeting);
-
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						memberBuffer.setSchoolName(schoolName);
-
-						// enregistrement dans la zone tampon
-
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
-
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
-
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
-
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
-
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
-								HttpStatus.NOT_FOUND);
-
-					}
 				} else {
-					List<TypeMeeting> listTypeMeetingMember = new ArrayList<TypeMeeting>();
-					listTypeMeetingMember.add(typeMeeting);
 
 					try {
 
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						memberBuffer.setSchoolName(schoolName);
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
-						// enregistrement dans la zone tampon
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
 
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
+							academicDatingInformation.setFirstName(firstName);
+							academicDatingInformation.setLastName(lastName);
+							academicDatingInformation.setLevelStudy(levelStudy);
+							academicDatingInformation.setSchoolName(schoolName);
 
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setFriendlyDatingInformatio(null);
+							member.setProfessionalMeetingInformation(null);
+							member.setDatingInformation(null);
 
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
+							member.setAcademicDatingInformation(academicDatingInformation);
 
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+							try {
+								// enregistrement dans la zone tampon
 
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
 					} catch (Exception ex) {
 						System.out.println(ex.getMessage());
 
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
@@ -535,125 +822,166 @@ public class InternetSurferController {
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		} else if (meetingName.equals("Amicale")) {
 
-			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String password = request.getParameter("password");
-			String emailAdress = request.getParameter("emailAdress");
-			
+			String name = request.getParameter("name");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			FriendlyDatingInformation friendlyDatingInformation = new FriendlyDatingInformation();
+
+			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
+
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				MemberBuffer memberBD = memberBufferRepository.findByPseudonym(pseudonym);
-				if (memberBD != null) {
-					List<TypeMeeting> listTypeMeetingif = memberBD.getTypeMeeting();
-					for (TypeMeeting type : listTypeMeetingif) {
-						if (type.equals(typeMeeting)) {
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-							// logger.error("Unable to create. A Member with
-							// name {} already exist", member.getPseudonym());
-							return new ResponseEntity(
-									new MemberErrorType("the email is already created in this type meeting"),
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
+
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
+
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
+
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
+
+						friendlyDatingInformation.setName(name);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setFriendlyDatingInformatio(friendlyDatingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
 									HttpStatus.NOT_FOUND);
+
 						}
 					}
-					try {
-						listTypeMeeting.add(typeMeeting);
-
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						
-
-						// enregistrement dans la zone tampon
-
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
-
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
-
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
-
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
-
-					} catch (Exception ex) {
-						System.out.println(ex.getMessage());
-
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
-								HttpStatus.NOT_FOUND);
-
-					}
 				} else {
-					List<TypeMeeting> listTypeMeetingMember = new ArrayList<TypeMeeting>();
-					listTypeMeetingMember.add(typeMeeting);
 
 					try {
 
-						memberBuffer.setPseudonym(pseudonym);
-						memberBuffer.setPassword(password);
-						memberBuffer.setTypeMeeting(listTypeMeeting);
-						memberBuffer.setFirstName(firstName);
-						memberBuffer.setEmailAdress(emailAdress);
-						
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
-						// enregistrement dans la zone tampon
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
 
-						String content1 = "Thanks to create your count in our website \n"
-								+ " Now,lick on this link to activate E-mail adress: "
-								+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-								+ memberBuffer.getPseudonym();
-						String subject1 = "confirm your E-mail adress";
-						// String form="saphirmfogo@gmail.com";V
-						MimeMessage msg = new MimeMessage(session);
-						/// msg.setFrom(new InternetAddress(form));
-						msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-						msg.setSubject(subject1);
-						msg.setText(content1);
-						msg.setSentDate(new Date());
+							friendlyDatingInformation.setName(name);
 
-						Transport transport = session.getTransport("smtp");
-						transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-						transport.sendMessage(msg, msg.getAllRecipients());
-						transport.close();
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setAcademicDatingInformation(null);
+							member.setProfessionalMeetingInformation(null);
+							member.setDatingInformation(null);
 
-						// memberBufferRepository.deleteAll();
-						memberBufferRepository.save(memberBuffer);
+							member.setFriendlyDatingInformatio(friendlyDatingInformation);
 
-						return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+							try {
+								// enregistrement dans la zone tampon
 
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
 					} catch (Exception ex) {
 						System.out.println(ex.getMessage());
 
-						logger.error("Unable to create. A Member with name {} already exist",
-								memberBuffer.getPseudonym());
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
@@ -662,15 +990,16 @@ public class InternetSurferController {
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		}
-		return null;
+		return new ResponseEntity(new MemberErrorType("the type of meeting is not available"), HttpStatus.NOT_FOUND);
 	}
 
+	@SuppressWarnings("unchecked")
 	/*
 	 * Version Get
 	 */
@@ -694,233 +1023,715 @@ public class InternetSurferController {
 		 * recuperation des donnees du formulaire
 		 */
 		String meetingName = request.getParameter("meetingName");
+		String pseudonym = request.getParameter("pseudonym");
+		String birthDate = request.getParameter("bithDate");
+		String gender = request.getParameter("gender");
+		String emailAdress = request.getParameter("emailAdress");
+		String password = request.getParameter("password");
+		String phoneNumber = request.getParameter("phoneNumber");
+
+		// File fileWay = new File(SAVE_DIR_PICTURE);
+		// String nom = "picture" + pseudonym + ".png";
+		// Part part = null;
+		// if (!fileWay.exists())
+		// fileWay.mkdir();
+
+		System.out.println("-------------------------------");
+		System.out.println(pseudonym);
+		System.out.println("-------------------------------");
+		System.out.println(emailAdress);
+		System.out.println("-------------------------------");
+		System.out.println(password);
+		System.out.println("-------------------------------");
+		System.out.println("-------------------------------");
+		System.out.println(phoneNumber);
+		System.out.println("-------------------------------");
 
 		if (meetingName.equals("Amoureuse")) {
 
-			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String birthDate = request.getParameter("bithDate");
-			String gender = request.getParameter("gender");
-			String pseudonym = request.getParameter("pseudonym");
-			String emailAdress = request.getParameter("emailAdress");
-			String password = request.getParameter("password");
-			String phoneNumber = request.getParameter("phoneNumber");
+			String fatherName = request.getParameter("fatherName");
+			String motherName = request.getParameter("motherName");
 
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
 			MemberBuffer member = new MemberBuffer();
+			DatingInformation datingInformation = new DatingInformation();
 
-			System.out.println("-------------------------------");
-			System.out.println(pseudonym);
-			System.out.println("-------------------------------");
-			System.out.println(emailAdress);
-			System.out.println("-------------------------------");
-			System.out.println(password);
-			System.out.println("-------------------------------");
-			System.out.println("-------------------------------");
-			System.out.println(phoneNumber);
-			System.out.println("-------------------------------");
+			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
 
-			// File fileWay = new File(SAVE_DIR_PICTURE);
-			// String nom = "picture" + pseudonym + ".png";
-			// Part part = null;
-			// if (!fileWay.exists())
-			// fileWay.mkdir();
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
 				// part = request.getPart("picture");
 				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
 				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
-				member.setTypeMeeting(listTypeMeeting);
-				member.setGender(gender);
-				member.setBirthDate(birthDate);
-				member.setPseudonym(pseudonym);
-				member.setEmailAdress(emailAdress);
-				member.setPhoneNumber(phoneNumber);
-				member.setPassword(password);
-				// member.setPicture(fileName);
 
-				// enregistrement dans la zone tampon
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-				String content1 = "Thanks to create your count in our website \n"
-						+ " Now,lick on this link to activate E-mail adress: "
-						+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-						+ member.getPseudonym();
-				String subject1 = "confirm your E-mail adress";
-				// String form="saphirmfogo@gmail.com";V
-				MimeMessage msg = new MimeMessage(session);
-				/// msg.setFrom(new InternetAddress(form));
-				msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-				msg.setSubject(subject1);
-				msg.setText(content1);
-				msg.setSentDate(new Date());
+					// ChooseMeeting chooseMeetingBd
+					// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
-				Transport transport = session.getTransport("smtp");
-				transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-				transport.sendMessage(msg, msg.getAllRecipients());
-				transport.close();
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
 
-				// memberBufferRepository.deleteAll();
-				memberBufferRepository.insert(member);
+						datingInformation.setFatherName(fatherName);
+						datingInformation.setMotherName(motherName);
 
-				return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
 
+						member.setDatingInformation(datingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
+					}
+				} else {
+
+					// ChooseMeeting chooseMeetingBd
+					// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+
+						return new ResponseEntity(
+								new MemberErrorType("this pseudonym is already using, please choose an another own"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						// Member memberBD =
+						// memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.deleteAll();
+						chooseMeetingRepository.save(chooseMeeting);
+
+						datingInformation.setFatherName(fatherName);
+						datingInformation.setMotherName(motherName);
+
+						member.setPseudonym(pseudonym);
+						member.setGender(gender);
+						member.setBirthDate(birthDate);
+						member.setEmailAdress(emailAdress);
+						member.setPhoneNumber(phoneNumber);
+						member.setPassword(password);
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(null);
+						member.setAcademicDatingInformation(null);
+						member.setProfessionalMeetingInformation(null);
+
+						member.setDatingInformation(datingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
+					}
+				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
 				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
+				return new ResponseEntity(new MemberErrorType("the email is not validate1"), HttpStatus.NOT_FOUND);
+
 			}
 
-		} else if (meetingName.equals("Proffesionnelle")) {
+		} else if (meetingName.equals("Professionnelle")) {
+
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String profession = request.getParameter("profession");
+			String levelStudy = request.getParameter("levelStudy");
+
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			ProfessionalMeetingInformation professionalMeeting = new ProfessionalMeetingInformation();
 
 			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String emailAdress = request.getParameter("emailAdress");
-			String profession = request.getParameter("profession");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				memberBuffer.setTypeMeeting(listTypeMeeting);
-				memberBuffer.setFirstName(firstName);
-				memberBuffer.setEmailAdress(emailAdress);
-				memberBuffer.setProfession(profession);
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-				// enregistrement dans la zone tampon
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
 
-				String content1 = "Thanks to create your count in our website \n"
-						+ " Now,lick on this link to activate E-mail adress: "
-						+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-						+ memberBuffer.getPseudonym();
-				String subject1 = "confirm your E-mail adress";
-				// String form="saphirmfogo@gmail.com";V
-				MimeMessage msg = new MimeMessage(session);
-				/// msg.setFrom(new InternetAddress(form));
-				msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-				msg.setSubject(subject1);
-				msg.setText(content1);
-				msg.setSentDate(new Date());
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-				Transport transport = session.getTransport("smtp");
-				transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-				transport.sendMessage(msg, msg.getAllRecipients());
-				transport.close();
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
 
-				// memberBufferRepository.deleteAll();
-				memberBufferRepository.insert(memberBuffer);
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
 
-				return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
+
+						professionalMeeting.setFirstName(firstName);
+						professionalMeeting.setLastName(lastName);
+						professionalMeeting.setLevelStudy(levelStudy);
+						professionalMeeting.setProfession(profession);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setProfessionalMeetingInformation(professionalMeeting);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
+					}
+				} else {
+
+					try {
+
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+
+							professionalMeeting.setFirstName(firstName);
+							professionalMeeting.setLastName(lastName);
+							professionalMeeting.setLevelStudy(levelStudy);
+							professionalMeeting.setProfession(profession);
+
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setFriendlyDatingInformatio(null);
+							member.setAcademicDatingInformation(null);
+							member.setDatingInformation(null);
+
+							member.setProfessionalMeetingInformation(professionalMeeting);
+
+							try {
+								// enregistrement dans la zone tampon
+
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						return new ResponseEntity(new MemberErrorType("the email is not validate"),
+								HttpStatus.NOT_FOUND);
+
+					}
+				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		} else if (meetingName.equals("Academique")) {
 
-			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
 			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String emailAdress = request.getParameter("emailAdress");
-			String SchoolName = request.getParameter("SchoolName");
+			String lastName = request.getParameter("lastName");
+			String schoolName = request.getParameter("schoolName");
+			String levelStudy = request.getParameter("levelStudy");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			AcademicDatingInformation academicDatingInformation = new AcademicDatingInformation();
+
+			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
+
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				memberBuffer.setTypeMeeting(listTypeMeeting);
-				memberBuffer.setFirstName(firstName);
-				memberBuffer.setEmailAdress(emailAdress);
-				memberBuffer.setProfession(SchoolName);
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-				// enregistrement dans la zone tampon
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
 
-				String content1 = "Thanks to create your count in our website \n"
-						+ " Now,lick on this link to activate E-mail adress: "
-						+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-						+ memberBuffer.getPseudonym();
-				String subject1 = "confirm your E-mail adress";
-				// String form="saphirmfogo@gmail.com";V
-				MimeMessage msg = new MimeMessage(session);
-				/// msg.setFrom(new InternetAddress(form));
-				msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-				msg.setSubject(subject1);
-				msg.setText(content1);
-				msg.setSentDate(new Date());
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-				Transport transport = session.getTransport("smtp");
-				transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-				transport.sendMessage(msg, msg.getAllRecipients());
-				transport.close();
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
 
-				// memberBufferRepository.deleteAll();
-				memberBufferRepository.insert(memberBuffer);
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
 
-				return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+						academicDatingInformation.setFirstName(firstName);
+						academicDatingInformation.setLastName(lastName);
+						academicDatingInformation.setLevelStudy(levelStudy);
+						academicDatingInformation.setSchoolName(schoolName);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setAcademicDatingInformation(academicDatingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
+					}
+				} else {
+
+					try {
+
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+
+							academicDatingInformation.setFirstName(firstName);
+							academicDatingInformation.setLastName(lastName);
+							academicDatingInformation.setLevelStudy(levelStudy);
+							academicDatingInformation.setSchoolName(schoolName);
+
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setFriendlyDatingInformatio(null);
+							member.setProfessionalMeetingInformation(null);
+							member.setDatingInformation(null);
+
+							member.setAcademicDatingInformation(academicDatingInformation);
+
+							try {
+								// enregistrement dans la zone tampon
+
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						return new ResponseEntity(new MemberErrorType("the email is not validate"),
+								HttpStatus.NOT_FOUND);
+
+					}
+				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		} else if (meetingName.equals("Amicale")) {
 
-			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
-			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-			listTypeMeeting.add(typeMeeting);
-			String firstName = request.getParameter("firstName");
-			String pseudonym = request.getParameter("pseudonym");
-			String emailAdress = request.getParameter("emailAdress");
+			String name = request.getParameter("name");
 
-			MemberBuffer memberBuffer = new MemberBuffer();
+			ChooseMeeting chooseMeeting = new ChooseMeeting();
+			MemberBuffer member = new MemberBuffer();
+			FriendlyDatingInformation friendlyDatingInformation = new FriendlyDatingInformation();
+
+			TypeMeeting typeMeeting = typeMeetingRepository.findByMeetingName(meetingName);
+
+			String idTypeMeeting = typeMeeting.getId();
+			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
-				memberBuffer.setTypeMeeting(listTypeMeeting);
-				memberBuffer.setFirstName(firstName);
-				memberBuffer.setEmailAdress(emailAdress);
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
-				// enregistrement dans la zone tampon
+				// Member memberBD =
+				// memberRepository.findByPseudonym(pseudonym);
 
-				String content1 = "Thanks to create your count in our website \n"
-						+ " Now,lick on this link to activate E-mail adress: "
-						+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-						+ memberBuffer.getPseudonym();
-				String subject1 = "confirm your E-mail adress";
-				// String form="saphirmfogo@gmail.com";V
-				MimeMessage msg = new MimeMessage(session);
-				/// msg.setFrom(new InternetAddress(form));
-				msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
-				msg.setSubject(subject1);
-				msg.setText(content1);
-				msg.setSentDate(new Date());
+				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-				Transport transport = session.getTransport("smtp");
-				transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
-				transport.sendMessage(msg, msg.getAllRecipients());
-				transport.close();
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
 
-				// memberBufferRepository.deleteAll();
-				memberBufferRepository.insert(memberBuffer);
+						return new ResponseEntity(
+								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
+								HttpStatus.NOT_FOUND);
+					} else {
+						Member memberBD = memberRepository.findByPseudonym(pseudonym);
+						chooseMeeting.setIdChooseMeeting(idChoose);
+						chooseMeetingRepository.save(chooseMeeting);
 
-				return new ResponseEntity<MemberBuffer>(memberBuffer, HttpStatus.CREATED);
+						friendlyDatingInformation.setName(name);
+
+						member.setPseudonym(memberBD.getPseudonym());
+						member.setGender(memberBD.getGender());
+						member.setBirthDate(memberBD.getBirthDate());
+						member.setEmailAdress(memberBD.getEmailAdress());
+						member.setPhoneNumber(memberBD.getPhoneNumber());
+						member.setPassword(memberBD.getPassword());
+						// member.setPicture(fileName);
+						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
+						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
+						member.setDatingInformation(memberBD.getDatingInformation());
+
+						member.setFriendlyDatingInformatio(friendlyDatingInformation);
+
+						try {
+							// enregistrement dans la zone tampon
+
+							String content1 = "Thanks to create your count in our website \n"
+									+ " Now,lick on this link to activate E-mail adress: "
+									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+									+ member.getPseudonym() + "&meetingName=" + meetingName;
+							String subject1 = "confirm your E-mail adress";
+							// String form="saphirmfogo@gmail.com";V
+							MimeMessage msg = new MimeMessage(session);
+							/// msg.setFrom(new InternetAddress(form));
+							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setSubject(subject1);
+							msg.setText(content1);
+							msg.setSentDate(new Date());
+
+							Transport transport = session.getTransport("smtp");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.sendMessage(msg, msg.getAllRecipients());
+							transport.close();
+
+							// memberBufferRepository.deleteAll();
+							memberBufferRepository.save(member);
+
+							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+						} catch (Exception ex) {
+							System.out.println(ex.getMessage());
+
+							logger.error("Unable to create. A Member with name {} already exist",
+									member.getPseudonym());
+							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+									HttpStatus.NOT_FOUND);
+
+						}
+					}
+				} else {
+
+					try {
+
+						// ChooseMeeting chooseMeetingBd
+						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+						if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+
+							return new ResponseEntity(
+									new MemberErrorType(
+											"this pseudonym is already using, please choose an another own"),
+									HttpStatus.NOT_FOUND);
+						} else {
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+
+							friendlyDatingInformation.setName(name);
+
+							member.setPseudonym(pseudonym);
+							member.setGender(gender);
+							member.setBirthDate(birthDate);
+							member.setEmailAdress(emailAdress);
+							member.setPhoneNumber(phoneNumber);
+							member.setPassword(password);
+							// member.setPicture(fileName);
+							member.setAcademicDatingInformation(null);
+							member.setProfessionalMeetingInformation(null);
+							member.setDatingInformation(null);
+
+							member.setFriendlyDatingInformatio(friendlyDatingInformation);
+
+							try {
+								// enregistrement dans la zone tampon
+
+								String content1 = "Thanks to create your count in our website \n"
+										+ " Now,lick on this link to activate E-mail adress: "
+										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
+										+ member.getPseudonym() + "&meetingName=" + meetingName;
+								String subject1 = "confirm your E-mail adress";
+								// String form="saphirmfogo@gmail.com";V
+								MimeMessage msg = new MimeMessage(session);
+								/// msg.setFrom(new InternetAddress(form));
+								msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+								msg.setSubject(subject1);
+								msg.setText(content1);
+								msg.setSentDate(new Date());
+
+								Transport transport = session.getTransport("smtp");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.sendMessage(msg, msg.getAllRecipients());
+								transport.close();
+
+								// memberBufferRepository.deleteAll();
+								memberBufferRepository.save(member);
+
+								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
+							} catch (Exception ex) {
+								System.out.println(ex.getMessage());
+
+								logger.error("Unable to create. A Member with name {} already exist",
+										member.getPseudonym());
+								return new ResponseEntity(new MemberErrorType("the email is not validate"),
+										HttpStatus.NOT_FOUND);
+
+							}
+
+						}
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+
+						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
+						return new ResponseEntity(new MemberErrorType("the email is not validate"),
+								HttpStatus.NOT_FOUND);
+
+					}
+				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 
-				logger.error("Unable to create. A Member with name {} already exist", memberBuffer.getPseudonym());
+				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
 
 			}
 
 		}
-		return null;
+		return new ResponseEntity(new MemberErrorType("the type of meeting is not available"), HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -938,12 +1749,100 @@ public class InternetSurferController {
 	public ResponseEntity<?> confirmRegistrationPost(HttpServletRequest request) {
 
 		String pseudonym = request.getParameter("user");
+		String meetingName = request.getParameter("meetingName");
 		System.out.println(pseudonym);
-		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
-		Status statusMember = statusRepository.findByStatusName("connected");
-		Member member = new Member();
-		try {
 
+		Status statusMember = statusRepository.findByStatusName("connected");
+
+		Member member = new Member();
+
+		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
+		Member memberDB = memberRepository.findByPseudonym(pseudonym);
+
+		if (memberDB != null) {
+
+			if (meetingName.equals("Amoureuse")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberBuffer.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Professionnelle")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Academique")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Amicale")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
+
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			}
+		} else {
 			member.setPseudonym(memberBuffer.getPseudonym());
 			member.setBirthDate(memberBuffer.getBirthDate());
 			member.setEmailAdress(memberBuffer.getEmailAdress());
@@ -952,24 +1851,22 @@ public class InternetSurferController {
 			member.setPassword(memberBuffer.getPassword());
 			member.setPicture(memberBuffer.getPicture());
 			member.setStatus(statusMember);
-			member.setTypeMeeting(memberBuffer.getTypeMeeting());
+			member.setDatingInformation(memberBuffer.getDatingInformation());
+			member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
+			member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
+			member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
 
-			memberRepository.deleteAll();
 			memberRepository.save(member);
 			memberBufferRepository.delete(memberBuffer);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		} catch (Exception ex) {
-			logger.error("Unable to create. A Member with name {} already exist", pseudonym);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Member with name " + "" + pseudonym + " already exist"),
-					HttpStatus.CONFLICT);
+
 		}
+		return null;
 
 	}
 
 	/*
-	 * Version Get
+	 * Version GET
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
@@ -977,35 +1874,121 @@ public class InternetSurferController {
 	public ResponseEntity<?> confirmRegistrationGet(HttpServletRequest request) {
 
 		String pseudonym = request.getParameter("user");
-
-		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
+		String meetingName = request.getParameter("meetingName");
+		System.out.println(pseudonym);
 
 		Status statusMember = statusRepository.findByStatusName("connected");
-		Member member = new Member();
-		try {
 
+		Member member = new Member();
+
+		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
+		Member memberDB = memberRepository.findByPseudonym(pseudonym);
+
+		if (memberDB != null) {
+
+			if (meetingName.equals("Amoureuse")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberBuffer.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Professionnelle")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Academique")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+
+				// memberRepository.deleteAll();
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			} else if (meetingName.equals("Amicale")) {
+
+				member.setPseudonym(memberBuffer.getPseudonym());
+				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setEmailAdress(memberBuffer.getEmailAdress());
+				member.setGender(memberBuffer.getGender());
+				member.setPhoneNumber(memberBuffer.getPhoneNumber());
+				member.setPassword(memberBuffer.getPassword());
+				member.setPicture(memberBuffer.getPicture());
+				member.setStatus(statusMember);
+				member.setDatingInformation(memberDB.getDatingInformation());
+				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
+				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
+				member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
+
+				memberRepository.save(member);
+				memberBufferRepository.delete(memberBuffer);
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+			}
+		} else {
 			member.setPseudonym(memberBuffer.getPseudonym());
 			member.setBirthDate(memberBuffer.getBirthDate());
 			member.setEmailAdress(memberBuffer.getEmailAdress());
-			member.setPhoneNumber(memberBuffer.getPhoneNumber());
 			member.setGender(memberBuffer.getGender());
+			member.setPhoneNumber(memberBuffer.getPhoneNumber());
 			member.setPassword(memberBuffer.getPassword());
 			member.setPicture(memberBuffer.getPicture());
 			member.setStatus(statusMember);
-			memberRepository.insert(member);
+			member.setDatingInformation(memberBuffer.getDatingInformation());
+			member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
+			member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
+			member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
+
+			memberRepository.save(member);
 			memberBufferRepository.delete(memberBuffer);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		} catch (Exception ex) {
-			logger.error("Unable to create. A Member with name {} already exist", pseudonym);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Member with name " + "" + pseudonym + " already exist"),
-					HttpStatus.CONFLICT);
-		}
-	}
 
-	/**
-	 * Start visualize testimony
+		}
+		return null;
+
+	}	  /** Start visualize testimony
 	 */
 	/*
 	 * Version Post

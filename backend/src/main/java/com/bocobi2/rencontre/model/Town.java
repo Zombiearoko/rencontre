@@ -2,6 +2,7 @@ package com.bocobi2.rencontre.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="town")
@@ -14,6 +15,9 @@ public class Town {
 	@Indexed
 	private String townName;
 	
+	@DBRef
+	private Borough borough;
+	
 	public Town() {
 		// TODO Auto-generated constructor stub
 	}
@@ -21,16 +25,19 @@ public class Town {
 	/**
 	 * @param townName
 	 */
-	public Town(String townName) {
-		super();
-		this.townName = townName;
-	}
+	
 
 	/**
 	 * @return the townName
 	 */
 	public String getTownName() {
 		return townName;
+	}
+
+	public Town(String townName, Borough borough) {
+		super();
+		this.townName = townName;
+		this.borough = borough;
 	}
 
 	/**
@@ -46,4 +53,18 @@ public class Town {
 	public String getIdTown() {
 		return idTown;
 	}
+
+	public Borough getBorough() {
+		return borough;
+	}
+
+	public void setBorough(Borough borough) {
+		this.borough = borough;
+	}
+
+	public void setIdTown(String idTown) {
+		this.idTown = idTown;
+	}
+	
+	
 }

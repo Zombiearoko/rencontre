@@ -14,6 +14,7 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 	public List<Message> findByReceiver(String receiver);
 	public List<Message> findByStatusMessage(String status);
 	public List<Message> findBySenderOrderByReceiver(String sender);
+	public List<Message> findAllByOrderBySendingDateAsc();
 	
 	@Query("{'sender':?0, 'receiver':?1}")
 	public List<Message> finByParticipant(String sender, String receiver);

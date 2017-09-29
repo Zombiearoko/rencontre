@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 //import { RegisterPage } from '../register/register';
 import { RestProvider } from '../../providers/rest/rest';
 
+import { Router } from '@angular/router';
+
+import { AlertService, MemberService } from '../_services/index';
+
 @Component({
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
@@ -12,7 +16,7 @@ import { RestProvider } from '../../providers/rest/rest';
 })
 export class MemberRegistrationComponent implements OnInit {
   
-
+  loading = false;
   clientForm: FormGroup;
   customerPictureFile: File;
   @ViewChild('customerPicture') customer_picture;
@@ -30,7 +34,9 @@ private results: [any];
 private collectionJson: object;
 submitted = false;
 
-  constructor(public rest: RestProvider, public fb: FormBuilder, private http: Http) { 
+  constructor(public rest: RestProvider, public fb: FormBuilder, private http: Http, private router: Router, private alertService: AlertService) { 
+  
+    
     this.clientForm = this.fb.group({
       'pseudonym': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(5)])],
       'birthDate': [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(45)])],
@@ -43,6 +49,7 @@ submitted = false;
     'customerPicture': ''
     });
     
+   
   }
 onSubmit(post){
 
@@ -58,6 +65,13 @@ onSubmit(post){
   console.log(this.pseudonym);
   this.rest.postAccount(this.pseudonym, this.birthDate , this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.picture)
   .subscribe((data) => {
+      // set success message and pass true paramater to persist the message after redirecting to the login page
+      this.alertService.success('Registration successful', true);
+      this.router.navigate(['/login']);
+  },
+  error => {
+      this.alertService.error(error);
+      this.loading = false;
         console.log(this.pseudonym);
         console.log(this.gender);
         this.submitted = true;

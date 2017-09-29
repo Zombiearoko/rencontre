@@ -1,5 +1,4 @@
 <div class="separator"></div>
-<!-- Header -->
 <header class="intro-header">
     <div class="container">
         <div class="intro-message">
@@ -88,12 +87,13 @@
                                 <label for="picture">Example file input</label>
                                 <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
                               </div>
-
+                            <div>
                                 <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-
+                                <a [routerLink]="['/login-form']" class="btn btn-link">Cancel</a>
                             <!-- <a [routerLink]="['../sessionCostumer']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">creer compte</button> </a>  -->
                             <button class="btn btn-danger ">Leave</button>
-                        
+                                
+                            </div>
                 </form>
                 <p>Form value: {{ clientForm.value | json }}</p>
                 <p>Form status: {{ clientForm.status | json }}</p>

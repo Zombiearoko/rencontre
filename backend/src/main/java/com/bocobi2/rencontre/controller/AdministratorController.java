@@ -1,6 +1,5 @@
 package com.bocobi2.rencontre.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +20,8 @@ import com.bocobi2.rencontre.model.Borough;
 import com.bocobi2.rencontre.model.Concession;
 import com.bocobi2.rencontre.model.Country;
 import com.bocobi2.rencontre.model.Department;
-import com.bocobi2.rencontre.model.Locality;
-import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Region;
-import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
 import com.bocobi2.rencontre.repositories.AdministratorRepository;
@@ -43,37 +39,34 @@ import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
 @RequestMapping("/rencontre/Administrator")
 public class AdministratorController {
 
-	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	public static final Logger logger = LoggerFactory.getLogger(AdministratorController.class);
 
 	@Autowired
 	AdministratorRepository administratorRepository;
 
 	@Autowired
 	CountryRepository countryRepository;
-	
+
 	@Autowired
 	RegionRepository regionRepository;
-	
+
 	@Autowired
 	DepartmentRepository departmentRepository;
-	
+
 	@Autowired
 	BoroughRepository boroughRepository;
 
 	@Autowired
 	TownRepository townRepository;
-	
+
 	@Autowired
 	ConcessionRepository concessionRepository;
 
-	
 	@Autowired
 	LocalityRepository localitytRepository;
 
 	@Autowired
 	TypeMeetingRepository typeMeetingRepository;
-	
-	
 
 	/**
 	 * connexion of the member
@@ -104,10 +97,13 @@ public class AdministratorController {
 			administrator = administratorRepository.findByLoginAdmin(loginAdmin);
 			if (administrator != null) {
 				if (administrator.getPasswordAdmin().equals(passwordAdmin)) {
+
 					session.setAttribute("Administrator", administrator);
+
 					return new ResponseEntity<Administrator>(administrator, HttpStatus.OK);
+
 				} else {
-					session.setAttribute("administrator", null);
+					session.setAttribute("Administrator", null);
 					logger.error("administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
 							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
@@ -205,7 +201,7 @@ public class AdministratorController {
 		}
 
 	}
-	
+
 	/*
 	 * Version Get
 	 */
@@ -229,7 +225,7 @@ public class AdministratorController {
 		}
 
 	}
-	
+
 	/*
 	 * method add country
 	 */
@@ -279,7 +275,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * add region
 	 */
@@ -292,15 +288,15 @@ public class AdministratorController {
 
 		String regionName = request.getParameter("regionName");
 		String countryName = request.getParameter("countryName");
-		
+
 		Region region = new Region();
 		Country country = countryRepository.findByCountryName(countryName);
-		
+
 		try {
 			region.setRegionName(regionName);
 			region.setCountry(country);
 			regionRepository.save(region);
-			
+
 			return new ResponseEntity<Region>(region, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Region with name {} already exist", regionName);
@@ -310,7 +306,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version Get
 	 */
@@ -320,15 +316,15 @@ public class AdministratorController {
 
 		String regionName = request.getParameter("regionName");
 		String countryName = request.getParameter("countryName");
-		
+
 		Region region = new Region();
 		Country country = countryRepository.findByCountryName(countryName);
-		
+
 		try {
 			region.setRegionName(regionName);
 			region.setCountry(country);
 			regionRepository.save(region);
-			
+
 			return new ResponseEntity<Region>(region, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Region with name {} already exist", regionName);
@@ -338,8 +334,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
-	
+
 	/*
 	 * Version Post
 	 */
@@ -349,16 +344,16 @@ public class AdministratorController {
 
 		String regionName = request.getParameter("regionName");
 		String departmentName = request.getParameter("departmentName");
-		
+
 		Region region = regionRepository.findByRegionName(regionName);
 		Department department = new Department();
-		
+
 		try {
 			department.setDepartmentName(departmentName);
 			department.setRegion(region);
-			 
+
 			departmentRepository.save(department);
-			
+
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
@@ -368,7 +363,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version Get
 	 */
@@ -378,16 +373,16 @@ public class AdministratorController {
 
 		String regionName = request.getParameter("regionName");
 		String departmentName = request.getParameter("departmentName");
-		
+
 		Region region = regionRepository.findByRegionName(regionName);
 		Department department = new Department();
-		
+
 		try {
 			department.setDepartmentName(departmentName);
 			department.setRegion(region);
-			 
+
 			departmentRepository.save(department);
-			
+
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
@@ -397,7 +392,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version Post
 	 */
@@ -407,16 +402,16 @@ public class AdministratorController {
 
 		String departmentName = request.getParameter("departmentName");
 		String boroughName = request.getParameter("boroughName");
-		
+
 		Department department = departmentRepository.findByDepartmentName(departmentName);
 		Borough borough = new Borough();
-		
+
 		try {
 			borough.setBoroughName(boroughName);
 			borough.setDepartment(department);
-			
+
 			boroughRepository.save(borough);
-			
+
 			return new ResponseEntity<Borough>(borough, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Borough with name {} already exist", boroughName);
@@ -426,7 +421,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version Get
 	 */
@@ -436,16 +431,16 @@ public class AdministratorController {
 
 		String departmentName = request.getParameter("departmentName");
 		String boroughName = request.getParameter("boroughName");
-		
+
 		Department department = departmentRepository.findByDepartmentName(departmentName);
 		Borough borough = new Borough();
-		
+
 		try {
 			borough.setBoroughName(boroughName);
 			borough.setDepartment(department);
-			
+
 			boroughRepository.save(borough);
-			
+
 			return new ResponseEntity<Borough>(borough, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Borough with name {} already exist", boroughName);
@@ -455,7 +450,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version Post
 	 */
@@ -465,25 +460,25 @@ public class AdministratorController {
 
 		String boroughName = request.getParameter("boroughName");
 		String townName = request.getParameter("townName");
-		
+
 		Borough borough = boroughRepository.findByBoroughName(boroughName);
 		Town town = new Town();
-		
+
 		try {
 			town.setTownName(townName);
 			town.setBorough(borough);
-			
+
 			townRepository.save(town);
-			
+
 			return new ResponseEntity<Town>(town, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
+
 	/*
 	 * Version Get
 	 */
@@ -493,26 +488,25 @@ public class AdministratorController {
 
 		String boroughName = request.getParameter("boroughName");
 		String townName = request.getParameter("townName");
-		
+
 		Borough borough = boroughRepository.findByBoroughName(boroughName);
 		Town town = new Town();
-		
+
 		try {
 			town.setTownName(townName);
 			town.setBorough(borough);
-			
+
 			townRepository.save(town);
-			
+
 			return new ResponseEntity<Town>(town, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
-	
+
 	/*
 	 * Version POst
 	 */
@@ -522,16 +516,16 @@ public class AdministratorController {
 
 		String townName = request.getParameter("townName");
 		String concessionName = request.getParameter("concessionName");
-		
+
 		Town town = townRepository.findByTownName(townName);
-		Concession concession= new Concession();
-		
+		Concession concession = new Concession();
+
 		try {
 			concession.setConcessionName(concessionName);
 			concession.setTown(town);
-			
+
 			concessionRepository.save(concession);
-			
+
 			return new ResponseEntity<Concession>(concession, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Concession with name {} already exist", concessionName);
@@ -560,11 +554,11 @@ public class AdministratorController {
 		return new ResponseEntity<List<Country>>(listOfCountry, HttpStatus.OK);
 
 	}
-	
+
 	/*
 	 * Version Get
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllCountry", method = RequestMethod.GET)
 	public ResponseEntity<List<Country>> listAllCountryGet(HttpServletRequest request) {
@@ -581,12 +575,12 @@ public class AdministratorController {
 	/*
 	 * Version Post
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listRegion", method = RequestMethod.POST)
 	public ResponseEntity<List<Region>> listRegionPost(HttpServletRequest request) {
 
-		String countryName =request.getParameter("countryName");
+		String countryName = request.getParameter("countryName");
 		Country country = countryRepository.findByCountryName(countryName);
 		List<Region> listOfRegion = regionRepository.findByCountry(country);
 
@@ -596,16 +590,16 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
-	
+
 	/*
 	 * Version Post
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listDepartment", method = RequestMethod.POST)
 	public ResponseEntity<List<Department>> listDepartmentPost(HttpServletRequest request) {
 
-		String regionName =request.getParameter("regionName");
+		String regionName = request.getParameter("regionName");
 		Region region = regionRepository.findByRegionName(regionName);
 		List<Department> listOfDepartment = departmentRepository.findByRegion(region);
 
@@ -615,17 +609,16 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
-	
 
 	/*
 	 * Version Post
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listBorough", method = RequestMethod.POST)
 	public ResponseEntity<List<Borough>> listBoroughPost(HttpServletRequest request) {
 
-		String departmentName =request.getParameter("departmentName");
+		String departmentName = request.getParameter("departmentName");
 		Department department = departmentRepository.findByDepartmentName(departmentName);
 		List<Borough> listOfBorough = boroughRepository.findByDepartment(department);
 
@@ -635,16 +628,16 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	/*
 	 * Version Post
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTown", method = RequestMethod.POST)
 	public ResponseEntity<List<Town>> listTownPost(HttpServletRequest request) {
 
-		String boroughName =request.getParameter("boroughName");
+		String boroughName = request.getParameter("boroughName");
 		Borough borough = boroughRepository.findByBoroughName(boroughName);
 		List<Town> listOfTown = townRepository.findByBorough(borough);
 
@@ -654,17 +647,16 @@ public class AdministratorController {
 		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
 
 	}
-	
-	
+
 	/*
 	 * Version Post
 	 */
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listConcession", method = RequestMethod.POST)
 	public ResponseEntity<List<Concession>> listConcessionPost(HttpServletRequest request) {
 
-		String townName =request.getParameter("townName");
+		String townName = request.getParameter("townName");
 		Town town = townRepository.findByTownName(townName);
 		List<Concession> listOfConcession = concessionRepository.findByTown(town);
 
@@ -674,134 +666,18 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
-	/***
-	 * Methode d'enregistrement departement
-	 */
 
-	/*
-	 * Version Post
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @RequestMapping(value = "/addDepartement", method = RequestMethod.POST)
-	 * public ResponseEntity<?> addDepartmentPost(HttpServletRequest request) {
-	 * 
-	 * String countryName = request.getParameter("countryName"); String
-	 * departmentName = request.getParameter("departmentName"); Country country
-	 * = countryRepository.findByCountryName(countryName);
-	 * 
-	 * Department department = new Department(); List<Department> departmentList
-	 * = new ArrayList<Department>(); try { departmentRepository.deleteAll();
-	 * department.setDepartmentName(departmentName);
-	 * departmentRepository.insert(department); departmentList.add(department);
-	 * country.setDepartment(departmentList); countryRepository.save(country);
-	 * return new ResponseEntity<Department>(department, HttpStatus.CREATED); }
-	 * catch (Exception ex) { logger.error(
-	 * "Unable to create. A Department with name {} already exist",
-	 * departmentName); return new ResponseEntity( new MemberErrorType(
-	 * "Unable to create. " + "A Country with name " + "" + departmentName +
-	 * " already exist"), HttpStatus.CONFLICT); }
-	 * 
-	 * } /* Version Get
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @RequestMapping(value = "/addDepartement", method = RequestMethod.GET)
-	 * public ResponseEntity<?> addDepartmentGet(HttpServletRequest request) {
-	 * 
-	 * String countryName=request.getParameter("countryName"); String
-	 * departmentName=request.getParameter("departmentName"); Country country
-	 * =countryRepository.findByCountryName(countryName);
-	 * 
-	 * Department department= new Department(); List<Department> departmentList
-	 * =new ArrayList<Department>(); try{
-	 * department.setDepartmentName(departmentName);
-	 * departmentRepository.insert(department); departmentList.add(department);
-	 * country.setDepartment(departmentList); countryRepository.save(country);
-	 * return new ResponseEntity<Department>(department, HttpStatus.CREATED);
-	 * }catch(Exception ex){ logger.error(
-	 * "Unable to create. A Department with name {} already exist",
-	 * departmentName); return new ResponseEntity( new MemberErrorType(
-	 * "Unable to create. " + "A Country with name " + "" + departmentName +
-	 * " already exist"), HttpStatus.CONFLICT); }
-	 * 
-	 * }
-	 * 
-	 * /* List all department
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @RequestMapping(value = "/listAllDepartment", method =
-	 * RequestMethod.POST) public ResponseEntity<List<Department>>
-	 * listAllDepartment(HttpServletRequest request) {
-	 * 
-	 * 
-	 * List<Department> listOfDepartment = departmentRepository.findAll();
-	 * 
-	 * if (listOfDepartment.isEmpty()) { return new
-	 * ResponseEntity(HttpStatus.NO_CONTENT); } return new
-	 * ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
-	 * 
-	 * }
-	 * 
-	 * /** Method add Ville d'un departement
-	 */
-	/*
-	 * VERSION POST
-	 * 
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @RequestMapping(value = "/addTown", method = RequestMethod.POST) public
-	 * ResponseEntity<?> addTownPost(HttpServletRequest request) {
-	 * 
-	 * String countryName=request.getParameter("countryName"); String
-	 * departmentName=request.getParameter("departmentName"); String
-	 * townName=request.getParameter("townName"); Country country
-	 * =countryRepository.findByCountryName(countryName); Department department=
-	 * departmentRepository.findByDepartmentName(departmentName); Town town=new
-	 * Town();
-	 * 
-	 * List<Town> townList =new ArrayList<Town>(); try{
-	 * townRepository.deleteAll(); town.setTownName(townName);
-	 * townRepository.insert(town); townList.add(town);
-	 * //department.setTown(townList); country.setTown(townList);
-	 * //departmentRepository.save(department); countryRepository.save(country);
-	 * return new ResponseEntity<Town>(town, HttpStatus.CREATED);
-	 * }catch(Exception ex){ logger.error(
-	 * "Unable to create. A Town with name {} already exist", townName); return
-	 * new ResponseEntity( new MemberErrorType("Unable to create. " +
-	 * "A Town with name " + "" + townName + " already exist"),
-	 * HttpStatus.CONFLICT); }
-	 * 
-	 * }
-	 * 
-	 * /* VERSION Get
-	 * 
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @RequestMapping(value = "/addTown", method = RequestMethod.GET) public
-	 * ResponseEntity<?> addTownGet(HttpServletRequest request) {
-	 * 
-	 * String countryName=request.getParameter("countryName"); String
-	 * departmentName=request.getParameter("departmentName"); String
-	 * townName=request.getParameter("townName"); Country country
-	 * =countryRepository.findByCountryName(countryName); Department department=
-	 * departmentRepository.findByDepartmentName(departmentName); Town town=new
-	 * Town();
-	 * 
-	 * List<Town> townList =new ArrayList<Town>(); try{
-	 * town.setTownName(townName); townRepository.insert(town);
-	 * townList.add(town); department.setTown(townList);
-	 * country.setTown(townList); departmentRepository.save(department);
-	 * countryRepository.save(country); return new ResponseEntity<Town>(town,
-	 * HttpStatus.CREATED); }catch(Exception ex){ logger.error(
-	 * "Unable to create. A Town with name {} already exist", townName); return
-	 * new ResponseEntity( new MemberErrorType("Unable to create. " +
-	 * "A Country with name " + "" + townName + " already exist"),
-	 * HttpStatus.CONFLICT); }
-	 * 
-	 * }
-	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
+	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
+
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+	}
+
 }

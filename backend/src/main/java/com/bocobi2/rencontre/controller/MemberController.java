@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Session;
@@ -19,7 +17,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import javax.validation.Valid;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -27,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,15 +33,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.bocobi2.rencontre.model.Conversation;
@@ -60,7 +51,6 @@ import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
 import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
-import com.mongodb.MongoClient;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -492,14 +482,15 @@ public class MemberController {
 			messageDb.setReceiver(receiver);
 			messageDb.setMessageContent(messageContent);
 			messageDb.setStatusMessage("Non lu");
-			//messageRepository.deleteAll();
+			// messageRepository.deleteAll();
 			messageRepository.save(messageDb);
 
 			if (conversationRepository.exists(idConversation)) {
 
-				//List<Message> messages = messageRepository
-						//.findAll(new PageRequest(0, 1, Sort.Direction.DESC, "sendingDate",sender,receiver)).getContent();
-				//messages.add(messageDb);
+				// List<Message> messages = messageRepository
+				// .findAll(new PageRequest(0, 1, Sort.Direction.DESC,
+				// "sendingDate",sender,receiver)).getContent();
+				// messages.add(messageDb);
 				List<Message> messages = messageRepository.findBySenderOrderByReceiver(sender);
 				List<String> members = new ArrayList<String>();
 				members.add(sender);
@@ -513,13 +504,15 @@ public class MemberController {
 				conversation.setNewMessageNumber();
 
 				conversationRepository.save(conversation);
-				
-				//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				
-				//Member memberDb = memberRepository.findByPseudonym(receiver);
-				
-				if ( memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
-					//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
+
+				// this.webSocket.convertAndSend("/topic/sendMessage",
+				// messageContent);
+
+				// Member memberDb = memberRepository.findByPseudonym(receiver);
+
+				if (memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
+					// this.webSocket.convertAndSend("/topic/sendMessage",
+					// messageContent);
 
 					String content1 = "you have received " + conversation.getNewMessageNumber() + " new message now.\n"
 							+ "you can connect to view your messaging.";
@@ -527,7 +520,8 @@ public class MemberController {
 					// String form="saphirmfogo@gmail.com";
 					MimeMessage msg = new MimeMessage(session);
 					/// msg.setFrom(new InternetAddress(form));
-					msg.setRecipients(MimeMessage.RecipientType.TO,  memberRepository.findByPseudonym(receiver).getEmailAdress());
+					msg.setRecipients(MimeMessage.RecipientType.TO,
+							memberRepository.findByPseudonym(receiver).getEmailAdress());
 					msg.setSubject(subject1);
 					msg.setText(content1);
 					msg.setSentDate(new Date());
@@ -536,12 +530,14 @@ public class MemberController {
 					transport.sendMessage(msg, msg.getAllRecipients());
 					transport.close();
 
-				} /*else {
-					this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				}*/
+				} /*
+					 * else {
+					 * this.webSocket.convertAndSend("/topic/sendMessage",
+					 * messageContent); }
+					 */
 
 				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
-				
+
 			} else {
 
 				List<Message> messages = new ArrayList<Message>();
@@ -561,12 +557,13 @@ public class MemberController {
 				// this.webSocket.convertAndSend("/topic/sendMessage",
 				// messageContent);
 				System.out.println(receiver);
-				//Member memberDb = memberRepository.findByPseudonym(receiver);
-				
-				//System.out.println(memberDb);
-				
+				// Member memberDb = memberRepository.findByPseudonym(receiver);
+
+				// System.out.println(memberDb);
+
 				if (memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
-					//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
+					// this.webSocket.convertAndSend("/topic/sendMessage",
+					// messageContent);
 
 					String content1 = "you have received " + conversation.getNewMessageNumber() + " new message now.\n"
 							+ "you can connect to view your messaging.";
@@ -574,7 +571,8 @@ public class MemberController {
 					// String form="saphirmfogo@gmail.com";
 					MimeMessage msg = new MimeMessage(session);
 					/// msg.setFrom(new InternetAddress(form));
-					msg.setRecipients(MimeMessage.RecipientType.TO, memberRepository.findByPseudonym(receiver).getEmailAdress());
+					msg.setRecipients(MimeMessage.RecipientType.TO,
+							memberRepository.findByPseudonym(receiver).getEmailAdress());
 					msg.setSubject(subject1);
 					msg.setText(content1);
 					msg.setSentDate(new Date());
@@ -583,9 +581,11 @@ public class MemberController {
 					transport.sendMessage(msg, msg.getAllRecipients());
 					transport.close();
 
-				} /*else {
-					this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				}*/
+				} /*
+					 * else {
+					 * this.webSocket.convertAndSend("/topic/sendMessage",
+					 * messageContent); }
+					 */
 				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
 			}
 
@@ -603,12 +603,11 @@ public class MemberController {
 	 * version GET
 	 */
 	// @MessageMapping("/chat")
-	//@SendTo("/topic/messages")
+	// @SendTo("/topic/messages")
 	@Async
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/sendMessage", method = RequestMethod.GET)
 	public ResponseEntity<?> sendMessageGet(HttpServletRequest request) throws Exception {
-
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -643,14 +642,15 @@ public class MemberController {
 			messageDb.setReceiver(receiver);
 			messageDb.setMessageContent(messageContent);
 			messageDb.setStatusMessage("Non lu");
-			//messageRepository.deleteAll();
+			// messageRepository.deleteAll();
 			messageRepository.save(messageDb);
 
 			if (conversationRepository.exists(idConversation)) {
 
-				//List<Message> messages = messageRepository
-						//.findAll(new PageRequest(0, 1, Sort.Direction.DESC, "sendingDate",sender,receiver)).getContent();
-				//messages.add(messageDb);
+				// List<Message> messages = messageRepository
+				// .findAll(new PageRequest(0, 1, Sort.Direction.DESC,
+				// "sendingDate",sender,receiver)).getContent();
+				// messages.add(messageDb);
 				List<Message> messages = messageRepository.findBySenderOrderByReceiver(sender);
 				List<String> members = new ArrayList<String>();
 				members.add(sender);
@@ -664,13 +664,15 @@ public class MemberController {
 				conversation.setNewMessageNumber();
 
 				conversationRepository.save(conversation);
-				
-				//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				
-				//Member memberDb = memberRepository.findByPseudonym(receiver);
-				
-				if ( memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
-					//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
+
+				// this.webSocket.convertAndSend("/topic/sendMessage",
+				// messageContent);
+
+				// Member memberDb = memberRepository.findByPseudonym(receiver);
+
+				if (memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
+					// this.webSocket.convertAndSend("/topic/sendMessage",
+					// messageContent);
 
 					String content1 = "you have received " + conversation.getNewMessageNumber() + " new message now.\n"
 							+ "you can connect to view your messaging.";
@@ -678,7 +680,8 @@ public class MemberController {
 					// String form="saphirmfogo@gmail.com";
 					MimeMessage msg = new MimeMessage(session);
 					/// msg.setFrom(new InternetAddress(form));
-					msg.setRecipients(MimeMessage.RecipientType.TO,  memberRepository.findByPseudonym(receiver).getEmailAdress());
+					msg.setRecipients(MimeMessage.RecipientType.TO,
+							memberRepository.findByPseudonym(receiver).getEmailAdress());
 					msg.setSubject(subject1);
 					msg.setText(content1);
 					msg.setSentDate(new Date());
@@ -687,12 +690,14 @@ public class MemberController {
 					transport.sendMessage(msg, msg.getAllRecipients());
 					transport.close();
 
-				} /*else {
-					this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				}*/
+				} /*
+					 * else {
+					 * this.webSocket.convertAndSend("/topic/sendMessage",
+					 * messageContent); }
+					 */
 
 				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
-				
+
 			} else {
 
 				List<Message> messages = new ArrayList<Message>();
@@ -712,12 +717,13 @@ public class MemberController {
 				// this.webSocket.convertAndSend("/topic/sendMessage",
 				// messageContent);
 				System.out.println(receiver);
-				//Member memberDb = memberRepository.findByPseudonym(receiver);
-				
-				//System.out.println(memberDb);
-				
+				// Member memberDb = memberRepository.findByPseudonym(receiver);
+
+				// System.out.println(memberDb);
+
 				if (memberRepository.findByPseudonym(receiver).getStatus().getStatusName().equals("disconnected")) {
-					//this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
+					// this.webSocket.convertAndSend("/topic/sendMessage",
+					// messageContent);
 
 					String content1 = "you have received " + conversation.getNewMessageNumber() + " new message now.\n"
 							+ "you can connect to view your messaging.";
@@ -725,7 +731,8 @@ public class MemberController {
 					// String form="saphirmfogo@gmail.com";
 					MimeMessage msg = new MimeMessage(session);
 					/// msg.setFrom(new InternetAddress(form));
-					msg.setRecipients(MimeMessage.RecipientType.TO, memberRepository.findByPseudonym(receiver).getEmailAdress());
+					msg.setRecipients(MimeMessage.RecipientType.TO,
+							memberRepository.findByPseudonym(receiver).getEmailAdress());
 					msg.setSubject(subject1);
 					msg.setText(content1);
 					msg.setSentDate(new Date());
@@ -734,9 +741,11 @@ public class MemberController {
 					transport.sendMessage(msg, msg.getAllRecipients());
 					transport.close();
 
-				} /*else {
-					this.webSocket.convertAndSend("/topic/sendMessage", messageContent);
-				}*/
+				} /*
+					 * else {
+					 * this.webSocket.convertAndSend("/topic/sendMessage",
+					 * messageContent); }
+					 */
 				return new ResponseEntity<Conversation>(conversation, HttpStatus.OK);
 			}
 

@@ -7,21 +7,29 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Document(collection="memberBuffer")
-public class MemberBuffer {
+public class MemberBuffer extends InternetSurfer {
 
 	@Id
 	@Indexed
 	private String pseudonym;
 	private String password;
-	
+	private String registrationDate;
 	private String phoneNumber;
 	private String birthDate;
+	private String meetingName;
 	@Indexed
 	private String gender;
 	private String picture;
 	
-	private String emailAdress;
+	private AcademicDatingInformation academicDatingInformation;
+	private FriendlyDatingInformation friendlyDatingInformatio;
+	private ProfessionalMeetingInformation professionalMeetingInformation;
+	private DatingInformation datingInformation;
+	
+	
+	
 	
 	private Subscription subscription;
 	
@@ -29,7 +37,14 @@ public class MemberBuffer {
 	private Profile profile;
 	
 	@DBRef
+	private List<TypeMeeting> typeMeeting;
+
+
+	@DBRef
 	private List<Message> messages;
+	
+	@DBRef
+	private List<Conversation> conversations;
 	
 	@DBRef
 	private List<Testimony> testimonies;
@@ -40,10 +55,45 @@ public class MemberBuffer {
 	
 	
 	public MemberBuffer() {
-		// TODO Auto-generated constructor stub
+		
 	}
+
+
+
 	
-	
+
+
+	public MemberBuffer(String pseudonym, String password, String registrationDate, String phoneNumber, String birthDate,
+			String gender, String picture, AcademicDatingInformation academicDatingInformation,
+			FriendlyDatingInformation friendlyDatingInformatio,
+			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
+			Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
+			List<Conversation> conversations, List<Testimony> testimonies, Status status, String meetingName) {
+		super();
+		this.pseudonym = pseudonym;
+		this.password = password;
+		this.registrationDate = registrationDate;
+		this.phoneNumber = phoneNumber;
+		this.birthDate = birthDate;
+		this.gender = gender;
+		this.picture = picture;
+		this.academicDatingInformation = academicDatingInformation;
+		this.friendlyDatingInformatio = friendlyDatingInformatio;
+		this.professionalMeetingInformation = professionalMeetingInformation;
+		this.datingInformation = datingInformation;
+		this.subscription = subscription;
+		this.profile = profile;
+		this.typeMeeting = typeMeeting;
+		this.messages = messages;
+		this.conversations = conversations;
+		this.testimonies = testimonies;
+		this.status = status;
+		this.meetingName= meetingName;
+	}
+
+
+
+
 
 
 	/**
@@ -59,23 +109,50 @@ public class MemberBuffer {
 	 * @param testimonies
 	 * @param status
 	 */
-	public MemberBuffer(String pseudonym, String password, String phoneNumber, String birthDate, String gender,
-			String picture, Subscription subscription, Profile profile, List<Message> messages,
-			List<Testimony> testimonies, Status status) {
-		super();
-		this.pseudonym = pseudonym;
-		this.password = password;
-		this.phoneNumber = phoneNumber;
-		this.birthDate = birthDate;
-		this.gender = gender;
-		this.picture = picture;
-		this.subscription = subscription;
-		this.profile = profile;
-		this.messages = messages;
-		this.testimonies = testimonies;
-		this.status = status;
+	
+	
+
+	
+
+	public List<TypeMeeting> getTypeMeeting() {
+		return typeMeeting;
 	}
 
+
+
+	public String getMeetingName() {
+		return meetingName;
+	}
+
+
+
+
+
+
+	public void setMeetingName(String meetingName) {
+		this.meetingName = meetingName;
+	}
+
+
+
+
+
+
+	public void setTypeMeeting(List<TypeMeeting> list) {
+		this.typeMeeting = list;
+	}
+
+
+
+	public List<Conversation> getConversations() {
+		return conversations;
+	}
+
+
+
+	public void setConversations(List<Conversation> conversations) {
+		this.conversations = conversations;
+	}
 
 
 
@@ -275,22 +352,95 @@ public class MemberBuffer {
 		this.status = status;
 	}
 	
-	/**
-	 * @return the emailAdress
-	 */
-	public String getEmailAdress() {
-		return emailAdress;
+	
+
+
+	public String getRegistrationDate() {
+		return registrationDate;
 	}
 
 
 
 
-	/**
-	 * @param emailAdress the emailAdress to set
-	 */
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+
+
+	public void setRegistrationDate(String registrationDate) {
+		this.registrationDate = registrationDate;
 	}
+
+
+
+
+
+
+	public AcademicDatingInformation getAcademicDatingInformation() {
+		return academicDatingInformation;
+	}
+
+
+
+
+
+
+	public void setAcademicDatingInformation(AcademicDatingInformation academicDatingInformation) {
+		this.academicDatingInformation = academicDatingInformation;
+	}
+
+
+
+
+
+
+	public FriendlyDatingInformation getFriendlyDatingInformatio() {
+		return friendlyDatingInformatio;
+	}
+
+
+
+
+
+
+	public void setFriendlyDatingInformatio(FriendlyDatingInformation friendlyDatingInformatio) {
+		this.friendlyDatingInformatio = friendlyDatingInformatio;
+	}
+
+
+
+
+
+
+	public ProfessionalMeetingInformation getProfessionalMeetingInformation() {
+		return professionalMeetingInformation;
+	}
+
+
+
+
+
+
+	public void setProfessionalMeetingInformation(ProfessionalMeetingInformation professionalMeetingInformation) {
+		this.professionalMeetingInformation = professionalMeetingInformation;
+	}
+
+
+
+
+
+
+	public DatingInformation getDatingInformation() {
+		return datingInformation;
+	}
+
+
+
+
+
+
+	public void setDatingInformation(DatingInformation datingInformation) {
+		this.datingInformation = datingInformation;
+	}
+
+
 
 
 
@@ -299,8 +449,44 @@ public class MemberBuffer {
 		return 0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String messagesList = "";
+		for(Message m:messages){
+			messagesList += m.toString()+",\n";
+		}
+		String testimoniesList = "";
+		for(Testimony t:testimonies){
+			testimoniesList += t.toString()+",\n";
+		}
+		return "Member: {\npseudonym : " + pseudonym + ",\n password : " + password + ",\n phoneNumber : " + phoneNumber
+				+ ",\n birthDate : " + birthDate + ",\n gender : " + gender + ",\n picture : " + picture + ",\n subscription : "
+				+ subscription.toString() + ",\n profile:" + profile.toString() + ",\n messages : [" + messagesList + "],\n testimonies : [" + testimoniesList
+				+ "],\n status : " + status.toString() + "\n}";
+	}
 
 	
-	
-	
+/*	public static void main(String args[]){
+		// Get the input stream
+		MongoClient mongoClient = new MongoClient();
+		MongoDatabase myDatabase = mongoClient.getDatabase("mydb");
+
+		// Create a gridFSBucket using the default bucket name "fs"
+		GridFSBucket gridFSBucket = GridFSBuckets.create(myDatabase);
+		try {
+		    InputStream streamToUploadFrom = new FileInputStream(new File("/tmp/mongodb-tutorial.pdf"));
+		    // Create some custom options
+		    GridFSUploadOptions options = new GridFSUploadOptions()
+		                                        .chunkSizeBytes(358400)
+		                                        .metadata(new org.bson.Document("type", "presentation"));
+
+		    ObjectId fileId = gridFSBucket.uploadFromStream("mongodb-tutorial", streamToUploadFrom, options);
+		} catch (FileNotFoundException e){
+		   // handle exception
+		}
+
+	}*/
 }

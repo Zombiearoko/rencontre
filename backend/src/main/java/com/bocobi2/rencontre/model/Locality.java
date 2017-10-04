@@ -1,9 +1,9 @@
 package com.bocobi2.rencontre.model;
 
-import java.util.List;
+
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="locality")
@@ -13,18 +13,38 @@ public class Locality {
 	private String idLocalite;
 	private String postalCode;
 	
-	@DBRef
+	
 	private Country country;
 	
-	@DBRef
+	
 	private Town town;
 	
-	@DBRef
+
 	private Department department;
+	
+	private Region region;
+	
+	private Borough borough;
+	
+	private Concession concession;
 
 	public Locality() {
 		
 	}
+	
+	
+	public Locality(String postalCode, Country country, Town town, Department department, Region region,
+			Borough borough, Concession concession) {
+
+		this.postalCode = postalCode;
+		this.country = country;
+		this.town = town;
+		this.department = department;
+		this.region = region;
+		this.borough = borough;
+		this.concession = concession;
+	}
+
 
 	/**
 	 * @param postalCode
@@ -34,6 +54,41 @@ public class Locality {
 	 */
 	
 
+	public Region getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
+
+	public Borough getBorough() {
+		return borough;
+	}
+
+
+	public void setBorough(Borough borough) {
+		this.borough = borough;
+	}
+
+
+	public Concession getConcession() {
+		return concession;
+	}
+
+
+	public void setConcession(Concession concession) {
+		this.concession = concession;
+	}
+
+
+	public void setIdLocalite(String idLocalite) {
+		this.idLocalite = idLocalite;
+	}
+
+
 	/**
 	 * @return the postalCode
 	 */
@@ -41,13 +96,7 @@ public class Locality {
 		return postalCode;
 	}
 
-	public Locality(String postalCode, Country country, Town town, Department department) {
-		super();
-		this.postalCode = postalCode;
-		this.country = country;
-		this.town = town;
-		this.department = department;
-	}
+	
 
 	/**
 	 * @param postalCode the postalCode to set

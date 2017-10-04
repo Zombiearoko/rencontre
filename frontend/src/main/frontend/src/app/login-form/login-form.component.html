@@ -1,0 +1,68 @@
+<!-- Page Content -->
+
+    <div class="container">
+        <div class="cadre">
+            <div class="col-md-6 col-md-offset-3">
+  <h2>Login</h2>
+  <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !pseudonym.valid }">
+          <label for="pseudonym">Pseudo</label>
+          <input type="text" class="form-control" name="pseudonym" [(ngModel)]="model.pseudonym" #pseudonym="ngModel" required />
+          <div *ngIf="f.submitted && !pseudonym.valid" class="help-block">pseudonym is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+          <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+      </div>
+      <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">Login</button>
+          <a [routerLink]="['/member-registration']" class="btn btn-link">Register</a>
+      </div>
+  </form>
+ </div> 
+            <!-- <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+                <div class="form-group">
+                    
+                        <label for="pseudonym"  >Pseudo</label>
+                        <div class="cols-lg-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier " />
+                            </div>
+                        </div>
+                        
+                          <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> 
+                         <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
+                         
+                </div>
+            
+            <div class="form-group">
+                <label for="password"  >PassWord</label>
+                <div class="cols-lg-8">
+                    <div class="input-group">
+                        <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
+                    </div>
+                </div>
+            </div>
+                <div>
+                    <a [routerLink]="['../member-session']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
+                    </a> -->
+
+                    <!-- <button type="submit" class="btn btn-primary">Submit<span [routerLink]="['/member-session']"></span></button> -->
+                        <!-- <a [routerLink]="['/home']" class="btn btn-link">Cancel</a> -->
+                 <!-- <a [routerLink]="['../member-session']">-->
+                      <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>    -->
+                     <!-- <a [routerLink]="['/member-session']" class="btn btn-link">Submit</a> -->
+                     
+                     <!-- </a>   -->
+                <!-- <button class="btn btn-danger ">Leave</button> -->
+                    
+                <!-- </div> -->
+    <!-- </form> --> -->
+
+
+            <!-- <p>Form value: {{ clientForm.value | json }}</p>
+            <p>Form status: {{ clientForm.status | json }}</p> -->
+        </div>
+  
+</div>

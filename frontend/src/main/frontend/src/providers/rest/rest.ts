@@ -12,6 +12,11 @@ import { Injectable } from '@angular/core';
     */
     @Injectable()
     export class RestProvider {
+      public startUrl = 'http://localhost:8091';
+      public memberData: any;
+      public memberToken: any;
+      public memberJson:any;
+     
        
         constructor(public http: Http) {
          
@@ -61,18 +66,64 @@ import { Injectable } from '@angular/core';
          
           
           };
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym +'&birthDate=' + birthDate + '&gender=' +gender + '&emailAdress=' + emailAdress + '&phoneNumber=' + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + picture;
+          const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym +'&birthDate=' + birthDate + '&gender=' +gender + '&emailAdress=' + emailAdress + '&phoneNumber=' + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + picture;
           const url2 = 'https://jsonplaceholder.typicode.com/posts';
           const urlSaph = 'http://192.168.8.105:8091/rencontre/Member/registration';
           const urlInno = 'http://localhost:8092/customer/addCustomer';
         return  this.http.post(url, object, options)
-                  // .do((res: Response ) => console.log(res.json()))
-                  // .map((res: Response ) => res.json());
+                  .do((res: Response ) => console.log(res.json()))
+                  .map((res: Response ) => res.json());
     }
               public   getAccount() {
     
         }
       
+        //for login
+        public postLoginMember(pseudonym, password) {
+          const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({  headers: headers1 });
+    
+          const object = {
+            pseudonym: pseudonym,
+            password: password,
+           };
+           
+           
+          const url ='http://localhost:8091/rencontre/Member/Connexion?pseudonym='+pseudonym+'&password='+password;
+          const url2 = 'https://jsonplaceholder.typicode.com/posts';
+        return  this.http.post(url, object, options)
+                  .do((res: Response ) => console.log(res.json()))
+                   //.map((res: Response ) => res.json());
+                    //ajouté a partir dici
+                  .map((res: Response) => {
+                    // login successful if there's a jwt token in the response
+                    let member = res.json();
+                    if (member && member.token) {
+                        // store member details and jwt token in local storage to keep user logged in between page refreshes
+                      localStorage.setItem('currentMember', JSON.stringify(member));
+                      //let value: string = localStorage.getItem("currentMember");
+                      this.memberData = localStorage.getItem("currentMember");
+                    
+                          this.memberToken= this.memberData.token;
+                          alert(this.memberToken);
+                          console.log("for rest",this.memberToken.token);
+                     
+                    
+                    }
+     
+                    return member;
+                });
+                //jusquici
+                 
+    }
+
+    //for logout
+
+    logout() {
+      // remove member from local storage to log user out
+      localStorage.removeItem('currentMember');
+  }
+
     }
       
        

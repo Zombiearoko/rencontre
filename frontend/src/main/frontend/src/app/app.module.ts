@@ -19,6 +19,7 @@ import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { AlertService, AuthenticationService, MemberService } from './_services/index';
 import { HomeComponent } from './home/index';
+import { MemberSessionComponent } from './member-session/member-session.component';
 
 
 
@@ -41,7 +42,8 @@ imports: [
      MemberRegistrationComponent,
      HeaderComponent,
      LoginFormComponent,
-     FooterComponent
+     FooterComponent,
+     MemberSessionComponent
   ],
  
   providers: [

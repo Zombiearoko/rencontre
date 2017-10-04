@@ -81,17 +81,16 @@
                                         <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder=" " >
                                     </div>
                                 </div>
-                                <!-- <br>TODO: remove this: {{spy.className}} -->
+                              
                         </div>
                         <div class="form-group">
                                 <label for="picture">Example file input</label>
                                 <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
                               </div>
                             <div>
-                                <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                                <a [routerLink]="['/login-form']" class="btn btn-link">Cancel</a>
-                            <!-- <a [routerLink]="['../sessionCostumer']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">creer compte</button> </a>  -->
-                            <button class="btn btn-danger ">Leave</button>
+                                <a [routerLink]="['../memberSession']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> </a>
+                                <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>                           
+                                
                                 
                             </div>
                 </form>

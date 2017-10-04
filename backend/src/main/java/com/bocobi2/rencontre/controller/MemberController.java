@@ -55,7 +55,6 @@ import com.bocobi2.rencontre.repositories.TestimonyRepository;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/rencontre/Member")
-// @Resource(name="myMessageQueue",type="javax.jms.ConnectionFactory")
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class MemberController {
@@ -805,4 +804,47 @@ public class MemberController {
 		return new ResponseEntity(chatMessageModelList, HttpStatus.OK);
 	}
 
+	/*
+	 * Methode de recherche des membres
+	 */
+	/*
+	 * Version post
+	 */
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/searchMemberWithPseudonym", method = RequestMethod.POST)
+	public ResponseEntity<?> searchMemberWithPseudonymPost(HttpServletRequest request) throws Exception {
+
+		HttpSession sessionMember = request.getSession();
+		Member member = (Member) sessionMember.getAttribute("Member");
+		String gender = member.getGender();
+		String searhPseudonym = request.getParameter("pseudonym");
+
+		// Member memberSearch=
+		// memberRepository.findByPseudonym(searhPseudonym);
+
+		if (memberRepository.exists(searhPseudonym)) {
+
+			String genderSearch = memberRepository.findByPseudonym(searhPseudonym).getGender();
+
+			if (gender.equals(genderSearch)) {
+
+				logger.error("Unable to find  member. The member " + searhPseudonym
+						+ " exist but you can search member " + "with a same gender");
+				return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym
+						+ " exist but you can search member " + "with a same gender"), HttpStatus.NOT_FOUND);
+			} else {
+				Member memberSearch = memberRepository.findByPseudonym(searhPseudonym);
+
+				return new ResponseEntity<Member>(memberSearch, HttpStatus.OK);
+			}
+
+		} else {
+			logger.error("Unable to find  member. The member " + searhPseudonym + " doest not exist");
+			return new ResponseEntity(
+					new MemberErrorType("Unable to find  member. The member " + searhPseudonym + " doest not exist"),
+					HttpStatus.NO_CONTENT);
+		}
+
+	}
 }

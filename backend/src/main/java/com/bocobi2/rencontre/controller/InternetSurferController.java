@@ -118,54 +118,54 @@ public class InternetSurferController {
 
 	@Autowired
 	ComeLocalityRepository comeLocalityRepository;
-	
+
 	@Autowired
 	CryptographRepository cryptographRepository;
 
 	/**
 	 * Methode de cryptographie
 	 */
-	
-	public static String encrypt(String ss) throws NoSuchAlgorithmException, NoSuchPaddingException,
-	InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
 
-// String ss = "Hello world, haris is here!";
-byte[] plainText = ss.getBytes();
-//
-// get a DES private key
-System.out.println("\nStart generating DES key");
-KeyGenerator keyGen = KeyGenerator.getInstance("DES");
-keyGen.init(56);
-Key key = keyGen.generateKey();
-System.out.println("Finish generating DES key");
-//
-// get a DES cipher object and print the provider
-Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-System.out.println("\n" + cipher.getProvider().getInfo());
-//
-// encrypt using the key and the plaintext
-System.out.println("\nStart encryption");
-cipher.init(Cipher.ENCRYPT_MODE, key);
-byte[] cipherText = cipher.doFinal(plainText);
-System.out.println("Finish encryption: ");
-System.out.println(new String(cipherText, "UTF8"));
-return new String(cipherText, "UTF8");
-}
-	
+	public static String encrypt(String ss) throws NoSuchAlgorithmException, NoSuchPaddingException,
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
+
+		// String ss = "Hello world, haris is here!";
+		byte[] plainText = ss.getBytes();
+		//
+		// get a DES private key
+		System.out.println("\nStart generating DES key");
+		KeyGenerator keyGen = KeyGenerator.getInstance("DES");
+		keyGen.init(56);
+		Key key = keyGen.generateKey();
+		System.out.println("Finish generating DES key");
+		//
+		// get a DES cipher object and print the provider
+		Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+		System.out.println("\n" + cipher.getProvider().getInfo());
+		//
+		// encrypt using the key and the plaintext
+		System.out.println("\nStart encryption");
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		byte[] cipherText = cipher.doFinal(plainText);
+		System.out.println("Finish encryption: ");
+		System.out.println(new String(cipherText, "UTF8"));
+		return new String(cipherText, "UTF8");
+	}
+
 	public static String cryptographe(String name) {
 
 		String crypte = "";
 		for (int i = 0; i < name.length(); i++) {
-			int c = name.charAt(i)^48;
+			int c = name.charAt(i) ^ 48;
 			char crypteC = (char) c;
 			if (crypteC == '\\') {
 				crypte = crypte + "\\" + crypteC;
-			} else if(crypteC == '^') {
-				crypteC= name.charAt(i);
+			} else if (crypteC == '^') {
+				crypteC = name.charAt(i);
 				crypte = crypte + crypteC;
 			}
-				crypte = crypte + crypteC;
-			//}
+			crypte = crypte + crypteC;
+			// }
 
 		}
 
@@ -188,12 +188,13 @@ return new String(cipherText, "UTF8");
 	/****
 	 * registration member in the data base methode qui gere l'enregistrement
 	 * d'un membre dans la bd
-	 * @throws UnsupportedEncodingException 
-	 * @throws BadPaddingException 
-	 * @throws IllegalBlockSizeException 
-	 * @throws NoSuchPaddingException 
-	 * @throws NoSuchAlgorithmException 
-	 * @throws InvalidKeyException 
+	 * 
+	 * @throws UnsupportedEncodingException
+	 * @throws BadPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws NoSuchPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeyException
 	 * 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -202,7 +203,9 @@ return new String(cipherText, "UTF8");
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ResponseEntity<?> registrationPost(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
+	public ResponseEntity<?> registrationPost(HttpServletRequest request, UriComponentsBuilder ucBuilder)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, UnsupportedEncodingException {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -227,8 +230,8 @@ return new String(cipherText, "UTF8");
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
 
-		String pseudo = encrypt(pseudonym);
-		String meeting = encrypt(meetingName);
+		// String pseudo = encrypt(pseudonym);
+		// String meeting = encrypt(meetingName);
 
 		// File fileWay = new File(SAVE_DIR_PICTURE);
 		// String nom = "picture" + pseudonym + ".png";
@@ -246,19 +249,16 @@ return new String(cipherText, "UTF8");
 		System.out.println("-------------------------------");
 		System.out.println(phoneNumber);
 		System.out.println("-------------------------------");
-		
-		
-		long numberMember=memberRepository.count();
-		String idCryptograph=""+numberMember;
+
+		long numberMember = memberRepository.count() + 1;
+		String idCryptograph = "" + numberMember;
 		System.out.println(numberMember);
-		Cryptograph cryptograph=new Cryptograph();
-		
+		Cryptograph cryptograph = new Cryptograph();
+
 		String content1 = "Thanks to create your count in our website \n"
 				+ " Now,lick on this link to activate E-mail adress: "
-				+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?number="
-				+ numberMember;
+				+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?number=" + numberMember;
 		String subject1 = "confirm your E-mail adress";
-		
 
 		if (meetingName.equals("Amoureuse")) {
 
@@ -385,7 +385,6 @@ return new String(cipherText, "UTF8");
 							}
 							// enregistrement dans la zone tampon
 
-							
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -407,12 +406,12 @@ return new String(cipherText, "UTF8");
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
-							
+
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
 							cryptographRepository.save(cryptograph);
-							
+
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
 							System.out.println(ex.getMessage());
@@ -466,7 +465,6 @@ return new String(cipherText, "UTF8");
 							}
 							// enregistrement dans la zone tampon
 
-							
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -488,12 +486,12 @@ return new String(cipherText, "UTF8");
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
-							
+
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
 							cryptographRepository.save(cryptograph);
-							
+
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
 							System.out.println(ex.getMessage());
@@ -589,6 +587,11 @@ return new String(cipherText, "UTF8");
 							// memberBufferRepository.deleteAll();
 							memberBufferRepository.save(member);
 
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
+
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
 							System.out.println(ex.getMessage());
@@ -637,7 +640,6 @@ return new String(cipherText, "UTF8");
 							try {
 								// enregistrement dans la zone tampon
 
-								
 								// String form="saphirmfogo@gmail.com";V
 								MimeMessage msg = new MimeMessage(session);
 								/// msg.setFrom(new InternetAddress(form));
@@ -653,6 +655,11 @@ return new String(cipherText, "UTF8");
 
 								// memberBufferRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {
@@ -741,7 +748,6 @@ return new String(cipherText, "UTF8");
 						try {
 							// enregistrement dans la zone tampon
 
-							
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -757,6 +763,11 @@ return new String(cipherText, "UTF8");
 
 							// memberBufferRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -806,7 +817,6 @@ return new String(cipherText, "UTF8");
 							try {
 								// enregistrement dans la zone tampon
 
-								
 								// String form="saphirmfogo@gmail.com";V
 								MimeMessage msg = new MimeMessage(session);
 								/// msg.setFrom(new InternetAddress(form));
@@ -822,6 +832,11 @@ return new String(cipherText, "UTF8");
 
 								// memberBufferRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {
@@ -904,7 +919,6 @@ return new String(cipherText, "UTF8");
 						try {
 							// enregistrement dans la zone tampon
 
-						
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -920,6 +934,11 @@ return new String(cipherText, "UTF8");
 
 							// memberBufferRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -981,6 +1000,11 @@ return new String(cipherText, "UTF8");
 
 								// memberBufferRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {
@@ -1738,151 +1762,159 @@ return new String(cipherText, "UTF8");
 	 */
 	/*
 	 * Version POST
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<?> confirmRegistrationPost(HttpServletRequest request) {
-		
-		String number=request.getParameter("number");
-		Cryptograph cryptograph=cryptographRepository.findById(number);
-		String pseudonym = cryptograph.getPseudonym();
-		String meetingName = cryptograph.getMeetingName();
-		////String user = request.getParameter("user");
-		//String meeting = request.getParameter("meetingName");
-		//String pseudonym = decryptographe(user);
-		//String meetingName = decryptographe(meeting);
-
-		//System.out.println(pseudonym);
-
-		Status statusMember = statusRepository.findByStatusName("connected");
-
-		Member member = new Member();
-
-		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
-		Member memberDB = memberRepository.findByPseudonym(pseudonym);
-
-		if (memberDB != null) {
-
-			if (meetingName.equals("Amoureuse")) {
-
-				member.setPseudonym(memberBuffer.getPseudonym());
-				member.setBirthDate(memberBuffer.getBirthDate());
-				member.setEmailAdress(memberBuffer.getEmailAdress());
-				member.setGender(memberBuffer.getGender());
-				member.setPhoneNumber(memberBuffer.getPhoneNumber());
-				member.setPassword(memberBuffer.getPassword());
-				member.setPicture(memberBuffer.getPicture());
-				member.setStatus(statusMember);
-				member.setDatingInformation(memberBuffer.getDatingInformation());
-				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
-				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
-				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
-
-				// memberRepository.deleteAll();
-				memberRepository.save(member);
-				memberBufferRepository.delete(memberBuffer);
-
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-
-			} else if (meetingName.equals("Professionnelle")) {
-
-				member.setPseudonym(memberBuffer.getPseudonym());
-				member.setBirthDate(memberBuffer.getBirthDate());
-				member.setEmailAdress(memberBuffer.getEmailAdress());
-				member.setGender(memberBuffer.getGender());
-				member.setPhoneNumber(memberBuffer.getPhoneNumber());
-				member.setPassword(memberBuffer.getPassword());
-				member.setPicture(memberBuffer.getPicture());
-				member.setStatus(statusMember);
-				member.setDatingInformation(memberDB.getDatingInformation());
-				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
-				member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
-				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
-
-				// memberRepository.deleteAll();
-				memberRepository.save(member);
-				memberBufferRepository.delete(memberBuffer);
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-
-			} else if (meetingName.equals("Academique")) {
-
-				member.setPseudonym(memberBuffer.getPseudonym());
-				member.setBirthDate(memberBuffer.getBirthDate());
-				member.setEmailAdress(memberBuffer.getEmailAdress());
-				member.setGender(memberBuffer.getGender());
-				member.setPhoneNumber(memberBuffer.getPhoneNumber());
-				member.setPassword(memberBuffer.getPassword());
-				member.setPicture(memberBuffer.getPicture());
-				member.setStatus(statusMember);
-				member.setDatingInformation(memberDB.getDatingInformation());
-				member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
-				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
-				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
-
-				// memberRepository.deleteAll();
-				memberRepository.save(member);
-				memberBufferRepository.delete(memberBuffer);
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-
-			} else if (meetingName.equals("Amicale")) {
-
-				member.setPseudonym(memberBuffer.getPseudonym());
-				member.setBirthDate(memberBuffer.getBirthDate());
-				member.setEmailAdress(memberBuffer.getEmailAdress());
-				member.setGender(memberBuffer.getGender());
-				member.setPhoneNumber(memberBuffer.getPhoneNumber());
-				member.setPassword(memberBuffer.getPassword());
-				member.setPicture(memberBuffer.getPicture());
-				member.setStatus(statusMember);
-				member.setDatingInformation(memberDB.getDatingInformation());
-				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
-				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
-				member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
-
-				memberRepository.save(member);
-				memberBufferRepository.delete(memberBuffer);
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-
-			}
-		} else {
-			member.setPseudonym(memberBuffer.getPseudonym());
-			member.setBirthDate(memberBuffer.getBirthDate());
-			member.setEmailAdress(memberBuffer.getEmailAdress());
-			member.setGender(memberBuffer.getGender());
-			member.setPhoneNumber(memberBuffer.getPhoneNumber());
-			member.setPassword(memberBuffer.getPassword());
-			member.setPicture(memberBuffer.getPicture());
-			member.setStatus(statusMember);
-			member.setDatingInformation(memberBuffer.getDatingInformation());
-			member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
-			member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
-			member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
-
-			memberRepository.save(member);
-			memberBufferRepository.delete(memberBuffer);
-			return new ResponseEntity<Member>(member, HttpStatus.OK);
-
-		}
-		return null;
-
-	}
-
-	/*
-	 * Version GET
+	 * 
+	 * @SuppressWarnings({ "unchecked", "rawtypes" })
+	 * 
+	 * @RequestMapping(value = "/confirmRegistration", method =
+	 * RequestMethod.POST)
+	 * 
+	 * @ResponseBody public ResponseEntity<?>
+	 * confirmRegistrationPost(HttpServletRequest request) {
+	 * 
+	 * String number=request.getParameter("number"); Cryptograph
+	 * cryptograph=cryptographRepository.findById(number); String pseudonym =
+	 * cryptograph.getPseudonym(); String meetingName =
+	 * cryptograph.getMeetingName(); ////String user =
+	 * request.getParameter("user"); //String meeting =
+	 * request.getParameter("meetingName"); //String pseudonym =
+	 * decryptographe(user); //String meetingName = decryptographe(meeting);
+	 * 
+	 * //System.out.println(pseudonym);
+	 * 
+	 * Status statusMember = statusRepository.findByStatusName("connected");
+	 * 
+	 * Member member = new Member();
+	 * 
+	 * MemberBuffer memberBuffer =
+	 * memberBufferRepository.findByPseudonym(pseudonym); Member memberDB =
+	 * memberRepository.findByPseudonym(pseudonym);
+	 * 
+	 * if (memberDB != null) {
+	 * 
+	 * if (meetingName.equals("Amoureuse")) {
+	 * 
+	 * member.setPseudonym(memberBuffer.getPseudonym());
+	 * member.setBirthDate(memberBuffer.getBirthDate());
+	 * member.setEmailAdress(memberBuffer.getEmailAdress());
+	 * member.setGender(memberBuffer.getGender());
+	 * member.setPhoneNumber(memberBuffer.getPhoneNumber());
+	 * member.setPassword(memberBuffer.getPassword());
+	 * member.setPicture(memberBuffer.getPicture());
+	 * member.setStatus(statusMember);
+	 * member.setDatingInformation(memberBuffer.getDatingInformation());
+	 * member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation
+	 * ()); member.setProfessionalMeetingInformation(memberDB.
+	 * getProfessionalMeetingInformation());
+	 * member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio()
+	 * );
+	 * 
+	 * // memberRepository.deleteAll(); memberRepository.save(member);
+	 * memberBufferRepository.delete(memberBuffer);
+	 * 
+	 * return new ResponseEntity<Member>(member, HttpStatus.OK);
+	 * 
+	 * } else if (meetingName.equals("Professionnelle")) {
+	 * 
+	 * member.setPseudonym(memberBuffer.getPseudonym());
+	 * member.setBirthDate(memberBuffer.getBirthDate());
+	 * member.setEmailAdress(memberBuffer.getEmailAdress());
+	 * member.setGender(memberBuffer.getGender());
+	 * member.setPhoneNumber(memberBuffer.getPhoneNumber());
+	 * member.setPassword(memberBuffer.getPassword());
+	 * member.setPicture(memberBuffer.getPicture());
+	 * member.setStatus(statusMember);
+	 * member.setDatingInformation(memberDB.getDatingInformation());
+	 * member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation
+	 * ()); member.setProfessionalMeetingInformation(memberBuffer.
+	 * getProfessionalMeetingInformation());
+	 * member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio()
+	 * );
+	 * 
+	 * // memberRepository.deleteAll(); memberRepository.save(member);
+	 * memberBufferRepository.delete(memberBuffer); return new
+	 * ResponseEntity<Member>(member, HttpStatus.OK);
+	 * 
+	 * } else if (meetingName.equals("Academique")) {
+	 * 
+	 * member.setPseudonym(memberBuffer.getPseudonym());
+	 * member.setBirthDate(memberBuffer.getBirthDate());
+	 * member.setEmailAdress(memberBuffer.getEmailAdress());
+	 * member.setGender(memberBuffer.getGender());
+	 * member.setPhoneNumber(memberBuffer.getPhoneNumber());
+	 * member.setPassword(memberBuffer.getPassword());
+	 * member.setPicture(memberBuffer.getPicture());
+	 * member.setStatus(statusMember);
+	 * member.setDatingInformation(memberDB.getDatingInformation());
+	 * member.setAcademicDatingInformation(memberBuffer.
+	 * getAcademicDatingInformation());
+	 * member.setProfessionalMeetingInformation(memberDB.
+	 * getProfessionalMeetingInformation());
+	 * member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio()
+	 * );
+	 * 
+	 * // memberRepository.deleteAll(); memberRepository.save(member);
+	 * memberBufferRepository.delete(memberBuffer); return new
+	 * ResponseEntity<Member>(member, HttpStatus.OK);
+	 * 
+	 * } else if (meetingName.equals("Amicale")) {
+	 * 
+	 * member.setPseudonym(memberBuffer.getPseudonym());
+	 * member.setBirthDate(memberBuffer.getBirthDate());
+	 * member.setEmailAdress(memberBuffer.getEmailAdress());
+	 * member.setGender(memberBuffer.getGender());
+	 * member.setPhoneNumber(memberBuffer.getPhoneNumber());
+	 * member.setPassword(memberBuffer.getPassword());
+	 * member.setPicture(memberBuffer.getPicture());
+	 * member.setStatus(statusMember);
+	 * member.setDatingInformation(memberDB.getDatingInformation());
+	 * member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation
+	 * ()); member.setProfessionalMeetingInformation(memberDB.
+	 * getProfessionalMeetingInformation());
+	 * member.setFriendlyDatingInformatio(memberBuffer.
+	 * getFriendlyDatingInformatio());
+	 * 
+	 * memberRepository.save(member);
+	 * memberBufferRepository.delete(memberBuffer); return new
+	 * ResponseEntity<Member>(member, HttpStatus.OK);
+	 * 
+	 * } } else { member.setPseudonym(memberBuffer.getPseudonym());
+	 * member.setBirthDate(memberBuffer.getBirthDate());
+	 * member.setEmailAdress(memberBuffer.getEmailAdress());
+	 * member.setGender(memberBuffer.getGender());
+	 * member.setPhoneNumber(memberBuffer.getPhoneNumber());
+	 * member.setPassword(memberBuffer.getPassword());
+	 * member.setPicture(memberBuffer.getPicture());
+	 * member.setStatus(statusMember);
+	 * member.setDatingInformation(memberBuffer.getDatingInformation());
+	 * member.setAcademicDatingInformation(memberBuffer.
+	 * getAcademicDatingInformation());
+	 * member.setProfessionalMeetingInformation(memberBuffer.
+	 * getProfessionalMeetingInformation());
+	 * member.setFriendlyDatingInformatio(memberBuffer.
+	 * getFriendlyDatingInformatio());
+	 * 
+	 * memberRepository.save(member);
+	 * memberBufferRepository.delete(memberBuffer); return new
+	 * ResponseEntity<Member>(member, HttpStatus.OK);
+	 * 
+	 * } return null;
+	 * 
+	 * }
+	 * 
+	 * /* Version GET
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> confirmRegistrationGet(HttpServletRequest request) {
 
-		String number=request.getParameter("number");
-		Cryptograph cryptograph=cryptographRepository.findById(number);
+		String number = request.getParameter("number");
+		Cryptograph cryptograph = cryptographRepository.findById(number);
 		System.out.println(cryptograph);
 		String pseudonym = cryptograph.getPseudonym();
 		String meetingName = cryptograph.getMeetingName();
-		//String pseudonym = request.getParameter("user");
-		//String meetingName = request.getParameter("meetingName");
+		// String pseudonym = request.getParameter("user");
+		// String meetingName = request.getParameter("meetingName");
 		System.out.println(pseudonym);
 
 		Status statusMember = statusRepository.findByStatusName("connected");
@@ -1909,10 +1941,11 @@ return new String(cipherText, "UTF8");
 				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
 
-				// memberRepository.deleteAll();
+				memberRepository.deleteAll();
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
-
+				cryptographRepository.deleteAll();
+				//cryptographRepository.delete(number);
 				return new ResponseEntity<Member>(member, HttpStatus.OK);
 
 			} else if (meetingName.equals("Professionnelle")) {
@@ -1933,6 +1966,7 @@ return new String(cipherText, "UTF8");
 				// memberRepository.deleteAll();
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
+				cryptographRepository.delete(number);
 				return new ResponseEntity<Member>(member, HttpStatus.OK);
 
 			} else if (meetingName.equals("Academique")) {
@@ -1953,6 +1987,7 @@ return new String(cipherText, "UTF8");
 				// memberRepository.deleteAll();
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
+				cryptographRepository.delete(number);
 				return new ResponseEntity<Member>(member, HttpStatus.OK);
 
 			} else if (meetingName.equals("Amicale")) {
@@ -1972,6 +2007,7 @@ return new String(cipherText, "UTF8");
 
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
+				cryptographRepository.delete(number);
 				return new ResponseEntity<Member>(member, HttpStatus.OK);
 
 			}
@@ -1991,6 +2027,7 @@ return new String(cipherText, "UTF8");
 
 			memberRepository.save(member);
 			memberBufferRepository.delete(memberBuffer);
+			cryptographRepository.delete(number);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
 
 		}

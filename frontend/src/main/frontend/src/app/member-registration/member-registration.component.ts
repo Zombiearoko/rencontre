@@ -8,11 +8,13 @@ import { RestProvider } from '../../providers/rest/rest';
 import { Router } from '@angular/router';
 
 import { AlertService, MemberService } from '../_services/index';
+import {MemberSessionComponent } from '../member-session/member-session.component';
 
 @Component({
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
-  styleUrls: ['./member-registration.component.css']
+  styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css'],
+  entryComponents: [MemberSessionComponent]
 })
 export class MemberRegistrationComponent implements OnInit {
   

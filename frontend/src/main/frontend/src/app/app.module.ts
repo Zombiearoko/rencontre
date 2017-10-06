@@ -17,9 +17,13 @@ import { FooterComponent } from './footer/footer.component';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, MemberService } from './_services/index';
+import { AlertService, AuthenticationService, MemberService,CountryService} from './_services/index';
 import { HomeComponent } from './home/index';
 import { MemberSessionComponent } from './member-session/member-session.component';
+import { LoginAdminComponent } from './login-admin/login-admin.component';
+import { AddCountryComponent } from './add-country/add-country.component';
+import { AboutComponent } from './about/about.component';
+
 
 
 
@@ -43,7 +47,10 @@ imports: [
      HeaderComponent,
      LoginFormComponent,
      FooterComponent,
-     MemberSessionComponent
+     MemberSessionComponent,
+     LoginAdminComponent,
+     AddCountryComponent,
+     AboutComponent
   ],
  
   providers: [
@@ -52,6 +59,7 @@ imports: [
      AlertService,
      AuthenticationService,
      MemberService,
+     CountryService,
   ],
   bootstrap: [AppComponent]
 })

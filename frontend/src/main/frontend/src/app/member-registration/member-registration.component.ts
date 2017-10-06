@@ -8,13 +8,13 @@ import { RestProvider } from '../../providers/rest/rest';
 import { Router } from '@angular/router';
 
 import { AlertService, MemberService } from '../_services/index';
-import {MemberSessionComponent } from '../member-session/member-session.component';
+import {LoginFormComponent} from '../login-form/index';
 
 @Component({
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
   styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css'],
-  entryComponents: [MemberSessionComponent]
+  entryComponents: [LoginFormComponent]
 })
 export class MemberRegistrationComponent implements OnInit {
   
@@ -69,7 +69,7 @@ onSubmit(post){
   .subscribe((data) => {
       // set success message and pass true paramater to persist the message after redirecting to the login page
       this.alertService.success('Registration successful', true);
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login-form']);
   },
   error => {
       this.alertService.error(error);

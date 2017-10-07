@@ -21,7 +21,7 @@
     display: inline-block;
     animation: 2s alertAnim forwards;
 }
-
+/* 
 .button {
     margin-top: 3rem;
 }
@@ -30,7 +30,7 @@ h1 {
     font-weight:bold;
     font-family:'Muli';
     font-size: 2em;
-}
+} */
 
 /* 
 @keyframes alertAnim {

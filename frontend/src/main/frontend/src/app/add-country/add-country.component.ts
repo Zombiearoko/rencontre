@@ -1,3 +1,6 @@
+
+
+
 import { ViewChild, Component,Input,ElementRef, OnInit } from '@angular/core';
 
 import { Response,HttpModule,Http } from '@angular/http';
@@ -7,34 +10,30 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-import { AlertService, CountryService, } from '../_services/index';
+import { AlertService, CountryService } from '../_services/index';
 import {Country} from '../_models/country';
 
 
 @Component({
-  selector: 'app-member-session',
+  selector: 'app-add-country',
   moduleId: module.id,
-  templateUrl: './member-session.component.html',
-  styleUrls: ['./member-session.component.css', '../../bootstrap/css/bootstrap.css']
+  templateUrl: './add-country.component.html',
+  providers:[AlertService, RestProvider],
+  styleUrls: ['./add-country.component.css','../../bootstrap/css/bootstrap.css'],
+  
 })
-export class MemberSessionComponent implements OnInit {
-  @Input('group')
-  public clientForm:FormGroup;
-  public countryName: string;
-  public surname: string;
-  public collectionJson={
-    countryName:'test',
-  }
-  submitted = false; 
-  public currentCountry: Country;
-  public countries: Country[] = [];
+export class AddCountryComponent implements OnInit {
+  currentCountry: Country;
+  countries: Country[] = [];
   
   loading = false;
-  
+  clientForm: FormGroup;
   post: any; 
   titleAlert:string = 'You must specify a country';
+private countryName: string;
 private results: [any];
-
+private collectionJson: object;
+submitted = false;
 
   constructor(private countryService: CountryService, 
     public rest: RestProvider, 
@@ -54,32 +53,29 @@ onSubmit(post){
 
   this.countryName = post.countryName;
   const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName='+this.countryName;
-  // console.log("look here please",this.countryName);
-  // this.rest.postCountry(this.countryName)
-  // .subscribe((data) => {
-  //   console.log("pour errorooooo",data);
-  //     // set success message and pass true paramater to persist the message after redirecting to the login page
-  //     this.alertService.success('addsuccessful', true);
-  //     this.router.navigateByUrl('/member-session');
-  //     console.log("pour error",data);
-  // },
-  // error => {
-  //     this.alertService.error(error);
-  //     this.loading = false;
-  //       console.log("pour error",this.countryName);
+  // console.log(this.countryName);
+  this.rest.postCountry(this.countryName)
+  .subscribe((data) => {
+      // set success message and pass true paramater to persist the message after redirecting to the login page
+      this.alertService.success('addsuccessful', true);
+      this.router.navigateByUrl('/add-country');
+  },
+  error => {
+      this.alertService.error(error);
+      this.loading = false;
+        // console.log(this.countryName);
         
-  //       this.submitted = true;
-  //      });
+        this.submitted = true;
+       });
   this.http.get(urlC).subscribe((resp)=>{
     this.results = resp['results'];
     this.collectionJson = resp.json();
-  console.log("pour la collection test",this.collectionJson);
+  // console.log(this.collectionJson);
 });
 
 }
   ngOnInit() {
     this.loadAllCountries();
-    this.getAll;
     
   }
 
@@ -87,22 +83,8 @@ onSubmit(post){
     this.countryService.delete(id).subscribe(() => { this.loadAllCountries() });
 }
 
-private getAll() {
-  return this.http.get('http://localhost:8091/rencontre/Administrator/listAllCountry')
-   .do((res: Response) => console.log("les pays",res.json()))
-    .map((res: Response) => {
-      
-// login successful if there's a jwt token in the response
-this.countries= res.json();
-//test
-console.log("hey les pays",this.countries);
-return this.countries;
-});
-}
 private loadAllCountries() {
     this.countryService.getAll().subscribe(countries => { this.countries = countries; });
 }
 
 }
-
- 

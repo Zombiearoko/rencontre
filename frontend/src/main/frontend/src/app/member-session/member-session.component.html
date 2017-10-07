@@ -1,61 +1,83 @@
-<!-- Page Content -->
-<div class="container-fluid">
-    <div class="container">
-        <div class="cadre ">
-            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-                        <div class="form-group">
-                            
-                                <label for="countryName"  >Country</label>
-                                <div class="cols-lg-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="countryName" name="countryName" id="countryName" placeholder=" add country hier " />
-                                    </div>
-                                </div>
-                                
-                                 <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                                 <div class="alert" *ngIf="!clientForm.controls.countryName.valid && clientForm.controls.countryName.touched">{{titleAlert}}</div>
-                                 
-                        </div>
-                        <div>
-                            <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
-                            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>                           
-                            
-                            
-                        </div>
-            </form>
-            <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p>
-  
-            <!-- <div class="col-md-6 col-md-offset-3">
-              <h1>country {{currentCountry.countryName}}! was added</h1>
-              <p>You're logged in with Angular 2!!</p>
-              <h3>All registered countries:</h3>
-              
-              <p><a [routerLink]="['/member-session']">add</a></p>
-          </div> -->
-          <div style="text-align:left" >
-            <h2>You submitted the following country:</h2>
-            <div class="row">
-             <h3>Country: <font color="red">{{ collectionJson.countryName }}</font></h3>
+<!-- Fixed navbar -->
+
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        </button>
+                <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
+              </div>
+              <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">  
+                  <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-cog"></span> About</a>
+                  </li>
+                  <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
+                  </li>
+                  <li><a class="menuLink" href="/add-country"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
+                  </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logout Admin</a>
+                  </li>
+                </ul>
+              </div>
             </div>
-           
-            <button class="btn btn-primary" (click)="submitted=false">Update</button>
-          </div>
-
-          <div class="col-md-6 col-md-offset-3">
-            
-            <h3>All registered Countries:</h3>
-            <ul>
-                <li *ngFor="let currentCountry of countries">
-                    {{currentCountry.countryName}}
-                    <a (click)="deleteCountry(country.id)">Delete</a>
-                </li>
-            </ul>
-           
         </div>
+              <!--/.nav-collapse -->
+        
+<!-- Page Content -->
+<div class="content">
+    <div class="page-header">
+        <h1>Admin Rencontre Web site</h1>
+    </div>
+
+    <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+        <div class="form-group">
+
+            <label for="countryName">Country</label>
+            <div class="cols-lg-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" formControlName="countryName" name="countryName" id="countryName" placeholder=" add country hier "
+                    />
+                </div>
+            </div>
+
+            <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+            <div class="alert" *ngIf="!clientForm.controls.countryName.valid && clientForm.controls.countryName.touched">{{titleAlert}}</div>
 
         </div>
-  
-  </div>
-  
-  </div>
+        <div>
+            <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+        </div>
+    </form>
+    <p>Form value: {{ clientForm.value | json }}</p>
+    <p>Form status: {{ clientForm.status | json }}</p>
+
+
+    <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
+    <h2>You submitted the following country:</h2>
+
+
+    <button class="btn btn-primary" (click)="submitted=false">Update</button>
+
+    <h3>All registered Countries:</h3>
+    <ul>
+        <li *ngFor="let currentCountry of countries">
+            {{currentCountry.countryName}}
+            <a (click)="deleteCountry(currentCountry.id)">Delete</a>
+        </li>
+    </ul>
+
+
+
+</div>

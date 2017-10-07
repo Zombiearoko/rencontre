@@ -5,8 +5,10 @@ import { LoginFormComponent } from './login-form/index';
 import {MemberRegistrationComponent } from './member-registration/index';
 import {MemberSessionComponent } from './member-session/member-session.component';
 import {AddCountryComponent  } from './add-country/add-country.component';
+import {AddRegionComponent  } from './add-region/add-region.component';
 import {LoginAdminComponent } from './login-admin/login-admin.component';
 import {AboutComponent } from './about/about.component';
+import {SessionAdminComponent } from './login-admin/session-admin/session-admin.component';
 
 
 
@@ -17,9 +19,12 @@ const appRoutes: Routes = [
     { path: 'login-form', component: LoginFormComponent },
     { path: 'member-registration', component: MemberRegistrationComponent },
     { path: 'add-country', component: AddCountryComponent },
+    { path: 'add-region', component: AddRegionComponent },    
     { path: 'member-session', component: MemberSessionComponent },
     { path: 'login-admin', component: LoginAdminComponent },
     { path: 'about', component: AboutComponent },
+    { path: 'session-admin', component: SessionAdminComponent },
+    
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

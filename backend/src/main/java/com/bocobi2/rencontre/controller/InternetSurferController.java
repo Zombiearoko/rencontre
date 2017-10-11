@@ -398,7 +398,8 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
 							ComeLocality comeLocality = new ComeLocality();
@@ -478,7 +479,8 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
 							ComeLocality comeLocality = new ComeLocality();
@@ -584,7 +586,8 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
 							cryptograph.setId(idCryptograph);
@@ -653,7 +656,8 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
 								cryptograph.setId(idCryptograph);
@@ -761,7 +765,8 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
 							cryptograph.setId(idCryptograph);
@@ -830,7 +835,8 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
 								cryptograph.setId(idCryptograph);
@@ -931,8 +937,9 @@ public class InternetSurferController {
 							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
-
-							// memberBufferRepository.deleteAll();
+							
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
 							cryptograph.setId(idCryptograph);
@@ -998,7 +1005,8 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
 								cryptograph.setId(idCryptograph);
@@ -1941,7 +1949,7 @@ public class InternetSurferController {
 				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
 
-				memberRepository.deleteAll();
+				//memberRepository.deleteAll();
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
 				cryptographRepository.deleteAll();

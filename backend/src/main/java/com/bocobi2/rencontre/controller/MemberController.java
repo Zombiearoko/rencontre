@@ -2,10 +2,16 @@
 package com.bocobi2.rencontre.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,12 +24,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,21 +50,44 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bocobi2.rencontre.model.Borough;
+import com.bocobi2.rencontre.model.ChooseMeeting;
+import com.bocobi2.rencontre.model.ComeLocality;
+import com.bocobi2.rencontre.model.Concession;
 import com.bocobi2.rencontre.model.Conversation;
+import com.bocobi2.rencontre.model.Country;
+import com.bocobi2.rencontre.model.DatingInformation;
+import com.bocobi2.rencontre.model.Department;
+import com.bocobi2.rencontre.model.Locality;
 import com.bocobi2.rencontre.model.Member;
+import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Message;
+import com.bocobi2.rencontre.model.Region;
 import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
+import com.bocobi2.rencontre.model.Town;
+import com.bocobi2.rencontre.model.TypeMeeting;
+import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
 import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
+import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -87,12 +124,69 @@ public class MemberController {
 	StatusRepository statusRepository;
 
 	@Autowired
+	TypeMeetingRepository typeMeetingRepository;
+
+	@Autowired
+	ChooseMeetingRepository chooseMeetingRepository;
+
+	@Autowired
 	private SimpMessagingTemplate webSocket;
+	
+	@Autowired
+	GridFsOperations gridOperations;
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
 	}
 
+	private String imageFileId = "";
+	private String FOLDER="/home/saphir/Images/style/";
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/savePicture", method = RequestMethod.POST)
+	public ResponseEntity<?> savePicturePost( @RequestParam("file") MultipartFile file, HttpServletRequest req
+		    ) throws UnknownHostException, Exception, FileNotFoundException {
+		
+		DBObject metaData = new BasicDBObject();
+		
+		InputStream iamgeStream = file.getInputStream();
+		metaData.put("type", "image");
+		
+		// Store picture to MongoDB
+		imageFileId = gridOperations.store(iamgeStream, "jsa-logo.png", "image/png", metaData).getId().toString();
+		
+		System.out.println("ImageFileId = " + imageFileId);
+		
+		
+		InputStream iamgeStreamText = file.getInputStream();
+		metaData.put("type", "text");
+		
+		// Store file text to MongoDB
+		imageFileId = gridOperations.store(iamgeStream, "saphir.pdf", "texte/pdf", metaData).getId().toString();
+		
+		System.out.println("ImageFileId = " + imageFileId);
+		
+		InputStream iamgeStreamVideo = file.getInputStream();
+		metaData.put("type", "video");
+		
+		// Store video to MongoDB
+		imageFileId = gridOperations.store(iamgeStreamVideo, "volviane.mp4", "video/mp4", metaData).getId().toString();
+		
+		System.out.println("ImageFileId = " + imageFileId);
+		
+		  String status = "Upload has been successful";
+		  
+		  return new ResponseEntity<String>(status, HttpStatus.OK);
+		  //return Response.status(200).entity(status).build();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * connexion of the member
 	 * 
@@ -102,7 +196,7 @@ public class MemberController {
 	 * Version POST
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/Connexion", method = RequestMethod.POST)
+	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
 
 		HttpSession session = requestConnexion.getSession();
@@ -110,6 +204,7 @@ public class MemberController {
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
 		String password = requestConnexion.getParameter("password");
+		String meetingName = requestConnexion.getParameter("meetingName");
 		System.out.println("-------------------------------");
 		System.out.println(pseudonym);
 		System.out.println("-------------------------------");
@@ -122,6 +217,11 @@ public class MemberController {
 			member = memberRepository.findByPseudonym(pseudonym);
 			if (member != null) {
 				if (member.getPassword().equals(password)) {
+					String status = "Connected";
+					Status statusDB = statusRepository.findByStatusName(status);
+					member.setStatus(statusDB);
+					member.setMeetingNameConnexion(meetingName);
+					memberRepository.save(member);
 					session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
@@ -150,7 +250,7 @@ public class MemberController {
 	 * version Get
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/Connexion", method = RequestMethod.GET)
+	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
 		HttpSession session = requestConnexion.getSession();
@@ -198,6 +298,53 @@ public class MemberController {
 	/*
 	 * end connexion
 	 */
+	/*
+	 * methode pour retourner les type de rencontre auxquels un individus est
+	 * connecte
+	 */
+	/*
+	 * version Post
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/returnTypeMeeting", method = RequestMethod.POST)
+	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
+
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudonymMember = request.getParameter("pseudonym");
+		Member member = memberRepository.findByPseudonym(pseudonymMember);
+		String pseudonym = member.getPseudonym();
+
+		List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+		TypeMeeting typeMeeting;
+		TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+		TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+		TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+		TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+
+		if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+
+			typeMeeting = datingMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+
+			typeMeeting = professionnalMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+
+			typeMeeting = friendlyMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+			typeMeeting = schoolMeeting;
+			listTypeMeeting.add(typeMeeting);
+		}
+
+		return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+
+	}
 
 	/**
 	 * Method change status
@@ -206,7 +353,6 @@ public class MemberController {
 	 * VERSION Post
 	 */
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
 	public ResponseEntity<?> changeStatusPost(HttpServletRequest request) {
 
@@ -265,32 +411,33 @@ public class MemberController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/addTestimony", method = RequestMethod.POST)
-	public ResponseEntity<?> addTestimonyPost(HttpServletRequest requestTestimony, UriComponentsBuilder ucBuilder)
+	public ResponseEntity<?> addTestimonyPost(HttpServletRequest requestTestimony,@RequestParam("file") MultipartFile file, UriComponentsBuilder ucBuilder)
 			throws IOException, ServletException {
 		HttpSession session = requestTestimony.getSession();
 		Member member = (Member) session.getAttribute("Member");
-
+		//String author=member.getPseudonym();
 		Testimony testimony = new Testimony();
 		// String resultTestimony;
-
+		
+		DBObject metaData = new BasicDBObject();
+		//private String imageFileId = "";
 		String testimonyType = requestTestimony.getParameter("testimonyType");
 		String author = requestTestimony.getParameter("author");
-
+		String fileName="testimony"+author+".mp4";
 		if (testimonyType.equalsIgnoreCase("videos")) {
 
-			File fileWay = new File(SAVE_DIR_TESTIMONY);
-			String name = "testimony" + author + ".avi";
-			Part part = null;
-			if (!fileWay.exists())
-				fileWay.mkdir();
-
-			part = requestTestimony.getPart("testimony");
 
 			try {
 
-				String fileName = SAVE_DIR_TESTIMONY + File.separator + name;
-				part.write(SAVE_DIR_TESTIMONY + File.separator + name);
-
+				InputStream fileStreamVideo = file.getInputStream();
+				metaData.put("type", "video");
+				
+				// Store video to MongoDB
+				imageFileId = gridOperations.store(fileStreamVideo, fileName, "video/mp4", metaData).getId().toString();
+				
+				System.out.println("ImageFileId = " + imageFileId);
+				//GridFSDBFile videoFile = gridOperations.findOne(new Query(Criteria.where("_id").is(imageFileId)));
+				
 				testimony.setTestimonyType(testimonyType);
 				testimony.setTestimonyContent(fileName);
 				testimony.setAuthor(author);
@@ -364,7 +511,8 @@ public class MemberController {
 		String author = requestTestimony.getParameter("author");
 
 		if (testimonyType.equalsIgnoreCase("videos")) {
-
+		
+			
 			File fileWay = new File(SAVE_DIR_TESTIMONY);
 			String name = "testimony";
 			Part part = null;
@@ -807,6 +955,7 @@ public class MemberController {
 	/*
 	 * Methode de recherche des membres
 	 */
+
 	/*
 	 * Version post
 	 */
@@ -815,15 +964,30 @@ public class MemberController {
 	@RequestMapping(value = "/searchMemberWithPseudonym", method = RequestMethod.POST)
 	public ResponseEntity<?> searchMemberWithPseudonymPost(HttpServletRequest request) throws Exception {
 
-		HttpSession sessionMember = request.getSession();
-		Member member = (Member) sessionMember.getAttribute("Member");
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		// String pseudo= member.getPseudonym();
+		String pseudo = request.getParameter("monPseudo");
+
+		Member member = memberRepository.findByPseudonym(pseudo);
+
 		String gender = member.getGender();
+
 		String searhPseudonym = request.getParameter("pseudonym");
 
+		String meetingNameConnexion = member.getMeetingNameConnexion();
+		TypeMeeting typeMeetingSearch = typeMeetingRepository.findByMeetingName(meetingNameConnexion);
+
+		TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+		TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+		TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+		TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
 		// Member memberSearch=
 		// memberRepository.findByPseudonym(searhPseudonym);
 
-		if (memberRepository.exists(searhPseudonym)) {
+		String idChoose = searhPseudonym + typeMeetingSearch.getId();
+
+		if (memberRepository.exists(searhPseudonym) && chooseMeetingRepository.exists(idChoose)) {
 
 			String genderSearch = memberRepository.findByPseudonym(searhPseudonym).getGender();
 
@@ -841,10 +1005,181 @@ public class MemberController {
 
 		} else {
 			logger.error("Unable to find  member. The member " + searhPseudonym + " doest not exist");
-			return new ResponseEntity(
-					new MemberErrorType("Unable to find  member. The member " + searhPseudonym + " doest not exist"),
-					HttpStatus.NO_CONTENT);
+			return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym + " "
+					+ "doest not exist in this type of meeting"), HttpStatus.NOT_ACCEPTABLE);
 		}
 
+	}
+
+	/*
+	 * Version post
+	 */
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/searchMemberWithGenderAndBirtDate", method = RequestMethod.POST)
+	public ResponseEntity<List<Member>> searchMemberWithGenderAndBirtDatePost(HttpServletRequest request)
+			throws Exception {
+
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudo = request.getParameter("monPseudo");
+
+		Member member = memberRepository.findByPseudonym(pseudo);
+
+		String genderMember = member.getGender();
+		String meetingNameConnexion = member.getMeetingNameConnexion();
+		TypeMeeting typeMeetingSearch = typeMeetingRepository.findByMeetingName(meetingNameConnexion);
+
+		// String searhPseudonym = request.getParameter("pseudonym");
+		String birthDateFrom = request.getParameter("birthDateFrom");
+		String birthDateTo = request.getParameter("birthDateTo");
+		String searchGender;
+		// Member memberSearch=
+		// memberRepository.findByPseudonym(searhPseudonym);
+
+		if (genderMember.equals("femme")) {
+			searchGender = "homme";
+		} else {
+			searchGender = "femme";
+		}
+
+		List<Member> listMember = memberRepository.findByGenderAndBirthDateBetween(searchGender, birthDateFrom,
+				birthDateTo);
+		List<Member> finalListMember = new ArrayList<Member>();
+		List<Member> finalDefaultListMember = new ArrayList<Member>();
+		if (listMember.isEmpty()) {
+			System.out.println("if");
+			List<Member> listMemberDefault = memberRepository.findByGender(searchGender);
+
+			for (Member memberP : listMemberDefault) {
+				if (chooseMeetingRepository.exists(memberP.getPseudonym() + typeMeetingSearch.getId())) {
+					finalDefaultListMember.add(memberP);
+				}
+			}
+
+			return new ResponseEntity(
+					new MemberErrorType("Unable to find  member. The member with this birthDate doest not exist. "
+							+ "but we propose you this another person"
+							+ new ResponseEntity<List<Member>>(finalDefaultListMember, HttpStatus.OK)),
+					HttpStatus.NOT_ACCEPTABLE);
+
+		} else {
+
+			for (Member memberP : listMember) {
+				if (chooseMeetingRepository.exists(memberP.getPseudonym() + typeMeetingSearch.getId())) {
+					finalListMember.add(memberP);
+				}
+			}
+			if (finalListMember.isEmpty()) {
+				List<Member> listMemberDefault = memberRepository.findByGender(searchGender);
+
+				for (Member memberP : listMemberDefault) {
+					if (chooseMeetingRepository.exists(memberP.getPseudonym() + typeMeetingSearch.getId())) {
+						finalDefaultListMember.add(memberP);
+					}
+				}
+
+				return new ResponseEntity(
+						new MemberErrorType("Unable to find  member. The member with this birthDate doest not exist. "
+								+ "but we propose you this another person"
+								+ new ResponseEntity<List<Member>>(finalDefaultListMember, HttpStatus.OK)),
+						HttpStatus.NOT_ACCEPTABLE);
+
+			} else {
+				return new ResponseEntity<List<Member>>(finalListMember, HttpStatus.OK);
+			}
+
+		}
+
+	}
+	
+	/* 
+	 * methodes de modification du profil: je ferai la methode d'ajout ou monification de la photo a part
+	 */
+	/*
+	 * Version post
+	 */
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/savePictures", method = RequestMethod.POST)
+	public ResponseEntity<?> savePicturesPost( @RequestParam("file") MultipartFile file, HttpServletRequest request
+		    ) throws UnknownHostException, Exception, FileNotFoundException {
+		
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		//String pseudonym= member.getPseudonym();
+		String pseudonym = request.getParameter("monPseudo");
+		Member member=memberRepository.findByPseudonym(pseudonym);
+		
+		DBObject metaData = new BasicDBObject();
+		
+		InputStream iamgeStream = file.getInputStream();
+		metaData.put("type", "image");
+		String pictureName="picture"+pseudonym;
+		
+		// Store picture to MongoDB
+		imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
+		
+		System.out.println("ImageFileId = " + imageFileId);
+		
+		member.setPicture(pictureName);
+		memberRepository.save(member);
+		String status = "Upload has been successful";
+		  
+		  return new ResponseEntity<String>(status, HttpStatus.OK);
+		  //return Response.status(200).entity(status).build();
+		
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+	public ResponseEntity<?> updateProfilePost(@RequestParam("file") MultipartFile file,HttpServletRequest request)
+			throws Exception {
+		
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		//String pseudonym= member.getPseudonym();
+		String pseudonym = request.getParameter("monPseudo");
+		Member member=memberRepository.findByPseudonym(pseudonym);
+		String typeMeeting = member.getMeetingNameConnexion();
+		String imageFileId = "";
+		
+		
+		if (typeMeeting.equals("Amoureuse")) {
+
+			String fatherName = request.getParameter("fatherName");
+			String motherName = request.getParameter("motherName");
+			String countryName = request.getParameter("countryName");
+			String regionName = request.getParameter("regionName");
+			String departmentName = request.getParameter("departmentName");
+			String boroughName = request.getParameter("boroughName");
+			String townName = request.getParameter("townName");
+			String concessionName = request.getParameter("concessionName");
+
+		}else if(typeMeeting.equals("Professionnelle")){
+			
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String profession = request.getParameter("profession");
+			String levelStudy = request.getParameter("levelStudy");
+			
+		}else if(typeMeeting.equals("Academique")){
+			
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String schoolName = request.getParameter("schoolName");
+			String levelStudy = request.getParameter("levelStudy");
+			
+		}else if(typeMeeting.equals("Amicale")){
+			
+		}
+			
+			
+		
+		return null;
 	}
 }

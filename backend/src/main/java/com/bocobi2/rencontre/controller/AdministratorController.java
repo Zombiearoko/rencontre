@@ -590,7 +590,25 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
+	
+	/*
+	 * Version Post
+	 */
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listRegion", method = RequestMethod.GET)
+	public ResponseEntity<List<Region>> listRegionGet(HttpServletRequest request) {
+
+		String countryName = request.getParameter("countryName");
+		Country country = countryRepository.findByCountryName(countryName);
+		List<Region> listOfRegion = regionRepository.findByCountry(country);
+
+		if (listOfRegion.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
+
+	}
 	/*
 	 * Version Post
 	 */
@@ -598,6 +616,21 @@ public class AdministratorController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listDepartment", method = RequestMethod.POST)
 	public ResponseEntity<List<Department>> listDepartmentPost(HttpServletRequest request) {
+
+		String regionName = request.getParameter("regionName");
+		Region region = regionRepository.findByRegionName(regionName);
+		List<Department> listOfDepartment = departmentRepository.findByRegion(region);
+
+		if (listOfDepartment.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listDepartment", method = RequestMethod.GET)
+	public ResponseEntity<List<Department>> listDepartmentGet(HttpServletRequest request) {
 
 		String regionName = request.getParameter("regionName");
 		Region region = regionRepository.findByRegionName(regionName);
@@ -628,6 +661,21 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listBorough", method = RequestMethod.GET)
+	public ResponseEntity<List<Borough>> listBoroughGet(HttpServletRequest request) {
+
+		String departmentName = request.getParameter("departmentName");
+		Department department = departmentRepository.findByDepartmentName(departmentName);
+		List<Borough> listOfBorough = boroughRepository.findByDepartment(department);
+
+		if (listOfBorough.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
+
+	}
 
 	/*
 	 * Version Post
@@ -636,6 +684,21 @@ public class AdministratorController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTown", method = RequestMethod.POST)
 	public ResponseEntity<List<Town>> listTownPost(HttpServletRequest request) {
+
+		String boroughName = request.getParameter("boroughName");
+		Borough borough = boroughRepository.findByBoroughName(boroughName);
+		List<Town> listOfTown = townRepository.findByBorough(borough);
+
+		if (listOfTown.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listTown", method = RequestMethod.GET)
+	public ResponseEntity<List<Town>> listTownGet(HttpServletRequest request) {
 
 		String boroughName = request.getParameter("boroughName");
 		Borough borough = boroughRepository.findByBoroughName(boroughName);
@@ -666,10 +729,38 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listConcession", method = RequestMethod.GET)
+	public ResponseEntity<List<Concession>> listConcessionGet(HttpServletRequest request) {
+
+		String townName = request.getParameter("townName");
+		Town town = townRepository.findByTownName(townName);
+		List<Concession> listOfConcession = concessionRepository.findByTown(town);
+
+		if (listOfConcession.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
+
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
+
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.GET)
+	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
 
 		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
 

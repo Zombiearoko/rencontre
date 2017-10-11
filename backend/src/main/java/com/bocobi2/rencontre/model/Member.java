@@ -6,17 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.gridfs.*;
-import com.mongodb.client.gridfs.model.*;
-import org.bson.*;
-import org.bson.types.ObjectId;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.charset.StandardCharsets;
-import static com.mongodb.client.model.Filters.eq;
 
 @Document(collection="member")
 public class Member extends InternetSurfer {
@@ -27,7 +16,11 @@ public class Member extends InternetSurfer {
 	private String password;
 	private String registrationDate;
 	private String phoneNumber;
+	private String numberPicture;
+	@Indexed
 	private String birthDate;
+	@Indexed
+	private String meetingNameConnexion;
 	@Indexed
 	private String gender;
 	private String picture;
@@ -77,7 +70,8 @@ public class Member extends InternetSurfer {
 			FriendlyDatingInformation friendlyDatingInformatio,
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
 			Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
-			List<Conversation> conversations, List<Testimony> testimonies, Status status) {
+			List<Conversation> conversations, List<Testimony> testimonies, Status status, 
+			String meetingNameConnexion, String numberPicture) {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
@@ -97,6 +91,8 @@ public class Member extends InternetSurfer {
 		this.conversations = conversations;
 		this.testimonies = testimonies;
 		this.status = status;
+		this.meetingNameConnexion=meetingNameConnexion;
+		this.setNumberPicture(numberPicture);
 	}
 
 
@@ -128,11 +124,29 @@ public class Member extends InternetSurfer {
 
 
 
+	public String getMeetingNameConnexion() {
+		return meetingNameConnexion;
+	}
+
+
+
+
+
+
+	public void setMeetingNameConnexion(String meetingNameConnexion) {
+		this.meetingNameConnexion = meetingNameConnexion;
+	}
+
+
+
+
+
+
 	public void setTypeMeeting(List<TypeMeeting> list) {
 		this.typeMeeting = list;
 	}
 
-
+	
 
 	public List<Conversation> getConversations() {
 		return conversations;
@@ -437,6 +451,24 @@ public class Member extends InternetSurfer {
 
 	public int computeAge(){
 		return 0;
+	}
+
+
+
+
+
+
+	public String getNumberPicture() {
+		return numberPicture;
+	}
+
+
+
+
+
+
+	public void setNumberPicture(String numberPicture) {
+		this.numberPicture = numberPicture;
 	}
 	
 	/* (non-Javadoc)

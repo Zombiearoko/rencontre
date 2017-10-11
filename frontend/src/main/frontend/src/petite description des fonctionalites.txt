@@ -1,0 +1,8 @@
+ajouter un pays/  member-session :s'ouvre juste apres la connexion d'un administrateur dans sa session
+country.ts dans model; country.service.ts dans service pour sa manipulation
+
+ajouter une region/  add-region
+
+login membre/ login-form: home, s'ouvre apres qun membre ait logge
+
+**form.css pour le css global

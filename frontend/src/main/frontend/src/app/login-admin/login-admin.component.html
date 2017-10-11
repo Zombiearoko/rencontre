@@ -1,0 +1,48 @@
+<!-- Fixed navbar -->
+<app-nav-admin></app-nav-admin>
+
+<!-- containe -->
+        <div class="container">
+            <div class="cadre">
+                <div class="col-md-6 col-md-offset-3">
+                    <h2>Login</h2>
+                    <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+                        <div class="form-group">
+
+                            <label for="loginAdmin">Pseudo</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="loginAdmin" name="loginAdmin" id="loginAdmin" placeholder=" your login hier "
+                                    />
+                                </div>
+                            </div>
+
+                            <div [hidden]="clientForm.controls.loginAdmin.valid|| clientForm.controls.loginAdmin.pristine" class="alert alert-danger">
+                            Pseudo is a required field</div>
+                            <div class="alert" *ngIf="!clientForm.controls.loginAdmin.valid && clientForm.controls.loginAdmin.touched">{{titleAlert}}</div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordAdmin">passwordAdmin</label>
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <input type="passwordAdmin" class="form-control" formControlName="passwordAdmin" name="passwordAdmin" id="passwordAdmin"
+                                        placeholder=" " />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button [disabled]="loading" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+
+
+                    <p>Form value: {{ clientForm.value | json }}</p>
+                    <p>Form status: {{ clientForm.status | json }}</p>
+
+                </div>
+            </div>
+
+        </div>

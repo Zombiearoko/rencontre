@@ -1,10 +1,10 @@
-.container {
+/* .container {
     display:block;
-    width:90%;
+     width:90%; 
     padding:2em;
     margin: 2em auto;
-    background:#abb;
-}
+     background:#abb; 
+} */
 
 .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid #42A948; /* green */
@@ -21,7 +21,7 @@
     display: inline-block;
     animation: 2s alertAnim forwards;
 }
-
+/* 
 .button {
     margin-top: 3rem;
 }
@@ -30,9 +30,9 @@ h1 {
     font-weight:bold;
     font-family:'Muli';
     font-size: 2em;
-}
+} */
 
-
+/* 
 @keyframes alertAnim {
     from {
         opacity:0;
@@ -42,4 +42,4 @@ h1 {
         opacity:1;
         transform: translateY(0);
     }
-}
+} */

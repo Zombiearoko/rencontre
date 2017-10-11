@@ -74,55 +74,75 @@ import { Injectable } from '@angular/core';
                   .do((res: Response ) => console.log(res.json()))
                   .map((res: Response ) => res.json());
     }
-              public   getAccount() {
+
+    //add country
+
+    public postCountry(countryName) {
+      const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
+const options = new RequestOptions({  headers: headers1 });
+      const object = {
+       countryName: countryName,
+      };
+      const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName='+countryName;
+      const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion';
+      const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment';
+      const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough';
+    return  this.http.post(urlC, object, options)
+              .do((res: Response ) => console.log(res.json()))
+              .map((res: Response ) => res.json());
+}
+             
+
+
+public   getAccount() {
     
         }
       
-        //for login
-        public postLoginMember(pseudonym, password) {
-          const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
-    const options = new RequestOptions({  headers: headers1 });
+  //       //for login
+  //       public postLoginMember(pseudonym, password) {
+  //         const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
+  //   const options = new RequestOptions({  headers: headers1 });
     
-          const object = {
-            pseudonym: pseudonym,
-            password: password,
-           };
+  //         const object = {
+  //           pseudonym: pseudonym,
+  //           password: password,
+  //          };
            
            
-          const url ='http://localhost:8091/rencontre/Member/Connexion?pseudonym='+pseudonym+'&password='+password;
-          const url2 = 'https://jsonplaceholder.typicode.com/posts';
-        return  this.http.post(url, object, options)
-                  .do((res: Response ) => console.log(res.json()))
-                   //.map((res: Response ) => res.json());
-                    //ajouté a partir dici
-                  .map((res: Response) => {
-                    // login successful if there's a jwt token in the response
-                    let member = res.json();
-                    if (member && member.token) {
-                        // store member details and jwt token in local storage to keep user logged in between page refreshes
-                      localStorage.setItem('currentMember', JSON.stringify(member));
-                      //let value: string = localStorage.getItem("currentMember");
-                      this.memberData = localStorage.getItem("currentMember");
+  //         const url ='http://localhost:8091/rencontre/Member/Connexion?pseudonym='+pseudonym+'&password='+password;
+  //         const url2 = 'https://jsonplaceholder.typicode.com/posts';
+  //       return  this.http.post(url, object, options)
+  //                 .do((res: Response ) => console.log(res.json()))
+  //                  //.map((res: Response ) => res.json());
+  //                   //ajouté a partir dici
+  //                 .map((res: Response) => {
+  //                   // login successful if there's a jwt token in the response
+  //                   let member = res.json();
+  //                   if (member && member.token) {
+  //                       // store member details and jwt token in local storage to keep user logged in between page refreshes
+  //                     localStorage.setItem('currentMember', JSON.stringify(member));
+  //                     //let value: string = localStorage.getItem("currentMember");
+  //                     this.memberData = localStorage.getItem("currentMember");
                     
-                          this.memberToken= this.memberData.token;
-                          alert(this.memberToken);
-                          console.log("for rest",this.memberToken.token);
+  //                         this.memberToken= this.memberData.token;
+  //                         alert(this.memberToken);
+  //                         console.log("for rest",this.memberToken.token);
                      
                     
-                    }
+  //                   }
      
-                    return member;
-                });
-                //jusquici
+  //                   return member;
+  //               });
+  //               //jusquici
                  
-    }
+  //   }
 
-    //for logout
+  //   //for logout
 
-    logout() {
-      // remove member from local storage to log user out
-      localStorage.removeItem('currentMember');
-  }
+  //   logout() {
+  //     // remove member from local storage to log user out
+  //     localStorage.removeItem('currentMember');
+  // }
 
     }
       

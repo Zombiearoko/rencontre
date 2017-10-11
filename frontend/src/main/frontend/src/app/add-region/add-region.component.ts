@@ -161,14 +161,15 @@ export class AddRegionComponent implements OnInit {
   public countryName: string;
   public regionName: string;
   public surname: string;
-  public collectionJson={
-    countryName:'test',
-  }
+  public collectionJson= Object;
+  // {
+  //   countryName:'test',
+  // }
   submitted = false; 
   public currentCountry: Country;
   public currentRegion: Region;
   public country:Country;
-  public countries: Country[] = [];
+ 
   public regions: Region[] = [];
   
   loading = false;
@@ -198,13 +199,26 @@ private results: [any];
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);
   }
-onSubmit(post){
+
+
+  // for country selected
+  selectedCountry:Country;
+  public countries: [Country] ;
   
-  this.region= post.countryName;
-  this.countryName = JSON.stringify(this.region);
+
+public Filter(value:Country)
+  {
+    alert(value);
+     this.country=value;
+     alert(this.country);
+  }
+  
+onSubmit(post){
+
   this.regionName = post.regionName;
+  console.log("My input: ", post.chosenCountry);
   console.log("pour le country venant du post", this.region);
-  const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName='+this.regionName+'&countryName='+ this.countryName;
+  const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName='+this.regionName+'&countryName='+ this.country;
   
   this.http.get(urlR).subscribe((resp)=>{
     this.results = resp['results'];

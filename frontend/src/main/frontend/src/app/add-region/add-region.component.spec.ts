@@ -8,6 +8,7 @@ describe('AddRegionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      // imports: [ FormsModule ], 
       declarations: [ AddRegionComponent ]
     })
     .compileComponents();

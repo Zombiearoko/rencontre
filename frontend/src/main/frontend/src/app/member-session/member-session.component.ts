@@ -54,6 +54,8 @@ onSubmit(post){
 
   this.countryName = post.countryName;
   const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName='+this.countryName;
+  alert(this.countryName);
+  
   // console.log("look here please",this.countryName);
   // this.rest.postCountry(this.countryName)
   // .subscribe((data) => {

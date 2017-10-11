@@ -1,4 +1,4 @@
-ajouter un pays/  member-session :s'ouvre juste apres la connexion d'un administrateur
+ajouter un pays/  member-session :s'ouvre juste apres la connexion d'un administrateur dans sa session
 country.ts dans model; country.service.ts dans service pour sa manipulation
 
 ajouter une region/  add-region

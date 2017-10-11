@@ -21,7 +21,6 @@ import { AlertService, AuthenticationService, MemberService, CountryService, Reg
 import { HomeComponent } from './home/index';
 import { MemberSessionComponent } from './member-session/member-session.component';
 import { LoginAdminComponent } from './login-admin/login-admin.component';
-import { AddCountryComponent } from './add-country/add-country.component';
 import { AboutComponent } from './about/about.component';
 import { AddRegionComponent } from './add-region/add-region.component';
 import { SessionAdminComponent } from './login-admin/session-admin/session-admin.component';
@@ -51,9 +50,8 @@ imports: [
      HeaderComponent,
      LoginFormComponent,
      FooterComponent,
-     MemberSessionComponent,
+     MemberSessionComponent,//pour add-country
      LoginAdminComponent,
-     AddCountryComponent,
      AboutComponent,
      AddRegionComponent,
      SessionAdminComponent,

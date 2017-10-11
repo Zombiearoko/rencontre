@@ -16,6 +16,8 @@
                 </li>
                 <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
                 </li>
+                <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
+                </li>
                 <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
                 </li>
             </ul>
@@ -76,7 +78,7 @@
                     <label for="regionName">Region</label>
                     <div class="cols-lg-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" formControlName="regionName" name="regionName" id="regionName" placeholder=" add country hier "
+                            <input type="text" class="form-control" formControlName="regionName" name="regionName" id="regionName" placeholder=" add Region hier "
                             />
                         </div>
                     </div>
@@ -125,17 +127,17 @@
                 <button class="btn btn-primary" (click)="submitted=false">Update</button>
             </div>
 
-            <div class="col-md-6 col-md-offset-3">
+            <!-- <div class="col-md-6 col-md-offset-3">
 
-                <h3>All registered Countries:</h3>
+                <h3>All registered Regions:</h3>
                 <ul>
-                    <li *ngFor="let currentCountry of countries">
-                        {{currentCountry.countryName}}
+                    <li *ngFor="let currentRegion of regions">
+                        {{currentRegion.regionName}}
                         <a (click)="deleteCountry(currentCountry.id)">Delete</a>
                     </li>
                 </ul>
 
-            </div>
+            </div> -->
 
         </div>
     </div>

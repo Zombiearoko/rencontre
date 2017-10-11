@@ -15,12 +15,12 @@ export class RegionService {
         return this.http.get('http://localhost:8091/rencontre/Administrator/listRegion' + id, this.jwt()).map((response: Response) => response.json());
     }
  
-    create(country: Region) {
-        return this.http.post('http://localhost:8091/rencontre/Administrator/listRegion', country, this.jwt()).map((response: Response) => response.json());
+    create(region: Region) {
+        return this.http.post('http://localhost:8091/rencontre/Administrator/listRegion', region, this.jwt()).map((response: Response) => response.json());
     }
  
-    update(country: Region) {
-        return this.http.put('http://localhost:8091/rencontre/Administrator/listRegion' + country.id, country, this.jwt()).map((response: Response) => response.json());
+    update(region: Region) {
+        return this.http.put('http://localhost:8091/rencontre/Administrator/listRegion' + region.id, region, this.jwt()).map((response: Response) => response.json());
     }
  
     delete(id: number) {

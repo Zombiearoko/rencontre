@@ -1,51 +1,52 @@
 <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
              </button>
-            <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-cog"></span> About</a>
-                </li>
-                <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
-                </li>
-                <li><a class="menuLink" href="/add-borough"><span class="glyphicon glyphicon-cog"></span> add Region</a>
-                </li>
-                <li><a class="menuLink" href="/add-town"><span class="glyphicon glyphicon-cog"></span> add Town</a>
-                </li>
-                <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
-                </li>
-                <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logout Admin</a>
-                </li>
-            </ul>
-        </div>
+      <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
     </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+          <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
+          </li>
+          <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
+          </li>
+          <li><a class="menuLink" href="/add-borough"><span class="glyphicon glyphicon-cog"></span> add Borough</a>
+          </li>
+        <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
+        </li>
+        <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logout Admin</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 <!--/.nav-collapse -->
 
 <div class="page-header">
-    <h1> Ajouter une Ville</h1>
+  <h1> Ajouter une Ville</h1>
 </div>
+
 <!-- Page Content -->
-<div class="container-fluid">
+
+<body>
+  <div class="container-fluid">
     <div class="container">
-        <div class="cadre ">
-            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+      <div class="cadre ">
+        <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
 
-                <div class="form-group">
-                    <select [(ngModel)]="selectedBorough" (change)="Filter($event.target.value)" formControlName="boroughNameN" name="selectB">
+          <div class="form-group">
+            <select [(ngModel)]="selectedBorough" (change)="Filter($event.target.value)" formControlName="boroughNameN" name="selectB">
                         <option [ngValue]="">Select Borough
                         </option>
                         <option *ngFor="let currentBorough of boroughs" 
@@ -54,64 +55,64 @@
                      </select>
 
 
-                </div>
-                
-
-                <div class="form-group">
-
-                    <label for="townName">Ville</label>
-                    <div class="cols-lg-8">
-                        <div class="input-group">
-                            <input type="text" class="form-control" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
-                            />
-                        </div>
-                    </div>
-
-                    <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
-
-                </div>
-                <div>
-                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                    <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+          </div>
 
 
-                </div>
-            </form>
-            <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p>
+          <div class="form-group">
 
-        
-    
-
-            <div class="col-md-6 col-md-offset-3">
-                <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-                <p>You're logged in Rencontre!!</p>
-
-
-                <p><a [routerLink]="['/login-admin']">Logout</a></p>
+            <label for="townName">Ville</label>
+            <div class="cols-lg-8">
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
+                />
+              </div>
             </div>
 
+            <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+            <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
 
-            <!-- <div class="col-md-6 col-md-offset-3">
+          </div>
+          <div>
+            <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+          </div>
+        </form>
+        <p>Form value: {{ clientForm.value | json }}</p>
+        <p>Form status: {{ clientForm.status | json }}</p>
+
+
+
+
+        <div class="col-md-6 col-md-offset-3">
+          <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
+          <p>You're logged in Rencontre!!</p>
+
+
+          <p><a [routerLink]="['/login-admin']">Logout</a></p>
+        </div>
+
+
+        <!-- <div class="col-md-6 col-md-offset-3">
               <h1>country {{currentCountry.regionName}}! was added</h1>
               <p>You're logged in Rencontre!!</p>
               <h3>All registered countries:</h3>
               
               <p><a [routerLink]="['/member-session']">add</a></p>
           </div> -->
-            <div style="text-align:left">
-                <h2>You submitted the following town:</h2>
-                <div class="row">
-                    <h3>ville:
-                        <font color="red">{{ collectionJson.townName }}</font>
-                    </h3>
-                </div>
+        <div style="text-align:left">
+          <h2>You submitted the following town:</h2>
+          <div class="row">
+            <h3>ville:
+              <font color="red">{{ collectionJson.townName }}</font>
+            </h3>
+          </div>
 
-                <button class="btn btn-primary" (click)="submitted=false">Update</button>
-            </div>
+          <button class="btn btn-primary" (click)="submitted=false">Update</button>
+        </div>
 
-            <!-- <div class="col-md-6 col-md-offset-3">
+        <!-- <div class="col-md-6 col-md-offset-3">
 
                 <h3>All registered Regions:</h3>
                 <ul>
@@ -123,6 +124,8 @@
 
             </div> -->
 
-        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+</body>

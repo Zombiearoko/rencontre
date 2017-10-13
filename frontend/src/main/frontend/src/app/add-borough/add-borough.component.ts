@@ -54,19 +54,19 @@ private results: [any];
     this.currentBorough = JSON.parse(localStorage.getItem('currentBorough'));
   }
   
-//getting country when selected
+//getting departement when selected
 public Filter(value: Department)
   {
-    
+    alert(value)
      this.department=value;
   }
   
 onSubmit(post){
 
   this.boroughName = post.boroughName;
-  const urlR = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName='+this.boroughName+'&departmentName='+ this.department;
+  const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName='+this.boroughName+'&departmentName='+ this.department;
   
-  this.http.get(urlR).subscribe((resp)=>{
+  this.http.get(urlB).subscribe((resp)=>{
     this.results = resp['results'];
     this.collectionJson = resp.json();
   console.log("pour la collection borough",this.collectionJson);
@@ -82,6 +82,7 @@ onSubmit(post){
 
 private loadAllDepartments() {
     this.departmentService.getAll().subscribe(departments => { this.departments = departments; });
+    console.log("departments", this.departments);
 }
 
 }

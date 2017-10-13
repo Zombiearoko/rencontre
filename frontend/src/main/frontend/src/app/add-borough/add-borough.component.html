@@ -1,3 +1,6 @@
+<body>
+    
+
 <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -17,6 +20,10 @@
                 <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
                 </li>
                 <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
+                </li>
+                <li><a class="menuLink" href="/add-borough"><span class="glyphicon glyphicon-cog"></span> add Borough</a>
+                </li>
+                <li><a class="menuLink" href="/add-town"><span class="glyphicon glyphicon-cog"></span> add Town</a>
                 </li>
                 <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
                 </li>
@@ -41,10 +48,10 @@
 
 
                 <div class="form-group">
-                    <select [(ngModel)]="selectedCountry" (change)="Filter($event.target.value)" formControlName="countryNameN" name="select">
+                    <select [(ngModel)]="selectedDepartment" (change)="Filter($event.target.value)" formControlName="departmentNameN" name="selectD">
                         <option [ngValue]="">Select Department
                         </option>
-                        <option *ngFor="let currentCountry of countries" 
+                        <option *ngFor="let currentDepartment of departments" 
                            >{{currentDepartment.departmentName}}
                         </option>
                      </select>
@@ -78,7 +85,7 @@
                     <label for="boroughName">Arrondissement</label>
                     <div class="cols-lg-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" formControlName="boroughregionName" name="boroughName" id="boroughName" placeholder=" add borough hier "
+                            <input type="text" class="form-control" formControlName="boroughName" name="boroughName" id="boroughName" placeholder=" add borough hier "
                             />
                         </div>
                     </div>
@@ -142,3 +149,4 @@
         </div>
     </div>
 </div>
+</body>

@@ -55,6 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bocobi2.rencontre.model.AcademicDatingInformation;
 import com.bocobi2.rencontre.model.Borough;
 import com.bocobi2.rencontre.model.ChooseMeeting;
 import com.bocobi2.rencontre.model.ComeLocality;
@@ -63,11 +64,13 @@ import com.bocobi2.rencontre.model.Conversation;
 import com.bocobi2.rencontre.model.Country;
 import com.bocobi2.rencontre.model.DatingInformation;
 import com.bocobi2.rencontre.model.Department;
+import com.bocobi2.rencontre.model.Friendly;
 import com.bocobi2.rencontre.model.Locality;
 import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Message;
+import com.bocobi2.rencontre.model.ProfessionalMeetingInformation;
 import com.bocobi2.rencontre.model.Region;
 import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
@@ -75,6 +78,7 @@ import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
 import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
+import com.bocobi2.rencontre.repositories.FriendlyRepository;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
@@ -134,6 +138,10 @@ public class MemberController {
 	
 	@Autowired
 	GridFsOperations gridOperations;
+	
+	@Autowired
+	FriendlyRepository freindlyRepository;
+	
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
@@ -1137,7 +1145,7 @@ public class MemberController {
 	
 	
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-	public ResponseEntity<?> updateProfilePost(@RequestParam("file") MultipartFile file,HttpServletRequest request)
+	public ResponseEntity<?> updateProfilePost(HttpServletRequest request)
 			throws Exception {
 		
 		// HttpSession sessionMember = request.getSession();
@@ -1153,12 +1161,19 @@ public class MemberController {
 
 			String fatherName = request.getParameter("fatherName");
 			String motherName = request.getParameter("motherName");
-			String countryName = request.getParameter("countryName");
-			String regionName = request.getParameter("regionName");
-			String departmentName = request.getParameter("departmentName");
-			String boroughName = request.getParameter("boroughName");
-			String townName = request.getParameter("townName");
-			String concessionName = request.getParameter("concessionName");
+			String motherProfession = request.getParameter("motherProfession");
+			String fatherProfession = request.getParameter("fatherProfession");
+			DatingInformation datingInformation= new DatingInformation();
+			
+			datingInformation.setFatherName(fatherName);
+			datingInformation.setMotherName(motherName);
+			datingInformation.setFatherProfession(fatherProfession);
+			datingInformation.setMotherProfession(motherProfession);
+			
+			member.setDatingInformation(datingInformation);
+			memberRepository.save(member);
+			
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
 
 		}else if(typeMeeting.equals("Professionnelle")){
 			
@@ -1167,6 +1182,16 @@ public class MemberController {
 			String profession = request.getParameter("profession");
 			String levelStudy = request.getParameter("levelStudy");
 			
+			ProfessionalMeetingInformation professionnalMeeting =new ProfessionalMeetingInformation();
+			professionnalMeeting.setFirstName(firstName);
+			professionnalMeeting.setLastName(lastName);
+			professionnalMeeting.setLevelStudy(levelStudy);
+			professionnalMeeting.setProfession(profession);
+			
+			member.setProfessionalMeetingInformation(professionnalMeeting);
+			memberRepository.save(member);
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
+			
 		}else if(typeMeeting.equals("Academique")){
 			
 			String firstName = request.getParameter("firstName");
@@ -1174,12 +1199,175 @@ public class MemberController {
 			String schoolName = request.getParameter("schoolName");
 			String levelStudy = request.getParameter("levelStudy");
 			
+			AcademicDatingInformation academicDating= new AcademicDatingInformation();
+			
+			academicDating.setFirstName(firstName);
+			academicDating.setLastName(lastName);
+			academicDating.setLevelStudy(levelStudy);
+			academicDating.setSchoolName(schoolName);
+			
+			member.setAcademicDatingInformation(academicDating);
+			memberRepository.save(member);
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
+			
 		}else if(typeMeeting.equals("Amicale")){
+			
 			
 		}
 			
 			
 		
 		return null;
+	}
+	/*
+	 * Version get
+	 */
+	@RequestMapping(value = "/updateProfile", method = RequestMethod.GET)
+	public ResponseEntity<?> updateProfileGet(HttpServletRequest request)
+			throws Exception {
+		
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		//String pseudonym= member.getPseudonym();
+		String pseudonym = request.getParameter("monPseudo");
+		Member member=memberRepository.findByPseudonym(pseudonym);
+		String typeMeeting = member.getMeetingNameConnexion();
+		String imageFileId = "";
+		
+		
+		if (typeMeeting.equals("Amoureuse")) {
+
+			String fatherName = request.getParameter("fatherName");
+			String motherName = request.getParameter("motherName");
+			String motherProfession = request.getParameter("motherProfession");
+			String fatherProfession = request.getParameter("fatherProfession");
+			DatingInformation datingInformation= new DatingInformation();
+			
+			datingInformation.setFatherName(fatherName);
+			datingInformation.setMotherName(motherName);
+			datingInformation.setFatherProfession(fatherProfession);
+			datingInformation.setMotherProfession(motherProfession);
+			
+			member.setDatingInformation(datingInformation);
+			memberRepository.save(member);
+			
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
+
+		}else if(typeMeeting.equals("Professionnelle")){
+			
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String profession = request.getParameter("profession");
+			String levelStudy = request.getParameter("levelStudy");
+			
+			ProfessionalMeetingInformation professionnalMeeting =new ProfessionalMeetingInformation();
+			professionnalMeeting.setFirstName(firstName);
+			professionnalMeeting.setLastName(lastName);
+			professionnalMeeting.setLevelStudy(levelStudy);
+			professionnalMeeting.setProfession(profession);
+			
+			member.setProfessionalMeetingInformation(professionnalMeeting);
+			memberRepository.save(member);
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
+			
+		}else if(typeMeeting.equals("Academique")){
+			
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String schoolName = request.getParameter("schoolName");
+			String levelStudy = request.getParameter("levelStudy");
+			
+			AcademicDatingInformation academicDating= new AcademicDatingInformation();
+			
+			academicDating.setFirstName(firstName);
+			academicDating.setLastName(lastName);
+			academicDating.setLevelStudy(levelStudy);
+			academicDating.setSchoolName(schoolName);
+			
+			member.setAcademicDatingInformation(academicDating);
+			memberRepository.save(member);
+			return new ResponseEntity<Member>(member,HttpStatus.OK);
+			
+		}else if(typeMeeting.equals("Amicale")){
+			
+			
+		}
+			
+			
+		
+		return null;
+	}
+	
+	/*
+	 * methode envoyer une demande d'amite et couple
+	 */
+	/*
+	 * Version Post
+	 */
+	@RequestMapping(value = "/send", method = RequestMethod.POST)
+	@MessageMapping("/request")
+	@SendTo("/topic/request")
+	@Async
+	public ResponseEntity<?> send(HttpServletRequest request)
+			throws Exception {
+		
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", "smtp.gmail.com");
+		// properties.put("mail.smtp.host", "smtp-relay.gmail.com");
+		properties.put("mail.smtp.port", "587");
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.starttls.required", "false");
+		properties.put("mail.smtp.connectiontimeout", "5000");
+		properties.put("mail.smtp.timeout", "5000");
+		properties.put("mail.smtp.writetimeout", "5000");
+		Session session = Session.getInstance(properties, null);
+		
+		
+		
+		
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		//String pseudonym= member.getPseudonym();
+		String pseudonymMember = request.getParameter("monPseudo");
+		Member memberSender=memberRepository.findByPseudonym(pseudonymMember);
+		String typeMeeting = memberSender.getMeetingNameConnexion();
+		String pseudonym=request.getParameter("pseudonym");
+		Member member=memberRepository.findByPseudonym(pseudonymMember);
+		String statut=member.getStatus().getStatusName();
+		
+		
+		String idFriendly=pseudonymMember+pseudonym+typeMeeting;
+		String friendlyStatut="demande envoye";
+		
+		Friendly friendly=new Friendly();
+		
+		friendly.setIdFriendly(idFriendly);
+		friendly.setFriendlyStatut(friendlyStatut);
+		
+		freindlyRepository.save(friendly);
+		
+		if(statut.equals("disconnected")){
+			
+			String content1 = "vous venez de recevoir une demande de relation " + typeMeeting+"\n"
+					+ "c'est peut etre votre jour de chance connectez vous maintenant " ;
+			String subject1 = "Notification";
+			// String form="saphirmfogo@gmail.com";
+			MimeMessage msg = new MimeMessage(session);
+			/// msg.setFrom(new InternetAddress(form));
+			msg.setRecipients(MimeMessage.RecipientType.TO,
+					memberRepository.findByPseudonym(pseudonym).getEmailAdress());
+			msg.setSubject(subject1);
+			msg.setText(content1);
+			msg.setSentDate(new Date());
+			Transport transport = session.getTransport("smtp");
+			transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+			transport.sendMessage(msg, msg.getAllRecipients());
+			transport.close();
+		
+		}
+		
+		
+		return new ResponseEntity<Friendly>(friendly, HttpStatus.OK);
 	}
 }

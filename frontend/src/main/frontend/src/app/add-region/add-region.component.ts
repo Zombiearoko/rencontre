@@ -147,6 +147,8 @@ import { Router } from '@angular/router';
 import { AlertService, CountryService, RegionService} from '../_services/index';
 import {Country} from '../_models/country';
 import {Region} from '../_models/region';
+// import {Country, Region} from '../_models/index';
+
 
 
 @Component({
@@ -160,7 +162,6 @@ export class AddRegionComponent implements OnInit {
   public clientForm:FormGroup;
   public countryName: string;
   public regionName: string;
-  public surname: string;
   public collectionJson= Object;
   // {
   //   countryName:'test',
@@ -169,21 +170,14 @@ export class AddRegionComponent implements OnInit {
   public currentCountry: Country;
   public currentRegion: Region;
   public country:Country;
- 
-  public regions: Region[] = [];
-  
+  public countries: Country[] = [];
   loading = false;
-
-  region:[any];
-  model: any;
   post: any; 
-  titleAlert:string = 'You must specify a country';
+  titleAlert:string = 'You must specify a region';
 private results: [any];
 
 
   constructor(private countryService: CountryService, 
-    private regionService: RegionService,
-    public rest: RestProvider, 
     public fb: FormBuilder, private http: Http, 
     private router: Router, 
     private alertService: AlertService) { 
@@ -199,25 +193,17 @@ private results: [any];
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);
   }
-
-
-  // for country selected
-  selectedCountry:Country;
-  public countries: [Country] ;
   
-
+//getting country when selected
 public Filter(value:Country)
   {
     alert(value);
      this.country=value;
-     alert(this.country);
   }
   
 onSubmit(post){
 
   this.regionName = post.regionName;
-  console.log("My input: ", post.chosenCountry);
-  console.log("pour le country venant du post", this.region);
   const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName='+this.regionName+'&countryName='+ this.country;
   
   this.http.get(urlR).subscribe((resp)=>{
@@ -229,26 +215,23 @@ onSubmit(post){
 }
   ngOnInit() {
     this.loadAllCountries();
-    this.getAll;
+    // this.getAll;
     
   }
 
-  deleteCountry(id: number) {
-    this.countryService.delete(id).subscribe(() => { this.loadAllCountries() });
-}
 
-private getAll() {
-  return this.http.get('http://localhost:8091/rencontre/Administrator/listAllCountry')
-   .do((res: Response) => console.log("les pays",res.json()))
-    .map((res: Response) => {
+// private getAll() {
+//   return this.http.get('http://localhost:8091/rencontre/Administrator/listAllCountry')
+//    .do((res: Response) => console.log("les pays",res.json()))
+//     .map((res: Response) => {
       
-// login successful if there's a jwt token in the response
-this.countries= res.json();
-//test
-console.log("hey les pays",this.countries);
-return this.countries;
-});
-}
+// // login successful if there's a jwt token in the response
+// this.countries= res.json();
+// //test
+// console.log("hey les pays",this.countries);
+// return this.countries;
+// });
+// }
 private loadAllCountries() {
     this.countryService.getAll().subscribe(countries => { this.countries = countries; });
 }

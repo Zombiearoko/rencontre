@@ -31,7 +31,7 @@
 <!--/.nav-collapse -->
 
 <div class="page-header">
-    <h1> Ajouter une Region</h1>
+    <h1> Ajouter un Arrondissement</h1>
 </div>
 <!-- Page Content -->
 <div class="container-fluid">
@@ -42,10 +42,10 @@
 
                 <div class="form-group">
                     <select [(ngModel)]="selectedCountry" (change)="Filter($event.target.value)" formControlName="countryNameN" name="select">
-                        <option [ngValue]="">Select Country
+                        <option [ngValue]="">Select Department
                         </option>
                         <option *ngFor="let currentCountry of countries" 
-                           >{{currentCountry.countryName}}
+                           >{{currentDepartment.departmentName}}
                         </option>
                      </select>
 
@@ -75,16 +75,16 @@
 
                 <div class="form-group">
 
-                    <label for="regionName">Region</label>
+                    <label for="boroughName">Arrondissement</label>
                     <div class="cols-lg-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" formControlName="regionName" name="regionName" id="regionName" placeholder=" add Region hier "
+                            <input type="text" class="form-control" formControlName="boroughregionName" name="boroughName" id="boroughName" placeholder=" add borough hier "
                             />
                         </div>
                     </div>
 
                     <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.regionName.valid && clientForm.controls.regionName.touched">{{titleAlert}}</div>
+                    <div class="alert" *ngIf="!clientForm.controls.boroughName.valid && clientForm.controls.boroughName.touched">{{titleAlert}}</div>
 
                 </div>
                 <div>
@@ -117,10 +117,10 @@
               <p><a [routerLink]="['/member-session']">add</a></p>
           </div> -->
             <div style="text-align:left">
-                <h2>You submitted the following Region:</h2>
+                <h2>You submitted the following borough:</h2>
                 <div class="row">
-                    <h3>Region:
-                        <font color="red">{{ collectionJson.regionName }}</font>
+                    <h3>Arrondissement:
+                        <font color="red">{{ collectionJson.boroughName }}</font>
                     </h3>
                 </div>
 

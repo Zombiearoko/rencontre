@@ -770,5 +770,88 @@ public class AdministratorController {
 		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 
 	}
+	
+	/*
+	 * list all
+	 */
 
+	/*
+	 * Version Get et post
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllRegion", method = RequestMethod.POST)
+	public ResponseEntity<List<Region>> listAllRegionPost(HttpServletRequest request) {
+
+		List<Region> listOfRegion = regionRepository.findAll();
+
+		if (listOfRegion.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
+
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllRegion", method = RequestMethod.GET)
+	public ResponseEntity<List<Region>> listAllRegionGet(HttpServletRequest request) {
+
+		List<Region> listOfRegion = regionRepository.findAll();
+
+		if (listOfRegion.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.POST)
+	public ResponseEntity<List<Department>> listAllDepartmentPost(HttpServletRequest request) {
+
+		List<Department> listOfDepartment = departmentRepository.findAll();
+
+		if (listOfDepartment.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.GET)
+	public ResponseEntity<List<Department>> listAllDepartmentGet(HttpServletRequest request) {
+
+		List<Department> listOfDepartment = departmentRepository.findAll();
+
+		if (listOfDepartment.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
+
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllBorough", method = RequestMethod.POST)
+	public ResponseEntity<List<Borough>> listAllBoroughPost(HttpServletRequest request) {
+
+		List<Borough> listOfBorough = boroughRepository.findAll();
+
+		if (listOfBorough.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllBorough", method = RequestMethod.GET)
+	public ResponseEntity<List<Borough>> listAllBoroughGet(HttpServletRequest request) {
+
+		List<Borough> listOfBorough = boroughRepository.findAll();
+
+		if (listOfBorough.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
+
+	}
+	
 }

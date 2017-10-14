@@ -8,23 +8,23 @@ export class BoroughService {
     constructor(private http: Http) { }
  
     getAll() {
-        return this.http.get('http://localhost:8091/rencontre/Administrator/listBorough', this.jwt()).map((response: Response) => response.json());
+        return this.http.get('http://localhost:8091/rencontre/Administrator/listAllBorough', this.jwt()).map((response: Response) => response.json());
     }
  
     getById(id: number) {
-        return this.http.get('http://localhost:8091/rencontre/Administrator/listBorough' + id, this.jwt()).map((response: Response) => response.json());
+        return this.http.get('http://localhost:8091/rencontre/Administrator/listAllBorough' + id, this.jwt()).map((response: Response) => response.json());
     }
  
     create(borough: Borough) {
-        return this.http.post('http://localhost:8091/rencontre/Administrator/listBorough', borough, this.jwt()).map((response: Response) => response.json());
+        return this.http.post('http://localhost:8091/rencontre/Administrator/listAllBorough', borough, this.jwt()).map((response: Response) => response.json());
     }
  
     update(borough: Borough) {
-        return this.http.put('http://localhost:8091/rencontre/Administrator/listBorough' + borough.id, borough, this.jwt()).map((response: Response) => response.json());
+        return this.http.put('http://localhost:8091/rencontre/Administrator/listAllBorough' + borough.id, borough, this.jwt()).map((response: Response) => response.json());
     }
  
     delete(id: number) {
-        return this.http.delete('http://localhost:8091/rencontre/Administrator/listBorough' + id, this.jwt()).map((response: Response) => response.json());
+        return this.http.delete('http://localhost:8091/rencontre/Administrator/listAllBorough' + id, this.jwt()).map((response: Response) => response.json());
     }
  
     // private helper methods

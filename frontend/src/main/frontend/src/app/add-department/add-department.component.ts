@@ -33,7 +33,7 @@ export class AddDepartmentComponent implements OnInit {
   public regions: Region[] = [];
   loading = false;
   post: any;
-  titleAlert: string = 'You must specify a country';
+  titleAlert: string = 'You must specify a Department';
   private results: [any];
 
 

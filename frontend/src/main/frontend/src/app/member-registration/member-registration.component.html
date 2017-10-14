@@ -24,7 +24,7 @@
                     </li>
                     <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
                     </li>
-                    <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-tasks"></span> Register</a>
+                    <li><a class="menuLink" href="/member-meeting"><span class="glyphicon glyphicon-tasks"></span> add meeting</a>
                     </li>
                     <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
                     </li>
@@ -116,8 +116,22 @@
                     <label for="picture">Example file input</label>
                     <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
                 </div>
+
+                <div class="form-group">
+                        <label for="meetingName">Select the Meeting Name</label>
+                    <select [(ngModel)]="selectedMeeting" (change)="Filter($event.target.value)" formControlName="MeetingNameN" name="selectM">
+                                <option [ngValue]="">
+                                </option>
+                                <option *ngFor="let currentMeeting of Meetings" 
+                                   >{{currentMeeting.meetingName}}
+                                </option>
+                             </select>
+        
+        
+                  </div>
+
                 <div>
-                    <a [routerLink]="['../memberSession']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> </a>
+                     <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
                     <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 

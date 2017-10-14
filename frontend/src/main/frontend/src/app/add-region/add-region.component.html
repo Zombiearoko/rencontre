@@ -44,7 +44,7 @@
 
                     <div class="form-group">
                         <label for="regionName">Select Country</label>
-                        <div class="cols-lg-8">
+                        
                             <select [(ngModel)]="selectedCountry" (change)="Filter($event.target.value)" formControlName="countryNameN" name="select">
                                 <option [ngValue]="">
                                 </option>
@@ -52,7 +52,7 @@
                                 >{{currentCountry.countryName}}
                                 </option>
                              </select>
-                        </div>
+                        
 
                     </div>
                     <!-- Update to angular 4.X.X, there is a new way to mark an option selected:
@@ -80,13 +80,12 @@
                     <div class="form-group">
 
                         <label for="regionName">Region</label>
-                        <div class="cols-lg-8">
+                       
                             <div class="input-group">
                                 <input type="text" class="form-control" formControlName="regionName" name="regionName" id="regionName" placeholder=" add Region hier "
                                 />
                             </div>
-                        </div>
-
+                        
                         <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                         <div class="alert" *ngIf="!clientForm.controls.regionName.valid && clientForm.controls.regionName.touched">{{titleAlert}}</div>
 

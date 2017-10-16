@@ -107,20 +107,22 @@ public class AdministratorController {
 					session.setAttribute("Administrator", null);
 					logger.error("administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
+							new MemberErrorType("Member with " + "password " + "" + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
 				logger.error("administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
-						new MemberErrorType("administrator with " + "pseudonym " + loginAdmin + " not found."),
+						new MemberErrorType(
+								"administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
 
 			}
 		} catch (Exception ex) {
 			logger.error("Member with pseudonym {} not found.", loginAdmin);
 			return new ResponseEntity(
-					new MemberErrorType("administrator with " + "pseudonym" + " " + loginAdmin + " not found."),
+					new MemberErrorType(
+							"administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
 
@@ -156,20 +158,21 @@ public class AdministratorController {
 					session.setAttribute("administrator", null);
 					logger.error("administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
+							new MemberErrorType("Member with " + "password" + " " + "" + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
 				logger.error("administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
-						new MemberErrorType("administrator with " + "pseudonym " + loginAdmin + " not found."),
+						new MemberErrorType(
+								"administrator with " + "pseudonym" + "" + " " + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
 
 			}
 		} catch (Exception ex) {
 			logger.error("Member with pseudonym {} not found.", loginAdmin);
 			return new ResponseEntity(
-					new MemberErrorType("administrator with " + "pseudonym" + " " + loginAdmin + " not found."),
+					new MemberErrorType("administrator with " + "pseudonym" + " " + "" + loginAdmin + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
 
@@ -191,9 +194,8 @@ public class AdministratorController {
 		TypeMeeting typeMeeting = new TypeMeeting();
 		if (typeMeetingRepository.findByMeetingName(meetingName) != null) {
 			logger.error("Unable to create. the type of Meeting with name {} already exist", meetingName);
-			return new ResponseEntity(new MemberErrorType(
-					"Unable to create. " + " the type of Meeting with name " + "" + meetingName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of Meeting with name "
+					+ "" + "" + meetingName + " already exist"), HttpStatus.CONFLICT);
 		} else {
 
 			typeMeeting.setMeetingName(meetingName);
@@ -215,9 +217,8 @@ public class AdministratorController {
 		TypeMeeting typeMeeting = new TypeMeeting();
 		if (typeMeetingRepository.findByMeetingName(meetingName) != null) {
 			logger.error("Unable to create. the type of Meeting with name {} already exist", meetingName);
-			return new ResponseEntity(new MemberErrorType(
-					"Unable to create. " + " the type of Meeting with name " + "" + meetingName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of Meeting with name "
+					+ "" + "" + meetingName + " already exist"), HttpStatus.CONFLICT);
 		} else {
 
 			typeMeeting.setMeetingName(meetingName);
@@ -249,7 +250,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Country with name {} already exist", countryName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Country with name " + "" + countryName + " already exist"),
+							"Unable to create. " + "A Country with name " + "" + "" + countryName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 
@@ -272,7 +273,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Country with name {} already exist", countryName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Country with name " + "" + countryName + " already exist"),
+							"Unable to create. " + "A Country with name " + "" + "" + countryName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -303,7 +304,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Region with name {} already exist", regionName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Region with name " + "" + regionName + " already exist"),
+							"Unable to create. " + "A Region with name " + "" + "" + regionName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -358,10 +359,8 @@ public class AdministratorController {
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Department with name " + "" + departmentName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "A Department with name " + "" + ""
+					+ "" + departmentName + " already exist"), HttpStatus.CONFLICT);
 		}
 	}
 
@@ -387,9 +386,8 @@ public class AdministratorController {
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Department with name " + "" + departmentName + " already exist"),
+			return new ResponseEntity(new MemberErrorType(
+					"Unable to create. " + "A Department with name " + "" + "" + departmentName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -418,7 +416,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Borough with name {} already exist", boroughName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Borough with name " + "" + boroughName + " already exist"),
+							"Unable to create. " + "A Borough with name " + "" + "" + boroughName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -475,7 +473,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + ""
+							+ "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -503,7 +502,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + ""
+							+ "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -532,7 +532,8 @@ public class AdministratorController {
 			logger.error("Unable to create. A Concession with name {} already exist", concessionName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Concession with name " + "" + concessionName + " already exist"),
+							"Unable to create. " + "A Concession with name " + ""
+									+ "" + concessionName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -760,7 +761,7 @@ public class AdministratorController {
 
 		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
 
-		//List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
 
 		if (listOfTypeMeeting.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -793,7 +794,7 @@ public class AdministratorController {
 
 		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
 
-		//List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
 
 		if (listOfTypeMeeting.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);

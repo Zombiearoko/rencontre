@@ -17,7 +17,7 @@ import { FooterComponent } from './footer/footer.component';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, MemberService, CountryService, RegionService, DepartmentService, BoroughService, TownService} from './_services/index';
+import { AlertService, AuthenticationService, MemberService, CountryService, RegionService, DepartmentService, BoroughService, TownService, MeetingService } from './_services/index';
 import { HomeComponent } from './home/index';
 import { MemberSessionComponent } from './member-session/member-session.component';
 import { LoginAdminComponent } from './login-admin/login-admin.component';
@@ -29,53 +29,58 @@ import { NavAdminComponent } from './nav-admin/nav-admin.component';
 import { AddDepartmentComponent } from './add-department/add-department.component';
 import { AddBoroughComponent } from './add-borough/add-borough.component';
 import { AddTownComponent } from './add-town/add-town.component';
+import { AddMeetingComponent } from './add-meeting/add-meeting.component';
+import { MemberRegister1Component } from './member-register1/member-register1.component';
 
 
 
 
 @NgModule({
-imports: [
-  BrowserModule,
-   FormsModule,
-   ReactiveFormsModule,
-   HttpModule,
-   routing
- ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    routing
+  ],
 
 
   declarations: [
     AppComponent,
-     HomePage,
-     AlertComponent,
-     HomeComponent,
-     HelloComponent,
-     MemberRegistrationComponent,
-     HeaderComponent,
-     LoginFormComponent,
-     FooterComponent,
-     MemberSessionComponent,//pour add-country
-     LoginAdminComponent,
-     AboutComponent,
-     AddRegionComponent,
-     SessionAdminComponent,
-     NavComponent,
-     NavAdminComponent,
-     AddDepartmentComponent,
-     AddBoroughComponent,
-     AddTownComponent
+    HomePage,
+    AlertComponent,
+    HomeComponent,
+    HelloComponent,
+    MemberRegistrationComponent,
+    HeaderComponent,
+    LoginFormComponent,
+    FooterComponent,
+    MemberSessionComponent,//pour add-country
+    LoginAdminComponent,
+    AboutComponent,
+    AddRegionComponent,
+    SessionAdminComponent,
+    NavComponent,
+    NavAdminComponent,
+    AddDepartmentComponent,
+    AddBoroughComponent,
+    AddTownComponent,
+    AddMeetingComponent,
+    MemberRegister1Component
   ],
- 
+
   providers: [
-     RestProvider,
-     AuthGuard,
-     AlertService,
-     AuthenticationService,
-     MemberService,
-     CountryService,
-     RegionService,
-     DepartmentService,
-     BoroughService,
-     TownService
+    RestProvider,
+    AuthGuard,
+    AlertService,
+    AuthenticationService,
+    MemberService,
+    CountryService,
+    RegionService,
+    DepartmentService,
+    BoroughService,
+    TownService,
+    MeetingService
   ],
   bootstrap: [AppComponent]
 })

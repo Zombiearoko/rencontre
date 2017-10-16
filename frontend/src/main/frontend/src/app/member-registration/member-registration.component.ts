@@ -47,6 +47,8 @@ submitted = false;
     'confirmPassword': [null, Validators.compose([Validators.required, Validators.minLength(6)])],
     'phoneNumber': [null, Validators.compose([Validators.required])],
     'gender': [null, Validators.compose([Validators.required])],
+  
+    
     // 'customerPicture': [null, Validators.required]
     'customerPicture': ''
     });

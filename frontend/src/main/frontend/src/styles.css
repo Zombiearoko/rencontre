@@ -24,10 +24,12 @@ body {
 
 h1, h2, h3, h4, h5, h6, .text-heading {
   font-family: "Josefin Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 }
 
 h1 {
   font-size: 4rem;
+ 
 }
 
 .tagline-upper {
@@ -53,9 +55,9 @@ h1 {
   font-size: 1.25rem;
 }
 
-.bg-faded {
+ .bg-faded {
   background-color: rgba(255, 255, 255, 0.9);
-}
+} 
 
 .bg-overlay {
   background-color: rgba(0, 0, 0, 0.7);

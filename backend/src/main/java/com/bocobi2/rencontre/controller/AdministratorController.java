@@ -1,5 +1,6 @@
 package com.bocobi2.rencontre.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -590,7 +591,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
-	
+
 	/*
 	 * Version Post
 	 */
@@ -627,7 +628,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listDepartment", method = RequestMethod.GET)
 	public ResponseEntity<List<Department>> listDepartmentGet(HttpServletRequest request) {
@@ -661,7 +662,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listBorough", method = RequestMethod.GET)
 	public ResponseEntity<List<Borough>> listBoroughGet(HttpServletRequest request) {
@@ -695,7 +696,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTown", method = RequestMethod.GET)
 	public ResponseEntity<List<Town>> listTownGet(HttpServletRequest request) {
@@ -729,7 +730,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listConcession", method = RequestMethod.GET)
 	public ResponseEntity<List<Concession>> listConcessionGet(HttpServletRequest request) {
@@ -745,23 +746,83 @@ public class AdministratorController {
 
 	}
 
+	/*
+	 * list type meeting with birtdate
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
 
+		String birth = request.getParameter("bithDate");
+		Integer birthDate = new Integer(birth);
+		System.out.println(birthDate);
 		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+		//List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
 
 		if (listOfTypeMeeting.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+		if (birthDate <= 20) {
+			for (TypeMeeting meeting : listOfTypeMeeting) {
+				if (meeting.getMeetingName().equals("Amicale")) {
+					listMineur.add(meeting);
+				} else if (meeting.getMeetingName().equals("Academique")) {
+					listMineur.add(meeting);
+				}
+			}
+			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+		} else {
+
+			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+		}
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.GET)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
 
+		String birth = request.getParameter("bithDate");
+		Integer birthDate = new Integer(birth);
+		System.out.println(birthDate);
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+		//List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+
+		if (birthDate <= 20) {
+			for (TypeMeeting meeting : listOfTypeMeeting) {
+				if (meeting.getMeetingName().equals("Amicale")) {
+					listMineur.add(meeting);
+				} else if (meeting.getMeetingName().equals("Academique")) {
+					listMineur.add(meeting);
+				}
+			}
+			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+		} else {
+
+			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+		}
+
+	}
+
+	/*
+	 * list all
+	 */
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllTypeMeeting", method = RequestMethod.POST)
+	public ResponseEntity<List<TypeMeeting>> listAllTypeMeetingPost(HttpServletRequest request) {
+
 		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
 
 		if (listOfTypeMeeting.isEmpty()) {
@@ -770,7 +831,20 @@ public class AdministratorController {
 		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllTypeMeeting", method = RequestMethod.GET)
+	public ResponseEntity<List<TypeMeeting>> listAllTypeMeetingGet(HttpServletRequest request) {
+
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+	}
+
 	/*
 	 * list all
 	 */
@@ -790,6 +864,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllRegion", method = RequestMethod.GET)
 	public ResponseEntity<List<Region>> listAllRegionGet(HttpServletRequest request) {
@@ -802,7 +877,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.POST)
 	public ResponseEntity<List<Department>> listAllDepartmentPost(HttpServletRequest request) {
@@ -815,7 +890,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.GET)
 	public ResponseEntity<List<Department>> listAllDepartmentGet(HttpServletRequest request) {
@@ -828,6 +903,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllBorough", method = RequestMethod.POST)
 	public ResponseEntity<List<Borough>> listAllBoroughPost(HttpServletRequest request) {
@@ -840,7 +916,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllBorough", method = RequestMethod.GET)
 	public ResponseEntity<List<Borough>> listAllBoroughGet(HttpServletRequest request) {
@@ -853,5 +929,5 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 }

@@ -7,8 +7,10 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-import { AlertService, MemberService } from '../_services/index';
+
 import {LoginFormComponent} from '../login-form/index';
+import { AlertService, MemberService, MeetingService } from '../_services/index';
+import {Meeting} from '../_models/meeting';
 
 @Component({
   selector: 'app-member-registration',
@@ -20,14 +22,17 @@ export class MemberRegistrationComponent implements OnInit {
   
   loading = false;
   clientForm: FormGroup;
+  public meetings: Meeting[] = [];
   customerPictureFile: File;
   @ViewChild('customerPicture') customer_picture;
   post: any; 
   titleAlert:string = 'You must specify a pseudo thats between 3 and 5 characters';
+  private birthDate: Date;
+private meetingName:Meeting;
+public currentMeeting:Meeting;
 private pseudonym: string;
 private password: string;
 private confirmPassword: string;
-private birthDate: string;
 private emailAdress: string;
 private gender: string;
 private phoneNumber: string;
@@ -36,12 +41,13 @@ private results: [any];
 private collectionJson: object;
 submitted = false;
 
-  constructor(public rest: RestProvider, public fb: FormBuilder, private http: Http, private router: Router, private alertService: AlertService) { 
+  constructor(public rest: RestProvider, private meetingService: MeetingService, public fb: FormBuilder, private http: Http, private router: Router, private alertService: AlertService) { 
   
     
     this.clientForm = this.fb.group({
+      'birthDate': [null, Validators.compose([Validators.required])],
+      'meetingName': [null, Validators.compose([Validators.required])],
       'pseudonym': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(5)])],
-      'birthDate': [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(45)])],
     'emailAdress': [null, Validators.compose([Validators.required, Validators.email])],
     'password': [null, Validators.compose([Validators.required, Validators.minLength(6)])],
     'confirmPassword': [null, Validators.compose([Validators.required, Validators.minLength(6)])],
@@ -53,12 +59,33 @@ submitted = false;
     'customerPicture': ''
     });
     
+    this.currentMeeting = JSON.parse(localStorage.getItem('currentMeeting'));
+    
    
   }
+
+  //getting meeting type when selected age
+public Filter(value: Date)
+{
+  
+  console.log('age donne', value);
+   this.birthDate=value;
+   this.meetingService.getAllByDate(this.birthDate).subscribe(meetings => { this.meetings = meetings; });
+   console.log("meetings", this.meetings);
+}
+
+public FilterM(value: Meeting)
+
+{
+  console.log('meeting choisi est bien', value);
+  this.meetingName=value;
+}
+  
 onSubmit(post){
 
-  this.pseudonym = post.pseudonym;
+  
   this.birthDate = post.birthDate;
+  this.pseudonym = post.pseudonym;
   this.gender = post.gender;
   this.emailAdress = post.emailAdress;
   this.phoneNumber = post.phoneNumber;

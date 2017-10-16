@@ -3,148 +3,167 @@
 </div>
 <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/3.3.7/css/font-awesome.min.css" rel="stylesheet">   -->
 
-<body>
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               </button>
-                <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
-            </div>
-            <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
+                </li>
                 <ul class="nav navbar-nav">
-                    <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
-                    </li>
-                    <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
-                    </li>
-                    <li><a class="menuLink" href="/add-department"><span class="glyphicon glyphicon-cog"></span> add Department</a>
-                    </li>
-                    <li><a class="menuLink" href="/member-meeting"><span class="glyphicon glyphicon-tasks"></span> add meeting</a>
-                    </li>
-                    <li><a class="menuLink" href="/member-session"><span class="glyphicon glyphicon-play-circle"></span> add country</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> login Admin</a>
-                    </li>
-                    <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> login Admin</a>
-                    </li>
-                    <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
-                    </li>
-                    <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </div>
-    <!-- Header -->
-    <div class="page-header">
-            Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
-        </div>
-   
-</body>
 
-<!-- Page Content -->
-<!-- <div class="container-fluid">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add Item</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/add-region">region</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/add-department">department</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/member-session">Add Country</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="add-borough">Add Borough</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/add-town">Add Town</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/add-meeting">Add Meeting</a>
+
+                        </div>
+                    </li>
+                </ul>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> login Admin</a>
+                </li>
+                <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
+                </li>
+                <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
+                </li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<!-- Header -->
+<div class="page-header">
+    Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
+</div>
+
+<body>
+
+    <!-- Page Content -->
+    <!-- <div class="container-fluid">
         <div class="container">
             <div class="cadre "> -->
-<div class="container">
-    <div class="cadre">
-        <div class="col-md-6 col-md-offset-3">
-            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-                <div class="form-group">
+    <div class="container">
+        <div class="cadre">
+            <div class="col-md-6 col-md-offset-3">
+                <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
-                    <label for="pseudonym">Pseudo</label>
+                    <div class="form-group">
 
-                    <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
-/>
-                    <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
+                        <label for="birthDay">Your age hier</label>
 
-                </div>
-                <div class="form-group">
-                    <label for="birthDay">Birthdate</label>
-                    <input type="text" class="form-control" formControlName="birthDate" name="birthDate" id="birthDate" placeholder=" your birthDate hier"
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="gender">choice your gender</label>
+                        <input type="date" id="birthDay" class="date" name="birthDay" (change)="Filter($event.target.value)" formControlName="birthDate" ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" 
+                        />
+                    </div>
 
-                    <select class="form-control" id="gender" name="gender" formControlName="gender">
+
+                    <div class="form-group">
+                            <label for="meetingName">Select the Meeting Name</label>
+                            <select [(ngModel)]="selectedMeeting" (change)="FilterM($event.target.value)" formControlName="meetingName" name="selectM">
+                                    <option [ngValue]="">
+                                    </option>
+                                    <option *ngFor="let currentMeeting of Meetings" 
+                                       >{{currentMeeting.meetingName}}
+                                    </option>
+                                 </select>
+    
+    
+                        </div>
+
+                    <div class="form-group">
+
+                        <label for="pseudonym">Pseudo</label>
+
+                        <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
+                        />
+                        <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+                        <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">choice your gender</label>
+
+                        <select class="form-control" id="gender" name="gender" formControlName="gender">
                               <option>Man</option>
                               <option>Woman</option>
                               
                             </select>
 
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    
-                            <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
-                            />
-            
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
 
-                <div class="form-group">
-                    <label for="tel">Phone Nomber</label>
+                        <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
+                        />
 
-                    <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
-                    />
+                    </div>
 
-                </div>
+                    <div class="form-group">
+                        <label for="tel">Phone Nomber</label>
 
-                <div class="form-group">
-                    <label for="password">PassWord</label>
+                        <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
+                        />
 
-                    <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
+                    </div>
 
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">confirm the passWord</label>
+                    <div class="form-group">
+                        <label for="password">PassWord</label>
 
-                    <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
-                        placeholder=" ">
+                        <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
 
-                </div>
-                <div class="form-group">
-                    <label for="picture">Example file input</label>
-                    <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">confirm the passWord</label>
 
-                <div class="form-group">
-                        <label for="meetingName">Select the Meeting Name</label>
-                    <select [(ngModel)]="selectedMeeting" (change)="Filter($event.target.value)" formControlName="MeetingNameN" name="selectM">
-                                <option [ngValue]="">
-                                </option>
-                                <option *ngFor="let currentMeeting of Meetings" 
-                                   >{{currentMeeting.meetingName}}
-                                </option>
-                             </select>
-        
-        
-                  </div>
+                        <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
+                            placeholder=" ">
 
-                <div>
-                     <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
-                    <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+                    </div>
+                    <div class="form-group">
+                        <label for="picture">Example file input</label>
+                        <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
+                    </div>
+
+                   
+
+                    <div>
+                        <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+                        <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 
-                </div>
-            </form>
-            <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p>
+                    </div>
+                </form>
+                <p>Form value: {{ clientForm.value | json }}</p>
+                <p>Form status: {{ clientForm.status | json }}</p>
+            </div>
+
         </div>
 
     </div>
-
-</div>
-<div class="clear-both"></div>
+</body>
+<!-- <div class="clear-both"></div>
 <aside class="banner">
 
     <div class="container">
@@ -171,9 +190,10 @@
             </div>
         </div>
 
-    </div>
-    <!-- /.container -->
+    </div> -->
+<!-- /.container -->
 
-</aside>
+<!-- </aside> -->
+
 
 <!-- /.banner -->

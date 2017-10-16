@@ -10,6 +10,10 @@ export class MeetingService {
     getAll() {
         return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting', this.jwt()).map((response: Response) => response.json());
     }
+    
+    getAllByDate(date:Date) {
+        return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting' + date, this.jwt()).map((response: Response) => response.json());
+    }
  
     getById(id: number) {
         return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting' + id, this.jwt()).map((response: Response) => response.json());

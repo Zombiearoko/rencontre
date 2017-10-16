@@ -102,10 +102,6 @@ public class MemberController {
 
 	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	private static final String SAVE_DIR_TESTIMONY = "/home/saphir/test1/workspaceGit/rencontre/backend/src/main/resources/UploadFile/UploadTestimony";
-	// private static final String SAVE_DIR_PICTURE =
-	// "/home/saphir/test1/workspaceGit/rencontre/backend/src/main/resources/UploadFile/UploadPicture";
-
 	@Autowired
 	MemberRepository memberRepository;
 
@@ -135,66 +131,58 @@ public class MemberController {
 
 	@Autowired
 	private SimpMessagingTemplate webSocket;
-	
+
 	@Autowired
 	GridFsOperations gridOperations;
-	
+
 	@Autowired
 	FriendlyRepository freindlyRepository;
-	
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
 	}
 
 	private String imageFileId = "";
-	private String FOLDER="/home/saphir/Images/style/";
-	
+	private String FOLDER = "/home/saphir/Images/style/";
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/savePicture", method = RequestMethod.POST)
-	public ResponseEntity<?> savePicturePost( @RequestParam("file") MultipartFile file, HttpServletRequest req
-		    ) throws UnknownHostException, Exception, FileNotFoundException {
-		
+	public ResponseEntity<?> savePicturePost(@RequestParam("file") MultipartFile file, HttpServletRequest req)
+			throws UnknownHostException, Exception, FileNotFoundException {
+
 		DBObject metaData = new BasicDBObject();
-		
+
 		InputStream iamgeStream = file.getInputStream();
 		metaData.put("type", "image");
-		
+
 		// Store picture to MongoDB
 		imageFileId = gridOperations.store(iamgeStream, "jsa-logo.png", "image/png", metaData).getId().toString();
-		
+
 		System.out.println("ImageFileId = " + imageFileId);
-		
-		
+
 		InputStream iamgeStreamText = file.getInputStream();
 		metaData.put("type", "text");
-		
+
 		// Store file text to MongoDB
 		imageFileId = gridOperations.store(iamgeStream, "saphir.pdf", "texte/pdf", metaData).getId().toString();
-		
+
 		System.out.println("ImageFileId = " + imageFileId);
-		
+
 		InputStream iamgeStreamVideo = file.getInputStream();
 		metaData.put("type", "video");
-		
+
 		// Store video to MongoDB
 		imageFileId = gridOperations.store(iamgeStreamVideo, "volviane.mp4", "video/mp4", metaData).getId().toString();
-		
+
 		System.out.println("ImageFileId = " + imageFileId);
-		
-		  String status = "Upload has been successful";
-		  
-		  return new ResponseEntity<String>(status, HttpStatus.OK);
-		  //return Response.status(200).entity(status).build();
-		
+
+		String status = "Upload has been successful";
+
+		return new ResponseEntity<String>(status, HttpStatus.OK);
+		// return Response.status(200).entity(status).build();
+
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * connexion of the member
 	 * 
@@ -419,33 +407,34 @@ public class MemberController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/addTestimony", method = RequestMethod.POST)
-	public ResponseEntity<?> addTestimonyPost(HttpServletRequest requestTestimony,@RequestParam("file") MultipartFile file, UriComponentsBuilder ucBuilder)
+	public ResponseEntity<?> addTestimonyPost(HttpServletRequest requestTestimony,
+			@RequestParam("file") MultipartFile file, UriComponentsBuilder ucBuilder)
 			throws IOException, ServletException {
 		HttpSession session = requestTestimony.getSession();
 		Member member = (Member) session.getAttribute("Member");
-		//String author=member.getPseudonym();
+		// String author=member.getPseudonym();
 		Testimony testimony = new Testimony();
 		// String resultTestimony;
-		
+
 		DBObject metaData = new BasicDBObject();
-		//private String imageFileId = "";
+		// private String imageFileId = "";
 		String testimonyType = requestTestimony.getParameter("testimonyType");
 		String author = requestTestimony.getParameter("author");
-		String fileName="testimony"+author+".mp4";
+		String fileName = "testimony" + author + ".mp4";
 		if (testimonyType.equalsIgnoreCase("videos")) {
-
 
 			try {
 
 				InputStream fileStreamVideo = file.getInputStream();
 				metaData.put("type", "video");
-				
+
 				// Store video to MongoDB
 				imageFileId = gridOperations.store(fileStreamVideo, fileName, "video/mp4", metaData).getId().toString();
-				
+
 				System.out.println("ImageFileId = " + imageFileId);
-				//GridFSDBFile videoFile = gridOperations.findOne(new Query(Criteria.where("_id").is(imageFileId)));
-				
+				// GridFSDBFile videoFile = gridOperations.findOne(new
+				// Query(Criteria.where("_id").is(imageFileId)));
+
 				testimony.setTestimonyType(testimonyType);
 				testimony.setTestimonyContent(fileName);
 				testimony.setAuthor(author);
@@ -519,23 +508,19 @@ public class MemberController {
 		String author = requestTestimony.getParameter("author");
 
 		if (testimonyType.equalsIgnoreCase("videos")) {
-		
+
 			
-			File fileWay = new File(SAVE_DIR_TESTIMONY);
 			String name = "testimony";
 			Part part = null;
-			if (!fileWay.exists())
-				fileWay.mkdir();
+
 
 			part = requestTestimony.getPart("testimony");
 
 			try {
 
-				String fileName = SAVE_DIR_TESTIMONY + File.separator + name;
-				part.write(SAVE_DIR_TESTIMONY + File.separator + name);
 
 				testimony.setTestimonyType(testimonyType);
-				testimony.setTestimonyContent(fileName);
+				
 				testimony.setAuthor(member.getPseudonym());
 				member = memberRepository.findByPseudonym(author);
 				testimony.setAuthor(member.getPseudonym());
@@ -1100,204 +1085,191 @@ public class MemberController {
 		}
 
 	}
-	
-	/* 
-	 * methodes de modification du profil: je ferai la methode d'ajout ou monification de la photo a part
+
+	/*
+	 * methodes de modification du profil: je ferai la methode d'ajout ou
+	 * monification de la photo a part
 	 */
 	/*
 	 * Version post
 	 */
-	
-	
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/savePictures", method = RequestMethod.POST)
-	public ResponseEntity<?> savePicturesPost( @RequestParam("file") MultipartFile file, HttpServletRequest request
-		    ) throws UnknownHostException, Exception, FileNotFoundException {
-		
+	public ResponseEntity<?> savePicturesPost(@RequestParam("file") MultipartFile file, HttpServletRequest request)
+			throws UnknownHostException, Exception, FileNotFoundException {
+
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
-		//String pseudonym= member.getPseudonym();
+		// String pseudonym= member.getPseudonym();
 		String pseudonym = request.getParameter("monPseudo");
-		Member member=memberRepository.findByPseudonym(pseudonym);
-		
+		Member member = memberRepository.findByPseudonym(pseudonym);
+
 		DBObject metaData = new BasicDBObject();
-		
+
 		InputStream iamgeStream = file.getInputStream();
 		metaData.put("type", "image");
-		String pictureName="picture"+pseudonym;
-		
+		String pictureName = "picture" + pseudonym;
+
 		// Store picture to MongoDB
 		imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
-		
+
 		System.out.println("ImageFileId = " + imageFileId);
-		
+
 		member.setPicture(pictureName);
 		memberRepository.save(member);
 		String status = "Upload has been successful";
-		  
-		  return new ResponseEntity<String>(status, HttpStatus.OK);
-		  //return Response.status(200).entity(status).build();
-		
+
+		return new ResponseEntity<String>(status, HttpStatus.OK);
+		// return Response.status(200).entity(status).build();
+
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-	public ResponseEntity<?> updateProfilePost(HttpServletRequest request)
-			throws Exception {
-		
+	public ResponseEntity<?> updateProfilePost(HttpServletRequest request) throws Exception {
+
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
-		//String pseudonym= member.getPseudonym();
+		// String pseudonym= member.getPseudonym();
 		String pseudonym = request.getParameter("monPseudo");
-		Member member=memberRepository.findByPseudonym(pseudonym);
+		Member member = memberRepository.findByPseudonym(pseudonym);
 		String typeMeeting = member.getMeetingNameConnexion();
 		String imageFileId = "";
-		
-		
+
 		if (typeMeeting.equals("Amoureuse")) {
 
 			String fatherName = request.getParameter("fatherName");
 			String motherName = request.getParameter("motherName");
 			String motherProfession = request.getParameter("motherProfession");
 			String fatherProfession = request.getParameter("fatherProfession");
-			DatingInformation datingInformation= new DatingInformation();
-			
+			DatingInformation datingInformation = new DatingInformation();
+
 			datingInformation.setFatherName(fatherName);
 			datingInformation.setMotherName(motherName);
 			datingInformation.setFatherProfession(fatherProfession);
 			datingInformation.setMotherProfession(motherProfession);
-			
+
 			member.setDatingInformation(datingInformation);
 			memberRepository.save(member);
-			
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
 
-		}else if(typeMeeting.equals("Professionnelle")){
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Professionnelle")) {
+
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String profession = request.getParameter("profession");
 			String levelStudy = request.getParameter("levelStudy");
-			
-			ProfessionalMeetingInformation professionnalMeeting =new ProfessionalMeetingInformation();
+
+			ProfessionalMeetingInformation professionnalMeeting = new ProfessionalMeetingInformation();
 			professionnalMeeting.setFirstName(firstName);
 			professionnalMeeting.setLastName(lastName);
 			professionnalMeeting.setLevelStudy(levelStudy);
 			professionnalMeeting.setProfession(profession);
-			
+
 			member.setProfessionalMeetingInformation(professionnalMeeting);
 			memberRepository.save(member);
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
-			
-		}else if(typeMeeting.equals("Academique")){
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Academique")) {
+
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String schoolName = request.getParameter("schoolName");
 			String levelStudy = request.getParameter("levelStudy");
-			
-			AcademicDatingInformation academicDating= new AcademicDatingInformation();
-			
+
+			AcademicDatingInformation academicDating = new AcademicDatingInformation();
+
 			academicDating.setFirstName(firstName);
 			academicDating.setLastName(lastName);
 			academicDating.setLevelStudy(levelStudy);
 			academicDating.setSchoolName(schoolName);
-			
+
 			member.setAcademicDatingInformation(academicDating);
 			memberRepository.save(member);
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
-			
-		}else if(typeMeeting.equals("Amicale")){
-			
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Amicale")) {
+
 		}
-			
-			
-		
+
 		return null;
 	}
+
 	/*
 	 * Version get
 	 */
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.GET)
-	public ResponseEntity<?> updateProfileGet(HttpServletRequest request)
-			throws Exception {
-		
+	public ResponseEntity<?> updateProfileGet(HttpServletRequest request) throws Exception {
+
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
-		//String pseudonym= member.getPseudonym();
+		// String pseudonym= member.getPseudonym();
 		String pseudonym = request.getParameter("monPseudo");
-		Member member=memberRepository.findByPseudonym(pseudonym);
+		Member member = memberRepository.findByPseudonym(pseudonym);
 		String typeMeeting = member.getMeetingNameConnexion();
 		String imageFileId = "";
-		
-		
+
 		if (typeMeeting.equals("Amoureuse")) {
 
 			String fatherName = request.getParameter("fatherName");
 			String motherName = request.getParameter("motherName");
 			String motherProfession = request.getParameter("motherProfession");
 			String fatherProfession = request.getParameter("fatherProfession");
-			DatingInformation datingInformation= new DatingInformation();
-			
+			DatingInformation datingInformation = new DatingInformation();
+
 			datingInformation.setFatherName(fatherName);
 			datingInformation.setMotherName(motherName);
 			datingInformation.setFatherProfession(fatherProfession);
 			datingInformation.setMotherProfession(motherProfession);
-			
+
 			member.setDatingInformation(datingInformation);
 			memberRepository.save(member);
-			
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
 
-		}else if(typeMeeting.equals("Professionnelle")){
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Professionnelle")) {
+
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String profession = request.getParameter("profession");
 			String levelStudy = request.getParameter("levelStudy");
-			
-			ProfessionalMeetingInformation professionnalMeeting =new ProfessionalMeetingInformation();
+
+			ProfessionalMeetingInformation professionnalMeeting = new ProfessionalMeetingInformation();
 			professionnalMeeting.setFirstName(firstName);
 			professionnalMeeting.setLastName(lastName);
 			professionnalMeeting.setLevelStudy(levelStudy);
 			professionnalMeeting.setProfession(profession);
-			
+
 			member.setProfessionalMeetingInformation(professionnalMeeting);
 			memberRepository.save(member);
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
-			
-		}else if(typeMeeting.equals("Academique")){
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Academique")) {
+
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String schoolName = request.getParameter("schoolName");
 			String levelStudy = request.getParameter("levelStudy");
-			
-			AcademicDatingInformation academicDating= new AcademicDatingInformation();
-			
+
+			AcademicDatingInformation academicDating = new AcademicDatingInformation();
+
 			academicDating.setFirstName(firstName);
 			academicDating.setLastName(lastName);
 			academicDating.setLevelStudy(levelStudy);
 			academicDating.setSchoolName(schoolName);
-			
+
 			member.setAcademicDatingInformation(academicDating);
 			memberRepository.save(member);
-			return new ResponseEntity<Member>(member,HttpStatus.OK);
-			
-		}else if(typeMeeting.equals("Amicale")){
-			
-			
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+
+		} else if (typeMeeting.equals("Amicale")) {
+
 		}
-			
-			
-		
+
 		return null;
 	}
-	
+
 	/*
 	 * methode envoyer une demande d'amite et couple
 	 */
@@ -1308,9 +1280,8 @@ public class MemberController {
 	@MessageMapping("/request")
 	@SendTo("/topic/request")
 	@Async
-	public ResponseEntity<?> send(HttpServletRequest request)
-			throws Exception {
-		
+	public ResponseEntity<?> send(HttpServletRequest request) throws Exception {
+
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		// properties.put("mail.smtp.host", "smtp-relay.gmail.com");
@@ -1322,35 +1293,31 @@ public class MemberController {
 		properties.put("mail.smtp.timeout", "5000");
 		properties.put("mail.smtp.writetimeout", "5000");
 		Session session = Session.getInstance(properties, null);
-		
-		
-		
-		
+
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
-		//String pseudonym= member.getPseudonym();
+		// String pseudonym= member.getPseudonym();
 		String pseudonymMember = request.getParameter("monPseudo");
-		Member memberSender=memberRepository.findByPseudonym(pseudonymMember);
+		Member memberSender = memberRepository.findByPseudonym(pseudonymMember);
 		String typeMeeting = memberSender.getMeetingNameConnexion();
-		String pseudonym=request.getParameter("pseudonym");
-		Member member=memberRepository.findByPseudonym(pseudonymMember);
-		String statut=member.getStatus().getStatusName();
-		
-		
-		String idFriendly=pseudonymMember+pseudonym+typeMeeting;
-		String friendlyStatut="demande envoye";
-		
-		Friendly friendly=new Friendly();
-		
+		String pseudonym = request.getParameter("pseudonym");
+		Member member = memberRepository.findByPseudonym(pseudonymMember);
+		String statut = member.getStatus().getStatusName();
+
+		String idFriendly = pseudonymMember + pseudonym + typeMeeting;
+		String friendlyStatut = "demande envoye";
+
+		Friendly friendly = new Friendly();
+
 		friendly.setIdFriendly(idFriendly);
 		friendly.setFriendlyStatut(friendlyStatut);
-		
+
 		freindlyRepository.save(friendly);
-		
-		if(statut.equals("disconnected")){
-			
-			String content1 = "vous venez de recevoir une demande de relation " + typeMeeting+"\n"
-					+ "c'est peut etre votre jour de chance connectez vous maintenant " ;
+
+		if (statut.equals("disconnected")) {
+
+			String content1 = "vous venez de recevoir une demande de relation " + typeMeeting + "\n"
+					+ "c'est peut etre votre jour de chance connectez vous maintenant ";
 			String subject1 = "Notification";
 			// String form="saphirmfogo@gmail.com";
 			MimeMessage msg = new MimeMessage(session);
@@ -1364,10 +1331,9 @@ public class MemberController {
 			transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
 			transport.sendMessage(msg, msg.getAllRecipients());
 			transport.close();
-		
+
 		}
-		
-		
+
 		return new ResponseEntity<Friendly>(friendly, HttpStatus.OK);
 	}
 }

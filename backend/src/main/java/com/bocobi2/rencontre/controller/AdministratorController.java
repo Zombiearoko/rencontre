@@ -1,5 +1,6 @@
 package com.bocobi2.rencontre.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,20 +107,22 @@ public class AdministratorController {
 					session.setAttribute("Administrator", null);
 					logger.error("administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
+							new MemberErrorType("Member with " + "password " + "" + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
 				logger.error("administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
-						new MemberErrorType("administrator with " + "pseudonym " + loginAdmin + " not found."),
+						new MemberErrorType(
+								"administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
 
 			}
 		} catch (Exception ex) {
 			logger.error("Member with pseudonym {} not found.", loginAdmin);
 			return new ResponseEntity(
-					new MemberErrorType("administrator with " + "pseudonym" + " " + loginAdmin + " not found."),
+					new MemberErrorType(
+							"administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
 
@@ -155,20 +158,21 @@ public class AdministratorController {
 					session.setAttribute("administrator", null);
 					logger.error("administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
+							new MemberErrorType("Member with " + "password" + " " + "" + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
 				logger.error("administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
-						new MemberErrorType("administrator with " + "pseudonym " + loginAdmin + " not found."),
+						new MemberErrorType(
+								"administrator with " + "pseudonym" + "" + " " + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
 
 			}
 		} catch (Exception ex) {
 			logger.error("Member with pseudonym {} not found.", loginAdmin);
 			return new ResponseEntity(
-					new MemberErrorType("administrator with " + "pseudonym" + " " + loginAdmin + " not found."),
+					new MemberErrorType("administrator with " + "pseudonym" + " " + "" + loginAdmin + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
 
@@ -190,9 +194,8 @@ public class AdministratorController {
 		TypeMeeting typeMeeting = new TypeMeeting();
 		if (typeMeetingRepository.findByMeetingName(meetingName) != null) {
 			logger.error("Unable to create. the type of Meeting with name {} already exist", meetingName);
-			return new ResponseEntity(new MemberErrorType(
-					"Unable to create. " + " the type of Meeting with name " + "" + meetingName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of Meeting with name "
+					+ "" + "" + meetingName + " already exist"), HttpStatus.CONFLICT);
 		} else {
 
 			typeMeeting.setMeetingName(meetingName);
@@ -214,9 +217,8 @@ public class AdministratorController {
 		TypeMeeting typeMeeting = new TypeMeeting();
 		if (typeMeetingRepository.findByMeetingName(meetingName) != null) {
 			logger.error("Unable to create. the type of Meeting with name {} already exist", meetingName);
-			return new ResponseEntity(new MemberErrorType(
-					"Unable to create. " + " the type of Meeting with name " + "" + meetingName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of Meeting with name "
+					+ "" + "" + meetingName + " already exist"), HttpStatus.CONFLICT);
 		} else {
 
 			typeMeeting.setMeetingName(meetingName);
@@ -248,7 +250,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Country with name {} already exist", countryName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Country with name " + "" + countryName + " already exist"),
+							"Unable to create. " + "A Country with name " + "" + "" + countryName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 
@@ -271,7 +273,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Country with name {} already exist", countryName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Country with name " + "" + countryName + " already exist"),
+							"Unable to create. " + "A Country with name " + "" + "" + countryName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -302,7 +304,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Region with name {} already exist", regionName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Region with name " + "" + regionName + " already exist"),
+							"Unable to create. " + "A Region with name " + "" + "" + regionName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -357,10 +359,8 @@ public class AdministratorController {
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Department with name " + "" + departmentName + " already exist"),
-					HttpStatus.CONFLICT);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "A Department with name " + "" + ""
+					+ "" + departmentName + " already exist"), HttpStatus.CONFLICT);
 		}
 	}
 
@@ -386,9 +386,8 @@ public class AdministratorController {
 			return new ResponseEntity<Department>(department, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Department with name {} already exist", departmentName);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Department with name " + "" + departmentName + " already exist"),
+			return new ResponseEntity(new MemberErrorType(
+					"Unable to create. " + "A Department with name " + "" + "" + departmentName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -417,7 +416,7 @@ public class AdministratorController {
 			logger.error("Unable to create. A Borough with name {} already exist", boroughName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Borough with name " + "" + boroughName + " already exist"),
+							"Unable to create. " + "A Borough with name " + "" + "" + boroughName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -474,7 +473,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + ""
+							+ "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -502,7 +502,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+					new MemberErrorType("Unable to create. " + "A Town with name " + ""
+							+ "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -531,7 +532,8 @@ public class AdministratorController {
 			logger.error("Unable to create. A Concession with name {} already exist", concessionName);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"Unable to create. " + "A Concession with name " + "" + concessionName + " already exist"),
+							"Unable to create. " + "A Concession with name " + ""
+									+ "" + concessionName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -590,7 +592,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
-	
+
 	/*
 	 * Version Post
 	 */
@@ -627,7 +629,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listDepartment", method = RequestMethod.GET)
 	public ResponseEntity<List<Department>> listDepartmentGet(HttpServletRequest request) {
@@ -661,7 +663,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listBorough", method = RequestMethod.GET)
 	public ResponseEntity<List<Borough>> listBoroughGet(HttpServletRequest request) {
@@ -695,7 +697,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTown", method = RequestMethod.GET)
 	public ResponseEntity<List<Town>> listTownGet(HttpServletRequest request) {
@@ -729,7 +731,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listConcession", method = RequestMethod.GET)
 	public ResponseEntity<List<Concession>> listConcessionGet(HttpServletRequest request) {
@@ -745,23 +747,83 @@ public class AdministratorController {
 
 	}
 
+	/*
+	 * list type meeting with birtdate
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
 
+		String birth = request.getParameter("bithDate");
+		Integer birthDate = new Integer(birth);
+		System.out.println(birthDate);
 		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
 
 		if (listOfTypeMeeting.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+		if (birthDate <= 20) {
+			for (TypeMeeting meeting : listOfTypeMeeting) {
+				if (meeting.getMeetingName().equals("Amicale")) {
+					listMineur.add(meeting);
+				} else if (meeting.getMeetingName().equals("Academique")) {
+					listMineur.add(meeting);
+				}
+			}
+			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+		} else {
+
+			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+		}
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.GET)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
 
+		String birth = request.getParameter("bithDate");
+		Integer birthDate = new Integer(birth);
+		System.out.println(birthDate);
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+
+		if (birthDate <= 20) {
+			for (TypeMeeting meeting : listOfTypeMeeting) {
+				if (meeting.getMeetingName().equals("Amicale")) {
+					listMineur.add(meeting);
+				} else if (meeting.getMeetingName().equals("Academique")) {
+					listMineur.add(meeting);
+				}
+			}
+			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+		} else {
+
+			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+		}
+
+	}
+
+	/*
+	 * list all
+	 */
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllTypeMeeting", method = RequestMethod.POST)
+	public ResponseEntity<List<TypeMeeting>> listAllTypeMeetingPost(HttpServletRequest request) {
+
 		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
 
 		if (listOfTypeMeeting.isEmpty()) {
@@ -770,7 +832,20 @@ public class AdministratorController {
 		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllTypeMeeting", method = RequestMethod.GET)
+	public ResponseEntity<List<TypeMeeting>> listAllTypeMeetingGet(HttpServletRequest request) {
+
+		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+		if (listOfTypeMeeting.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+
+	}
+
 	/*
 	 * list all
 	 */
@@ -790,6 +865,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllRegion", method = RequestMethod.GET)
 	public ResponseEntity<List<Region>> listAllRegionGet(HttpServletRequest request) {
@@ -802,7 +878,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Region>>(listOfRegion, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.POST)
 	public ResponseEntity<List<Department>> listAllDepartmentPost(HttpServletRequest request) {
@@ -815,7 +891,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllDepartment", method = RequestMethod.GET)
 	public ResponseEntity<List<Department>> listAllDepartmentGet(HttpServletRequest request) {
@@ -828,6 +904,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Department>>(listOfDepartment, HttpStatus.OK);
 
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllBorough", method = RequestMethod.POST)
 	public ResponseEntity<List<Borough>> listAllBoroughPost(HttpServletRequest request) {
@@ -840,7 +917,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllBorough", method = RequestMethod.GET)
 	public ResponseEntity<List<Borough>> listAllBoroughGet(HttpServletRequest request) {
@@ -853,5 +930,5 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 }

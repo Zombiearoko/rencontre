@@ -53,11 +53,11 @@ public Filter(value: Date)
   // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
   // alert(date);
   
-  console.log('age donne', value.getFullYear);
+  console.log('age donne', value);
    this.age=value;
 
    
-   this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
+   this.meetingService.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
    console.log("meetings", this.meetings);
 }
 onSubmit(post){

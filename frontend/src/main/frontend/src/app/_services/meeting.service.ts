@@ -12,7 +12,7 @@ export class MeetingService {
     }
     
     getAllByDate(date:Date) {
-        return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting' + date, this.jwt()).map((response: Response) => response.json());
+        return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + date, this.jwt()).map((response: Response) => response.json());
     }
  
     getById(id: number) {

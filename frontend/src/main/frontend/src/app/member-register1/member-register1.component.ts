@@ -28,24 +28,34 @@ export class MemberRegister1Component implements OnInit {
   post: any; 
   titleAlert:string = 'You must specify a pseudo thats between 3 and 5 characters';
   private age:Date;
+  date:number;
 private results: [any];
 private collectionJson: object;
 submitted = false;
+objDate = Date.now();
 
   constructor(private rest: RestProvider,private meetingService: MeetingService, public fb: FormBuilder, private http: Http, private router: Router, private alertService: AlertService) { 
   
     
     this.clientForm = this.fb.group({
-      'age': [null, Validators.compose([Validators.required])]
+      'date': [null, Validators.compose([Validators.required])]
     });
     
    
   }
   //getting country when selected
-public Filter(value: any)
+public Filter(value: Date)
 {
-  alert(value);
+  
+
+  // var ageDifMs = Date.now() - this.age.getTime();  
+  // var ageDate = new Date(ageDifMs); // miliseconds from epoch
+  // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
+  // alert(date);
+  
+  console.log('age donne', value.getFullYear);
    this.age=value;
+
    
    this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
    console.log("meetings", this.meetings);
@@ -58,7 +68,7 @@ onSubmit(post){
 
 }
   ngOnInit() {
-    
+    console.log("date du jour", this.objDate  );
     
   }
   

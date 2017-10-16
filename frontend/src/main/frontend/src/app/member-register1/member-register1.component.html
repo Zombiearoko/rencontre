@@ -88,10 +88,10 @@
         <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
           <div class="form-group">
 
-            <label for="age">Your age hier</label>
+            <label for="date">Your age hier</label>
 
             <input type="date" id="date" class="date" name="date" (change)="Filter($event.target.value)" formControlName="date" ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31"
-              required />
+              />
           </div>
 
           <div>

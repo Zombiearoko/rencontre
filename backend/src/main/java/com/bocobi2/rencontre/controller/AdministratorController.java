@@ -1,6 +1,9 @@
 package com.bocobi2.rencontre.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -473,8 +476,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + ""
-							+ "" + townName + " already exist"),
+					new MemberErrorType(
+							"Unable to create. " + "A Town with name " + "" + "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -502,8 +505,8 @@ public class AdministratorController {
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Town with name {} already exist", townName);
 			return new ResponseEntity(
-					new MemberErrorType("Unable to create. " + "A Town with name " + ""
-							+ "" + townName + " already exist"),
+					new MemberErrorType(
+							"Unable to create. " + "A Town with name " + "" + "" + townName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -530,10 +533,8 @@ public class AdministratorController {
 			return new ResponseEntity<Concession>(concession, HttpStatus.CREATED);
 		} catch (Exception ex) {
 			logger.error("Unable to create. A Concession with name {} already exist", concessionName);
-			return new ResponseEntity(
-					new MemberErrorType(
-							"Unable to create. " + "A Concession with name " + ""
-									+ "" + concessionName + " already exist"),
+			return new ResponseEntity(new MemberErrorType(
+					"Unable to create. " + "A Concession with name " + "" + "" + concessionName + " already exist"),
 					HttpStatus.CONFLICT);
 		}
 	}
@@ -755,30 +756,53 @@ public class AdministratorController {
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
 
 		String birth = request.getParameter("bithDate");
-		Integer birthDate = new Integer(birth);
-		System.out.println(birthDate);
-		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
 
-		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = dateFormat.parse(birth);
+			System.out.println("Date parsée : " + date);
 
-		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int year = calendar.get(Calendar.YEAR);
 
-		if (listOfTypeMeeting.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
+			Calendar calendarCourante = Calendar.getInstance();
 
-		if (birthDate <= 20) {
-			for (TypeMeeting meeting : listOfTypeMeeting) {
-				if (meeting.getMeetingName().equals("Amicale")) {
-					listMineur.add(meeting);
-				} else if (meeting.getMeetingName().equals("Academique")) {
-					listMineur.add(meeting);
-				}
+			int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+			int birthDate = yearCourante - year;
+
+			// Integer birthDate = new Integer(birth);
+			System.out.println(birthDate);
+			List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+			List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+			// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+
+			if (listOfTypeMeeting.isEmpty()) {
+				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
-		} else {
 
-			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+			if (birthDate <= 20) {
+				for (TypeMeeting meeting : listOfTypeMeeting) {
+					if (meeting.getMeetingName().equals("Amicale")) {
+						listMineur.add(meeting);
+					} else if (meeting.getMeetingName().equals("Academique")) {
+						listMineur.add(meeting);
+					}
+				}
+				return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+			} else {
+
+				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : dd/MM/YYYY"),
+					HttpStatus.CONFLICT);
+
 		}
 
 	}
@@ -788,30 +812,53 @@ public class AdministratorController {
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
 
 		String birth = request.getParameter("bithDate");
-		Integer birthDate = new Integer(birth);
-		System.out.println(birthDate);
-		List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
 
-		List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = dateFormat.parse(birth);
+			System.out.println("Date parsée : " + date);
 
-		// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int year = calendar.get(Calendar.YEAR);
 
-		if (listOfTypeMeeting.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
+			Calendar calendarCourante = Calendar.getInstance();
 
-		if (birthDate <= 20) {
-			for (TypeMeeting meeting : listOfTypeMeeting) {
-				if (meeting.getMeetingName().equals("Amicale")) {
-					listMineur.add(meeting);
-				} else if (meeting.getMeetingName().equals("Academique")) {
-					listMineur.add(meeting);
-				}
+			int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+			int birthDate = yearCourante - year;
+
+			// Integer birthDate = new Integer(birth);
+			System.out.println(birthDate);
+			List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
+
+			List<TypeMeeting> listMineur = new ArrayList<TypeMeeting>();
+
+			// List<TypeMeeting> listMajeur = new ArrayList<TypeMeeting>();
+
+			if (listOfTypeMeeting.isEmpty()) {
+				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
-		} else {
 
-			return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+			if (birthDate <= 20) {
+				for (TypeMeeting meeting : listOfTypeMeeting) {
+					if (meeting.getMeetingName().equals("Amicale")) {
+						listMineur.add(meeting);
+					} else if (meeting.getMeetingName().equals("Academique")) {
+						listMineur.add(meeting);
+					}
+				}
+				return new ResponseEntity<List<TypeMeeting>>(listMineur, HttpStatus.OK);
+			} else {
+
+				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : dd/MM/YYYY"),
+					HttpStatus.CONFLICT);
+
 		}
 
 	}

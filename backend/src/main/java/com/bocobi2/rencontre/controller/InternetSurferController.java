@@ -1078,10 +1078,105 @@ public class InternetSurferController {
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
 
+		// String pseudo = encrypt(pseudonym);
+		// String meeting = encrypt(meetingName);
+
+		// File fileWay = new File(SAVE_DIR_PICTURE);
+		// String nom = "picture" + pseudonym + ".png";
+		// Part part = null;
+		// if (!fileWay.exists())
+		// fileWay.mkdir();
+
+		System.out.println("-------------------------------");
+		System.out.println(pseudonym);
+		System.out.println("-------------------------------");
+		System.out.println(emailAdress);
+		System.out.println("-------------------------------");
+		System.out.println(password);
+		System.out.println("-------------------------------");
+		System.out.println("-------------------------------");
+		System.out.println(phoneNumber);
+		System.out.println("-------------------------------");
+
+		long numberMember = memberRepository.count() + 1;
+		String idCryptograph = "" + numberMember;
+		System.out.println(numberMember);
+		Cryptograph cryptograph = new Cryptograph();
+
+		String content1 = "Thanks to create your count in our website \n"
+				+ " Now,lick on this link to activate E-mail adress: "
+				+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?number=" + numberMember;
+		String subject1 = "confirm your E-mail adress";
+
 		if (meetingName.equals("Amoureuse")) {
 
 			String fatherName = request.getParameter("fatherName");
 			String motherName = request.getParameter("motherName");
+			String countryName = request.getParameter("countryName");
+			String regionName = request.getParameter("regionName");
+			String departmentName = request.getParameter("departmentName");
+			String boroughName = request.getParameter("boroughName");
+			String townName = request.getParameter("townName");
+			String concessionName = request.getParameter("concessionName");
+
+			Country countryDB = countryRepository.findByCountryName(countryName);
+			Region regionDB = regionRepository.findByRegionName(regionName);
+			Department departmentDB = departmentRepository.findByDepartmentName(departmentName);
+			Borough boroughDB = boroughRepository.findByBoroughName(boroughName);
+			// Town town = townRepository.findByTownName(townName);
+			// Concession concession=
+			// concessionRepository.findByConcessionName(concessionName);
+
+			Town town = new Town();
+			Concession concession = new Concession();
+
+			try {
+				town.setTownName(townName);
+				town.setBorough(boroughDB);
+
+				townRepository.save(town);
+
+			} catch (Exception ex) {
+				logger.error("Unable to create. A Town with name {} already exist", townName);
+				return new ResponseEntity(
+						new MemberErrorType(
+								"Unable to create. " + "A Town with name " + "" + townName + " already exist"),
+						HttpStatus.CONFLICT);
+			}
+
+			Town townDB = townRepository.findByTownName(townName);
+
+			try {
+				concession.setConcessionName(concessionName);
+				concession.setTown(townDB);
+
+				concessionRepository.save(concession);
+
+			} catch (Exception ex) {
+				logger.error("Unable to create. A Concession with name {} already exist", concessionName);
+				return new ResponseEntity(new MemberErrorType(
+						"Unable to create. " + "A Concession with name " + "" + concessionName + " already exist"),
+						HttpStatus.CONFLICT);
+			}
+			Concession concessionDB = concessionRepository.findByConcessionName(concessionName);
+
+			String idLocality = countryName + regionName + departmentName + boroughName + townName + concessionName;
+
+			Locality locality = new Locality();
+
+			locality.setIdLocalite(idLocality);
+			locality.setCountry(countryDB);
+			locality.setRegion(regionDB);
+			locality.setDepartment(departmentDB);
+			locality.setBorough(boroughDB);
+			locality.setTown(townDB);
+			locality.setConcession(concessionDB);
+
+			localityRepository.save(locality);
+
+			Locality localityDB = localityRepository.findByIdLocalite(idLocality);
+
+			String idLocalityDB = localityDB.getIdLocalite();
 
 			ChooseMeeting chooseMeeting = new ChooseMeeting();
 			MemberBuffer member = new MemberBuffer();
@@ -1093,6 +1188,9 @@ public class InternetSurferController {
 			String idChoose = pseudonym + idTypeMeeting;
 
 			try {
+				// part = request.getPart("picture");
+				// String fileName = SAVE_DIR_PICTURE + File.separator + nom;
+				// part.write(SAVE_DIR_PICTURE + File.separator + nom);
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
@@ -1125,13 +1223,16 @@ public class InternetSurferController {
 						member.setDatingInformation(datingInformation);
 
 						try {
+
+							String idComeLocality = pseudonym + idLocalityDB;
+
+							if (comeLocalityRepository.exists(idComeLocality)) {
+
+								return new ResponseEntity(new MemberErrorType("this locality is already exist"),
+										HttpStatus.NOT_FOUND);
+							}
 							// enregistrement dans la zone tampon
 
-							String content1 = "Thanks to create your count in our website \n"
-									+ " Now,lick on this link to activate E-mail adress: "
-									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-									+ member.getPseudonym() + "&meetingName=" + meetingName;
-							String subject1 = "confirm your E-mail adress";
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -1145,8 +1246,20 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							ComeLocality comeLocality = new ComeLocality();
+
+							comeLocality.setId(idComeLocality);
+
+							comeLocalityRepository.save(comeLocality);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -1172,7 +1285,7 @@ public class InternetSurferController {
 						// Member memberBD =
 						// memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.deleteAll();
+						// chooseMeetingRepository.deleteAll();
 						chooseMeetingRepository.save(chooseMeeting);
 
 						datingInformation.setFatherName(fatherName);
@@ -1192,13 +1305,15 @@ public class InternetSurferController {
 						member.setDatingInformation(datingInformation);
 
 						try {
+							String idComeLocality = pseudonym + idLocalityDB;
+
+							if (comeLocalityRepository.exists(idComeLocality)) {
+
+								return new ResponseEntity(new MemberErrorType("this locality is already exist"),
+										HttpStatus.NOT_FOUND);
+							}
 							// enregistrement dans la zone tampon
 
-							String content1 = "Thanks to create your count in our website \n"
-									+ " Now,lick on this link to activate E-mail adress: "
-									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-									+ member.getPseudonym() + "&meetingName=" + meetingName;
-							String subject1 = "confirm your E-mail adress";
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -1212,8 +1327,20 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							ComeLocality comeLocality = new ComeLocality();
+
+							comeLocality.setId(idComeLocality);
+
+							comeLocalityRepository.save(comeLocality);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -1294,11 +1421,6 @@ public class InternetSurferController {
 						try {
 							// enregistrement dans la zone tampon
 
-							String content1 = "Thanks to create your count in our website \n"
-									+ " Now,lick on this link to activate E-mail adress: "
-									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-									+ member.getPseudonym() + "&meetingName=" + meetingName;
-							String subject1 = "confirm your E-mail adress";
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -1312,8 +1434,14 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -1363,11 +1491,6 @@ public class InternetSurferController {
 							try {
 								// enregistrement dans la zone tampon
 
-								String content1 = "Thanks to create your count in our website \n"
-										+ " Now,lick on this link to activate E-mail adress: "
-										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-										+ member.getPseudonym() + "&meetingName=" + meetingName;
-								String subject1 = "confirm your E-mail adress";
 								// String form="saphirmfogo@gmail.com";V
 								MimeMessage msg = new MimeMessage(session);
 								/// msg.setFrom(new InternetAddress(form));
@@ -1381,8 +1504,14 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {
@@ -1471,11 +1600,6 @@ public class InternetSurferController {
 						try {
 							// enregistrement dans la zone tampon
 
-							String content1 = "Thanks to create your count in our website \n"
-									+ " Now,lick on this link to activate E-mail adress: "
-									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-									+ member.getPseudonym() + "&meetingName=" + meetingName;
-							String subject1 = "confirm your E-mail adress";
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -1489,8 +1613,14 @@ public class InternetSurferController {
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
-							// memberBufferRepository.deleteAll();
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -1540,11 +1670,6 @@ public class InternetSurferController {
 							try {
 								// enregistrement dans la zone tampon
 
-								String content1 = "Thanks to create your count in our website \n"
-										+ " Now,lick on this link to activate E-mail adress: "
-										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-										+ member.getPseudonym() + "&meetingName=" + meetingName;
-								String subject1 = "confirm your E-mail adress";
 								// String form="saphirmfogo@gmail.com";V
 								MimeMessage msg = new MimeMessage(session);
 								/// msg.setFrom(new InternetAddress(form));
@@ -1558,8 +1683,14 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {
@@ -1642,11 +1773,6 @@ public class InternetSurferController {
 						try {
 							// enregistrement dans la zone tampon
 
-							String content1 = "Thanks to create your count in our website \n"
-									+ " Now,lick on this link to activate E-mail adress: "
-									+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-									+ member.getPseudonym() + "&meetingName=" + meetingName;
-							String subject1 = "confirm your E-mail adress";
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
@@ -1659,9 +1785,15 @@ public class InternetSurferController {
 							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
-
-							// memberBufferRepository.deleteAll();
+							
+							//memberBufferRepository.deleteAll();
+							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
+
+							cryptograph.setId(idCryptograph);
+							cryptograph.setPseudonym(pseudonym);
+							cryptograph.setMeetingName(meetingName);
+							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 						} catch (Exception ex) {
@@ -1708,11 +1840,6 @@ public class InternetSurferController {
 							try {
 								// enregistrement dans la zone tampon
 
-								String content1 = "Thanks to create your count in our website \n"
-										+ " Now,lick on this link to activate E-mail adress: "
-										+ "http://localhost:8091/rencontre/InternetSurfer/confirmRegistration?user="
-										+ member.getPseudonym() + "&meetingName=" + meetingName;
-								String subject1 = "confirm your E-mail adress";
 								// String form="saphirmfogo@gmail.com";V
 								MimeMessage msg = new MimeMessage(session);
 								/// msg.setFrom(new InternetAddress(form));
@@ -1726,8 +1853,14 @@ public class InternetSurferController {
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
-								// memberBufferRepository.deleteAll();
+								//memberBufferRepository.deleteAll();
+								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
+
+								cryptograph.setId(idCryptograph);
+								cryptograph.setPseudonym(pseudonym);
+								cryptograph.setMeetingName(meetingName);
+								cryptographRepository.save(cryptograph);
 
 								return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
 							} catch (Exception ex) {

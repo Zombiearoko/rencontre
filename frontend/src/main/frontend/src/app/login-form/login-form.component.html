@@ -40,40 +40,40 @@
    -->
 
 <body>
-    
-  <!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
            </button>
-            <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
-          </div>
-          <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-      
-              <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
-              </li>
-              <li><a class="menuLink" href="member-registration"><span class="glyphicon glyphicon-tasks"></span> Register</a>
-              </li>
-              <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
-              </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              
-              <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-tasks"></span> About</a>
-              </li>
-             
-            </ul>
-          </div>
+                <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+
+                    <li><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
+                    </li>
+                    <li><a class="menuLink" href="member-registration"><span class="glyphicon glyphicon-tasks"></span> Register</a>
+                    </li>
+                    <li class="active"><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-tasks"></span> About</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </div>
-    
-          <!--/.nav-collapse -->
+
+    <!--/.nav-collapse -->
 
     <!-- Page Content -->
 
@@ -90,12 +90,28 @@
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
-                        <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+                        <div *ngIf="f.submitted && !password.valid" class="help-block">passeword is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingName">Select the Meeting Name</label>
+                        <select ng-model="meetingValue" class="form-control" name="meetingName" [(ngModel)]="model.meetingName" #meetingName="ngModel"
+                            required>
+                                                      <option [ngValue]="">
+                                                      </option>
+                                                      <option *ngFor="let currentMeeting of meetings" 
+                                                         >{{currentMeeting.meetingName}}
+                                                      </option>
+                                                   </select>
+
+
                     </div>
                     <div class="form-group">
                         <button [disabled]="loading" class="btn btn-primary">Login</button>
                         <a [routerLink]="['/member-registration']" class="btn btn-link">Register</a>
                     </div>
+
+
                 </form>
             </div>
         </div>

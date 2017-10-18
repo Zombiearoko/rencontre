@@ -42,9 +42,9 @@
                 </ul>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> login Admin</a>
+                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logAdmin</a>
                 </li>
-                <li><a class="menuLink" href="/add-region"><span class="glyphicon glyphicon-cog"></span> add Region</a>
+                <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
                 </li>
                 <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
                 </li>
@@ -71,28 +71,26 @@
 
                     <div class="form-group">
 
-                        <label for="birthDay">Your age hier</label>
+                        <label for="birthDate">Your age hier</label>
 
-                        <input type="date" id="birthDay" class="date" name="birthDay" (change)="Filter($event.target.value)" formControlName="birthDate" ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" 
-                        />
+                        <input type="date" id="birthDate" class="date" name="birthDate" (change)="Filter($event.target.value)" formControlName="birthDate"
+                            ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" />
                     </div>
 
+                    <div class="form-group" *ngIf="clientForm.controls.birthDate.valid">
+                        <label for="meetingName">Select the Meeting Name</label>
+                        <select class="date" formControlName="meetingName" name="meetingName" [(ngModel)]="model.meetingName">
+                                                      <option [ngValue]="">
+                                                      </option>
+                                                      <option *ngFor="let met of collectionJson" 
+                                                         >{{met.meetingName}}
+                                                      </option>
+                                                   </select>
+
+
+                    </div>
 
                     <div class="form-group">
-                            <label for="meetingName">Select the Meeting Name</label>
-                            <select [(ngModel)]="selectedMeeting" (change)="FilterM($event.target.value)" formControlName="meetingName" name="selectM">
-                                    <option [ngValue]="">
-                                    </option>
-                                    <option *ngFor="let currentMeeting of Meetings" 
-                                       >{{currentMeeting.meetingName}}
-                                    </option>
-                                 </select>
-    
-    
-                        </div>
-
-                    <div class="form-group">
-
                         <label for="pseudonym">Pseudo</label>
 
                         <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
@@ -102,6 +100,84 @@
 
                     </div>
 
+                    <!-- showing only for Amicale -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amicale' ">
+                        
+                    <div class="form-group">
+
+                        <label for="name">Name</label>
+
+                        <input type="text" class="form-control" formControlName="name" name="name" id="name" placeholder=" your name hier "
+                        />
+                        <!-- <div [hidden]="clientForm.controls.name.valid|| clientForm.controls.name.pristine" class="alert alert-danger"> name is a required field</div> -->
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.name.valid && clientForm.controls.name.touched">your name hier</div> -->
+
+                    </div>
+                    </span>
+
+                    <!-- showing only  for Academique and Professionnelle firstName,lastName,levelStudy; -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' || clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
+                        
+                    <div class="form-group">
+
+                        <label for="firstName">FirstName</label>
+
+                        <input type="text" class="form-control" formControlName="firstName" name="firstName" id="firstName" placeholder=" your firstName hier "
+                        />
+                        <!-- <div [hidden]="clientForm.controls.firstName.valid|| clientForm.controls.firstName.pristine" class="alert alert-danger"> firstName is a required field</div> -->
+                        <div class="alert" *ngIf="!clientForm.controls.firstName.valid && clientForm.controls.firstName.touched">your firstName hier</div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="lastName">LastName</label>
+
+                        <input type="text" class="form-control" formControlName="lastName" name="lastName" id="lastName" placeholder=" your lastName hier "
+                        />
+                        <!-- <div [hidden]="clientForm.controls.lastName.valid|| clientForm.controls.lastName.pristine" class="alert alert-danger"> lastName is a required field</div> -->
+                        <div class="alert" *ngIf="!clientForm.controls.lastName.valid && clientForm.controls.lastName.touched">your lastName hier</div>
+
+                    </div>
+            
+                    <!-- levelStudy -->
+                    <div class="form-group">
+
+                        <label for="levelStudy">LevelStudy</label>
+
+                        <input type="text" class="form-control" formControlName="levelStudy" name="levelStudy" id="levelStudy" placeholder=" your levelStudy hier "
+                        />
+                        <div class="alert" *ngIf="!clientForm.controls.levelStudy.valid && clientForm.controls.levelStudy.touched">your levelStudy hier</div>
+
+                    </div>
+                    </span>
+                      <!-- showing only for Academique -->
+                   <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' ">
+                    
+                    <div class="form-group">
+                        
+                          <label for="schoolName">SchoolName</label>
+                        
+                           <input type="text" class="form-control" formControlName="schoolName" name="schoolName" id="schoolName" placeholder=" your schoolName hier "
+                           />
+                            <div class="alert" *ngIf="!clientForm.controls.schoolName.valid && clientForm.controls.schoolName.touched">your schoolName hier</div>
+                        
+                    </div>
+                   </span>
+                    
+                    <!-- showing only for profession -->
+                   <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
+                        
+                    <div class="form-group">
+
+                        <label for="profession">Profession</label>
+
+                        <input type="text" class="form-control" formControlName="profession" name="profession" id="profession" placeholder=" your profession hier "
+                        />
+                        <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div>
+
+                    </div>
+                   </span>
+                    <!-- collectionJson?.length != 2" -->
                     <div class="form-group">
                         <label for="gender">choice your gender</label>
 
@@ -112,7 +188,7 @@
                             </select>
 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" *ngIf="clientForm.controls.meetingName.valid ">
                         <label for="email">Email</label>
 
                         <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
@@ -146,7 +222,8 @@
                         <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
                     </div>
 
-                   
+
+
 
                     <div>
                         <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
@@ -178,7 +255,7 @@
                         <a href="/login-admin" class="btn btn-secondary btn-lg">
                             <i class="fa fa-github fa-fw"></i>
                             <span class="network-name">Github</span>
-                        </a>
+                    </a>
                     </li>
                     <li class="list-inline-item">
                         <a href="#" class="btn btn-secondary btn-lg">
@@ -186,14 +263,14 @@
                             <span class="network-name">Linkedin</span>
                         </a>
                     </li>
-                </ul>
+                    </ul>
             </div>
         </div>
 
     </div> -->
-<!-- /.container -->
+    <!-- /.container -->
 
-<!-- </aside> -->
+    <!-- </aside> -->
 
 
-<!-- /.banner -->
+    <!-- /.banner -->

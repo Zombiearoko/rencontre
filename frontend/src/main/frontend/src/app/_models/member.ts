@@ -8,5 +8,9 @@ export class Member {
     gender: string;
     phoneNumber: string;
     picture: string;
-    
+    name: string;
+    firstName: string;
+    lastName: string;
+    schoolName: string;
+    levelStudy: string;
 }

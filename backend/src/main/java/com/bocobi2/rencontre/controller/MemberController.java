@@ -249,12 +249,13 @@ public class MemberController {
 	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
-		HttpSession session = requestConnexion.getSession();
 
+		HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
 		String password = requestConnexion.getParameter("password");
+		String meetingName = requestConnexion.getParameter("meetingName");
 		System.out.println("-------------------------------");
 		System.out.println(pseudonym);
 		System.out.println("-------------------------------");
@@ -267,6 +268,11 @@ public class MemberController {
 			member = memberRepository.findByPseudonym(pseudonym);
 			if (member != null) {
 				if (member.getPassword().equals(password)) {
+					String status = "Connected";
+					Status statusDB = statusRepository.findByStatusName(status);
+					member.setStatus(statusDB);
+					member.setMeetingNameConnexion(meetingName);
+					memberRepository.save(member);
 					session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
@@ -342,6 +348,49 @@ public class MemberController {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/returnTypeMeeting", method = RequestMethod.GET)
+	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingGet(HttpServletRequest request) {
+
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudonymMember = request.getParameter("pseudonym");
+		Member member = memberRepository.findByPseudonym(pseudonymMember);
+		String pseudonym = member.getPseudonym();
+
+		List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+		TypeMeeting typeMeeting;
+		TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+		TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+		TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+		TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+
+		if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+
+			typeMeeting = datingMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+
+			typeMeeting = professionnalMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+
+			typeMeeting = friendlyMeeting;
+			listTypeMeeting.add(typeMeeting);
+
+		} else if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+			typeMeeting = schoolMeeting;
+			listTypeMeeting.add(typeMeeting);
+		}
+
+		return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+
+	}
+
+	
+	
 	/**
 	 * Method change status
 	 */
@@ -1125,6 +1174,40 @@ public class MemberController {
 
 	}
 
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/downloadPicture", method = RequestMethod.POST)
+	public ResponseEntity<?> downloadPicturePost(@RequestParam("file") MultipartFile file, HttpServletRequest request)
+			throws UnknownHostException, Exception, FileNotFoundException {
+
+		// HttpSession sessionMember = request.getSession();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		// String pseudonym= member.getPseudonym();
+		String pseudonym = request.getParameter("monPseudo");
+		Member member = memberRepository.findByPseudonym(pseudonym);
+
+		DBObject metaData = new BasicDBObject();
+
+		InputStream iamgeStream = file.getInputStream();
+		metaData.put("type", "image");
+		String pictureName = "picture" + pseudonym;
+
+		// Store picture to MongoDB
+		imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
+
+		System.out.println("ImageFileId = " + imageFileId);
+
+		member.setPicture(pictureName);
+		memberRepository.save(member);
+		String status = "Upload has been successful";
+
+		return new ResponseEntity<String>(status, HttpStatus.OK);
+		// return Response.status(200).entity(status).build();
+
+	}
+
+	
+	
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
 	public ResponseEntity<?> updateProfilePost(HttpServletRequest request) throws Exception {
 
@@ -1276,7 +1359,7 @@ public class MemberController {
 	/*
 	 * Version Post
 	 */
-	@RequestMapping(value = "/send", method = RequestMethod.POST)
+	@RequestMapping(value = "/sendAnInquiry", method = RequestMethod.POST)
 	@MessageMapping("/request")
 	@SendTo("/topic/request")
 	@Async

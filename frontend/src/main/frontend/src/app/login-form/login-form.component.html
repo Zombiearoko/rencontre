@@ -82,9 +82,11 @@
             <div class="col-md-6 col-md-offset-3">
                 <h2>Login</h2>
                 <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !pseudonym.valid }">
                         <label for="pseudonym">Pseudo</label>
-                        <input type="text" class="form-control" name="pseudonym" [(ngModel)]="model.pseudonym" #pseudonym="ngModel" required />
+                        <input type="text" class="form-control" name="pseudonym" (change)="Filter($event.target.value)" [(ngModel)]="model.pseudonym"
+                            #pseudonym="ngModel" required />
                         <div *ngIf="f.submitted && !pseudonym.valid" class="help-block">pseudonym is required</div>
                     </div>
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
@@ -93,19 +95,23 @@
                         <div *ngIf="f.submitted && !password.valid" class="help-block">passeword is required</div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="meetingName">Select the Meeting Name</label>
-                        <select ng-model="meetingValue" class="form-control" name="meetingName" [(ngModel)]="model.meetingName" #meetingName="ngModel"
-                            required>
-                                                      <option [ngValue]="">
-                                                      </option>
-                                                      <option *ngFor="let currentMeeting of meetings" 
-                                                         >{{currentMeeting.meetingName}}
-                                                      </option>
-                                                   </select>
+                    <!-- showing only for meeting after giving pseudo -->
+                    <span *ngIf="pseudonym.valid">
+                                
+                        <div class="form-group">
+                            <label for="meetingName">Select the Meeting Name</label>
+                            <select ng-model="meetingValue" class="form-control" name="meetingName" [(ngModel)]="model.meetingName" #meetingName="ngModel"
+                                required>
+                                                        <option [ngValue]="">
+                                                        </option>
+                                                        <option *ngFor="let currentMeeting of meetings" 
+                                                            >{{currentMeeting.meetingName}}
+                                                        </option>
+                                                    </select>
 
 
-                    </div>
+                        </div>
+                     </span>
                     <div class="form-group">
                         <button [disabled]="loading" class="btn btn-primary">Login</button>
                         <a [routerLink]="['/member-registration']" class="btn btn-link">Register</a>

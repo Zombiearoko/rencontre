@@ -28,7 +28,7 @@ export class AuthenticationService {
             meetingName: meetingName,
         };
 
-        const url = 'http://localhost:8091/rencontre/Member/Connexion?pseudonym=' + pseudonym + '&password=' + password + '&meetingName=' + meetingName;
+        const url = 'http://localhost:8091/rencontre/Member/connexion?pseudonym=' + pseudonym + '&password=' + password + '&meetingName=' + meetingName;
         return this.http.post(url, object, options)
             .do((res: Response) => console.log(res.json()))
             //.map((res: Response ) => res.json());

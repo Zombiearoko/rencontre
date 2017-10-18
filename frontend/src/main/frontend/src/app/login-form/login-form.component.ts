@@ -130,13 +130,14 @@ export class LoginFormComponent implements OnInit {
     public meetings: Meeting[] = [];
     
 
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         // public fb: FormBuilder,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private rest : RestProvider, ) {
+        private rest: RestProvider, ) {
         //  this.clientForm = this.fb.group({
         //           'pseudonym': [null, Validators.compose([Validators.required,  Validators.minLength(4)])],
         //           'password': [null, Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -144,6 +145,16 @@ export class LoginFormComponent implements OnInit {
         this.currentMeeting = JSON.parse(localStorage.getItem('currentMeeting'));
     }
 
+
+  //getting meeting type when selected pseudo
+  public Filter(value: string) {
+    
+        console.log('pseudo donne', value,);
+       
+        this.loadAllMeetings(value);
+        
+      }
+    
     ngOnInit() {
         // reset login status
         this.authenticationService.logout();
@@ -151,17 +162,19 @@ export class LoginFormComponent implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         //    this.router.navigateByUrl('/login-form');
-        this.loadAllMeetings();
+       
         // this.getAll;
+        
 
     }
 
 
-    private loadAllMeetings() {
+    private loadAllMeetings(pseudonym: string) {
         // this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
-     this.rest.getAll().subscribe(meetings => { this.meetings = meetings; });
+        //  this.rest.getAll().subscribe(meetings => { this.meetings = meetings; });
+        this.rest.getAllByPeudo(pseudonym).subscribe(meetings => { this.meetings = meetings; });
 
-        
+
     }
 
 

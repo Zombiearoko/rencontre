@@ -13,4 +13,13 @@ export class Member {
     lastName: string;
     schoolName: string;
     levelStudy: string;
+    profession:string;
+    fatherName: string;
+    motherName: string;
+    country: string;
+    region: string;
+    department: string;
+    borough: string;
+    town: string;
+    concession: string;
 }

@@ -36,20 +36,26 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                   </button>
-      <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
+      <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-
+        <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add Item</a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/add-region">region</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/add-department">department</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/member-session">Add Country</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="add-borough">Add Borough</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/add-town">Add Town</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/add-meeting">Add Meeting</a>
 
           </div>
         </li>
@@ -88,10 +94,24 @@
         <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
           <div class="form-group">
 
-            <label for="age">Your age hier</label>
+            <label for="date">Your age hier</label>
 
-            <input type="date" id="date" class="date" name="date" (change)="Filter($event.target.value)" formControlName="date" ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31"
-              required />
+            <input type="date" id="date" class="date" name="date" (change)="Filter($event.target.value)" formControlName="date" ng-model="date.value"
+              placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" />
+          </div>
+
+          <div class="form-group" class="alert" *ngIf="clientForm.controls.date.valid">
+            <label for="meetingName">Select the Meeting Name</label>
+            <select [(ngModel)]="selectedMeeting" class="date" formControlName="meetingNameN"
+              name="meetingName">
+                      <option [ngValue]="">
+                      </option>
+                      <option *ngFor="let met of collectionJson" 
+                         >{{met.meetingName}}
+                      </option>
+                   </select>
+
+
           </div>
 
           <div>
@@ -139,7 +159,7 @@
     </div>
 
   </div> -->
-  <!-- /.container -->
+<!-- /.container -->
 
 <!-- </aside> -->
 

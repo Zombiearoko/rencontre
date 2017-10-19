@@ -44,9 +44,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logAdmin</a>
                 </li>
-                <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
+                <li class="active"><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
                 </li>
-                <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
+                <li><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
                 </li>
             </ul>
         </div>
@@ -125,7 +125,7 @@
                         <input type="text" class="form-control" formControlName="firstName" name="firstName" id="firstName" placeholder=" your firstName hier "
                         />
                         <!-- <div [hidden]="clientForm.controls.firstName.valid|| clientForm.controls.firstName.pristine" class="alert alert-danger"> firstName is a required field</div> -->
-                        <div class="alert" *ngIf="!clientForm.controls.firstName.valid && clientForm.controls.firstName.touched">your firstName hier</div>
+                        <!-- <div class="alert" *ngIf="clientForm.controls.firstName.touched">your firstName hier</div> -->
 
                     </div>
                     <div class="form-group">
@@ -135,7 +135,7 @@
                         <input type="text" class="form-control" formControlName="lastName" name="lastName" id="lastName" placeholder=" your lastName hier "
                         />
                         <!-- <div [hidden]="clientForm.controls.lastName.valid|| clientForm.controls.lastName.pristine" class="alert alert-danger"> lastName is a required field</div> -->
-                        <div class="alert" *ngIf="!clientForm.controls.lastName.valid && clientForm.controls.lastName.touched">your lastName hier</div>
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.lastName.valid && clientForm.controls.lastName.touched">your lastName hier</div> -->
 
                     </div>
             
@@ -146,12 +146,12 @@
 
                         <input type="text" class="form-control" formControlName="levelStudy" name="levelStudy" id="levelStudy" placeholder=" your levelStudy hier "
                         />
-                        <div class="alert" *ngIf="!clientForm.controls.levelStudy.valid && clientForm.controls.levelStudy.touched">your levelStudy hier</div>
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.levelStudy.valid && clientForm.controls.levelStudy.touched">your levelStudy hier</div> -->
 
                     </div>
                     </span>
-                      <!-- showing only for Academique -->
-                   <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' ">
+                    <!-- showing only for Academique -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' ">
                     
                     <div class="form-group">
                         
@@ -159,13 +159,13 @@
                         
                            <input type="text" class="form-control" formControlName="schoolName" name="schoolName" id="schoolName" placeholder=" your schoolName hier "
                            />
-                            <div class="alert" *ngIf="!clientForm.controls.schoolName.valid && clientForm.controls.schoolName.touched">your schoolName hier</div>
+                            <!-- <div class="alert" *ngIf="!clientForm.controls.schoolName.valid && clientForm.controls.schoolName.touched">your schoolName hier</div> -->
                         
                     </div>
                    </span>
-                    
+
                     <!-- showing only for profession -->
-                   <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
                         
                     <div class="form-group">
 
@@ -173,70 +173,183 @@
 
                         <input type="text" class="form-control" formControlName="profession" name="profession" id="profession" placeholder=" your profession hier "
                         />
-                        <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div>
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
 
                     </div>
                    </span>
-                    <!-- collectionJson?.length != 2" -->
-                    <div class="form-group">
-                        <label for="gender">choice your gender</label>
 
-                        <select class="form-control" id="gender" name="gender" formControlName="gender">
+                    <!-- showing when selected Amoureuse meeting name  fatherName,motherName,country,region,department,borough,town et concession -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amoureuse' ">
+                    <div class="form-group">
+
+                        <label for="fatherName">Amoureuse</label>
+
+                        <input type="text" class="form-control" formControlName="fatherName" name="fatherName" id="fatherName" placeholder=" your fatherName hier "
+                        />
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
+
+                    </div>
+                    <!-- mother -->
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" formControlName="motherName" name="motherName" id="motherName" placeholder=" your motherName hier "
+                        />
+                        <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
+
+                    </div>
+                    <!-- country -->
+                    <div class="form-group">
+                        <label for="regionName">Select Country</label>
+                        <span class="date ">
+                        <select [(ngModel)]="selectedCountry" class="form-control" (change)="FilterC($event.target.value)" formControlName="countryName" name="select">
+                                    <option [ngValue]="">
+                                    </option>
+                                    <option *ngFor="let currentCountry of countries" 
+                                    >{{currentCountry.countryName}}
+                                    </option>
+                                 </select>
+
+                        </span>
+            </div>
+
+            <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+            <!-- <div class="alert" *ngIf="!clientForm.controls.countryName.valid && clientForm.controls.countryName.touched">{{titleAlert}}</div> -->
+
+            <!-- region -->
+            <div class="form-group">
+                <label for="meetingName">Select the RegionName</label>
+                <span class="date">
+                        <select [(ngModel)]="selectedRegion" class="form-control" (change)="FilterR($event.target.value)" formControlName="regionName" name="selectR">
+                                <option [ngValue]="">Select Region
+                                </option>
+                                <option *ngFor="let currentRegion of regions" 
+                                   >{{currentRegion.regionName}}
+                                </option>
+                             </select>
+                            </span>
+
+            </div>
+            <!-- departmant -->
+            <div class="form-group">
+                <label for="meetingName">Select the DEpartement Name</label>
+                <span class="date">
+                <select [(ngModel)]="selectedDepartment" class="form-control" (change)="FilterD($event.target.value)" formControlName="departmentName"
+                    name="selectD">
+                                <option [ngValue]="">Select Department
+                                </option>
+                                <option *ngFor="let currentDepartment of departments" 
+                                   >{{currentDepartment.departmentName}}
+                                </option>
+                             </select>
+                </span>
+
+
+            </div>
+            <!-- borough -->
+
+            <div class="form-group">
+                <label for="meetingName">Select the Borough Name</label>
+                <span class="date">
+                    <select [(ngModel)]="selectedBorough" class="form-control" (change)="FilterB($event.target.value)" formControlName="boroughName"
+                        name="selectB">
+                                            <option [ngValue]="">Select Borough
+                                            </option>
+                                            <option *ngFor="let currentBorough of boroughs" 
+                                            >{{currentBorough.boroughName}}
+                                            </option>
+                    </select>
+                </span>
+
+
+            </div>
+
+            <!-- Town -->
+
+            <div class="form-group">
+                <label for="meetingName">Select the Town Name</label>
+                <span class="date">
+                <select [(ngModel)]="selectedTown" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName"
+                    name="townName">
+                                        <option [ngValue]="">Select Town
+                                        </option>
+                                        <option *ngFor="let currentTown of townNames" 
+                                           >{{currentTown.TownName}}
+                                        </option>
+                                     </select>
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="concessionName">Concession</label>
+
+                <input type="text" class="form-control" formControlName="concessionName" name="concessionName" id="concessionName" placeholder=" your concession hier "
+                />
+                <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
+
+            </div>
+            </span>
+            <!-- collectionJson?.length != 2" -->
+            <div class="form-group">
+                <label for="gender">choice your gender</label>
+
+                <select class="form-control" id="gender" name="gender" formControlName="gender">
                               <option>Man</option>
                               <option>Woman</option>
                               
                             </select>
 
-                    </div>
-                    <div class="form-group" *ngIf="clientForm.controls.meetingName.valid ">
-                        <label for="email">Email</label>
+            </div>
+            <div class="form-group" *ngIf="clientForm.controls.meetingName.valid ">
+                <label for="email">Email</label>
 
-                        <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
-                        />
+                <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
+                />
 
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tel">Phone Nomber</label>
-
-                        <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
-                        />
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">PassWord</label>
-
-                        <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
-
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">confirm the passWord</label>
-
-                        <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
-                            placeholder=" ">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="picture">Example file input</label>
-                        <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
-                    </div>
-
-
-
-
-                    <div>
-                        <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                        <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
-
-
-                    </div>
-                </form>
-                <p>Form value: {{ clientForm.value | json }}</p>
-                <p>Form status: {{ clientForm.status | json }}</p>
             </div>
 
+            <div class="form-group">
+                <label for="tel">Phone Nomber</label>
+
+                <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
+                />
+
+            </div>
+
+            <div class="form-group">
+                <label for="password">PassWord</label>
+
+                <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
+
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">confirm the passWord</label>
+
+                <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
+                    placeholder=" ">
+
+            </div>
+            <div class="form-group">
+                <label for="picture">Example file input</label>
+                <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
+            </div>
+
+
+
+
+            <div>
+                <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+                <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+            </div>
+            </form>
+            <p>Form value: {{ clientForm.value | json }}</p>
+            <p>Form status: {{ clientForm.status | json }}</p>
         </div>
+
+    </div>
 
     </div>
 </body>
@@ -268,9 +381,9 @@
         </div>
 
     </div> -->
-    <!-- /.container -->
+<!-- /.container -->
 
-    <!-- </aside> -->
+<!-- </aside> -->
 
 
-    <!-- /.banner -->
+<!-- /.banner -->

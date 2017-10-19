@@ -8,7 +8,7 @@ export class MeetingService {
     constructor(private http: Http) { }
  
     getAll() {
-        return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting', this.jwt()).map((response: Response) => response.json());
+        return this.http.get('http://localhost:8091/rencontre/Administrator/listAllTypeMeeting', this.jwt()).map((response: Response) => response.json());
        
     }
     

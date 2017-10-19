@@ -1,0 +1,12 @@
+.cadre {
+    
+    font-weight: bold;
+    color:#ffffff;
+   
+}
+.date, ul, #statusName {
+    columns: black;
+}
+h3{
+    color:red
+}

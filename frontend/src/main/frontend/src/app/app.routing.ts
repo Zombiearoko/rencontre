@@ -11,6 +11,7 @@ import {AddDepartmentComponent  } from './add-department/add-department.componen
 import {AddBoroughComponent  } from './add-borough/add-borough.component';
 import {AddTownComponent  } from './add-town/add-town.component';
 import {AddMeetingComponent  } from './add-meeting/add-meeting.component';
+import {AddStatusComponent  } from './add-status/add-status.component';
 import {LoginAdminComponent } from './login-admin/login-admin.component';
 import {AboutComponent } from './about/about.component';
 import {SessionAdminComponent } from './login-admin/session-admin/session-admin.component';
@@ -31,6 +32,7 @@ const appRoutes: Routes = [
     { path: 'add-borough', component: AddBoroughComponent },  
     { path: 'add-town', component: AddTownComponent }, 
     { path: 'add-meeting', component: AddMeetingComponent }, 
+    { path: 'add-status', component: AddStatusComponent },
     { path: 'member-session', component: MemberSessionComponent },
     { path: 'login-admin', component: LoginAdminComponent },
     { path: 'about', component: AboutComponent },

@@ -65,61 +65,61 @@
     </span>
 
 
-      <div class="form-group">
+          <div class="form-group">
 
-        <label for="townName">Ville</label>
-        <div class="cols-lg-8">
-          <div class="input-group">
-            <input type="text" class="form-control" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
-            />
+            <label for="townName">Ville</label>
+            <div class="cols-lg-8">
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
+                />
+              </div>
+            </div>
+
+            <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+            <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
+
           </div>
+          <div>
+            <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+          </div>
+        </form>
+        <p>Form value: {{ clientForm.value | json }}</p>
+        <p>Form status: {{ clientForm.status | json }}</p>
+
+
+
+
+        <div class="col-md-6 col-md-offset-3">
+          <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
+          <p>You're logged in Rencontre!!</p>
+
+
+          <p><a [routerLink]="['/login-admin']">Logout</a></p>
         </div>
 
-        <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-        <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
 
-      </div>
-      <div>
-        <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-        <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
-
-
-      </div>
-      </form>
-      <p>Form value: {{ clientForm.value | json }}</p>
-      <p>Form status: {{ clientForm.status | json }}</p>
-
-
-
-
-      <div class="col-md-6 col-md-offset-3">
-        <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-        <p>You're logged in Rencontre!!</p>
-
-
-        <p><a [routerLink]="['/login-admin']">Logout</a></p>
-      </div>
-
-
-      <!-- <div class="col-md-6 col-md-offset-3">
+        <!-- <div class="col-md-6 col-md-offset-3">
               <h1>country {{currentCountry.regionName}}! was added</h1>
               <p>You're logged in Rencontre!!</p>
               <h3>All registered countries:</h3>
               
               <p><a [routerLink]="['/member-session']">add</a></p>
           </div> -->
-      <div style="text-align:left">
-        <h2>You submitted the following town:</h2>
-        <div class="row">
-          <h3>ville:
-            <font color="red">{{ collectionJson.townName }}</font>
-          </h3>
+        <div style="text-align:left">
+          <h2>You submitted the following town:</h2>
+          <div class="row">
+            <h3>ville:
+              <font color="red">{{ collectionJson.townName }}</font>
+            </h3>
+          </div>
+
+          <button class="btn btn-primary" (click)="submitted=false">Update</button>
         </div>
 
-        <button class="btn btn-primary" (click)="submitted=false">Update</button>
-      </div>
-
-      <!-- <div class="col-md-6 col-md-offset-3">
+        <!-- <div class="col-md-6 col-md-offset-3">
 
                 <h3>All registered Regions:</h3>
                 <ul>
@@ -131,8 +131,8 @@
 
             </div> -->
 
+      </div>
     </div>
-  </div>
   </div>
 
 </body>

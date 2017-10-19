@@ -4,3 +4,9 @@
     color:#ffffff;
    
 }
+.date, ul,#meetingName {
+    columns: black;
+}
+h3{
+    color:red
+}

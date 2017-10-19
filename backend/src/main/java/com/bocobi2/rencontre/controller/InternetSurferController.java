@@ -1878,7 +1878,7 @@ public class InternetSurferController {
 						System.out.println(ex.getMessage());
 
 						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-						return new ResponseEntity(new MemberErrorType("the email is not validate"),
+					return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
 					}

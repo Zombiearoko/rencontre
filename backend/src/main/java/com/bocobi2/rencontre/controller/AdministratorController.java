@@ -26,6 +26,7 @@ import com.bocobi2.rencontre.model.Country;
 import com.bocobi2.rencontre.model.Department;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Region;
+import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
 import com.bocobi2.rencontre.repositories.AdministratorRepository;
@@ -35,6 +36,7 @@ import com.bocobi2.rencontre.repositories.CountryRepository;
 import com.bocobi2.rencontre.repositories.DepartmentRepository;
 import com.bocobi2.rencontre.repositories.LocalityRepository;
 import com.bocobi2.rencontre.repositories.RegionRepository;
+import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TownRepository;
 import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
 
@@ -71,6 +73,9 @@ public class AdministratorController {
 
 	@Autowired
 	TypeMeetingRepository typeMeetingRepository;
+	
+	@Autowired
+	StatusRepository statusRepository;
 
 	/**
 	 * connexion of the member
@@ -180,7 +185,55 @@ public class AdministratorController {
 		}
 
 	}
+	
+	/*
+	 * Methode d'ajout de status
+	 */
 
+	/*
+	 * Version Post
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/addStatus", method = RequestMethod.POST)
+	public ResponseEntity<?> addStatusPost(HttpServletRequest request) {
+
+		String statusName = request.getParameter("statusName");
+		// typeMeetingRepository.deleteAll();
+		Status status = new Status();
+		if (statusRepository.findByStatusName(statusName) != null) {
+			logger.error("Unable to create. the status with name {} already exist", statusName);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of status with name "
+					+ "" + "" + statusName + " already exist"), HttpStatus.CONFLICT);
+		} else {
+
+			status.setStatusName(statusName);
+			statusRepository.insert(status);
+			return new ResponseEntity<Status>(status, HttpStatus.OK);
+		}
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/addStatus", method = RequestMethod.GET)
+	public ResponseEntity<?> addStatusGet(HttpServletRequest request) {
+
+		String statusName = request.getParameter("statusName");
+		// typeMeetingRepository.deleteAll();
+		Status status = new Status();
+		if (statusRepository.findByStatusName(statusName) != null) {
+			logger.error("Unable to create. the status with name {} already exist", statusName);
+			return new ResponseEntity(new MemberErrorType("Unable to create. " + "" + " the type of status with name "
+					+ "" + "" + statusName + " already exist"), HttpStatus.CONFLICT);
+		} else {
+
+			status.setStatusName(statusName);
+			statusRepository.insert(status);
+			return new ResponseEntity<Status>(status, HttpStatus.OK);
+		}
+
+	}
+
+	
 	/***
 	 * method add type of meeting
 	 */
@@ -975,6 +1028,32 @@ public class AdministratorController {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllStatus", method = RequestMethod.POST)
+	public ResponseEntity<List<Status>> listAllStatusPost(HttpServletRequest request) {
+
+		List<Status> listOfStatus= statusRepository.findAll();
+
+		if (listOfStatus.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Status>>(listOfStatus, HttpStatus.OK);
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/listAllStatus", method = RequestMethod.GET)
+	public ResponseEntity<List<Status>> listAllStatusGet(HttpServletRequest request) {
+
+		List<Status> listOfStatus= statusRepository.findAll();
+
+		if (listOfStatus.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Status>>(listOfStatus, HttpStatus.OK);
 
 	}
 

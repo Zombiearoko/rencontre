@@ -68,6 +68,7 @@ export class MemberRegistrationComponent implements OnInit {
   private collectionJson: object;
   submitted = false;
 
+
   constructor(public rest: RestProvider,
     private meetingService: MeetingService,
     private countryService: CountryService,
@@ -168,35 +169,159 @@ export class MemberRegistrationComponent implements OnInit {
   // }
 
   onSubmit(post) {
+
     this.birthDate = post.birthDate;
     this.meetingName = post.meetingName;
     this.pseudonym = post.pseudonym;
-  //   this.name = post.name;
-  //   this.firstName = post.firstName;
-  //   this.lastName = post.lastName;
-  //   this.schoolName = post.schoolName;
-  //   this.levelStudy = post.levelStudy;
-  //   this.profession = post.profession;
-  //   this.countryName = post.countryName;
-  //   this.regionName = post.regionNAme;
-  //   this.departmentName = post.departementName;
-  //   this.boroughName = post.boroughName;
-  //  this.townName = post.townName;
-  //   this.concessionName = post.concessionName;
+    this.name = post.name;
+    this.firstName = post.firstName;
+    this.lastName = post.lastName;
+    this.schoolName = post.schoolName;
+    this.levelStudy = post.levelStudy;
+    this.profession = post.profession;
+    this.fatherName = post.fatherName;
+    this.motherName = post.motherName;
+    this.countryName = post.countryName;
+    this.regionName = post.regionNAme;
+    this.departmentName = post.departementName;
+    this.boroughName = post.boroughName;
+    this.townName = post.townName;
+    this.concessionName = post.concessionName;
     this.gender = post.gender;
     this.emailAdress = post.emailAdress;
     this.phoneNumber = post.phoneNumber;
     this.password = post.password;
     this.confirmPassword = post.confirmPassword;
     this.picture = post.picture;
-    const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+
+    if (!((this.name == null) || (this.name == ""))) {
+      console.log("nooooo", this.name);
+      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
       + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-      + this.confirmPassword + '&name=' + this.name + '&meetingName=' + this.meetingName
-      + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName='
-      + this.schoolName + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession
+      + this.confirmPassword + '&meetingName=' + this.meetingName
+      + '&name=' + this.name ;
+
+    this.http.get(url).subscribe((resp) => {
+      this.results = resp['results'];
+      this.collectionJson = resp.json();
+      console.log(this.collectionJson);
+      //  set success message and pass true paramater to persist the message after redirecting to the login page
+      this.alertService.success('Registration successful', true);
+      this.router.navigate(['/member-registration']);
+    },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+        console.log(this.pseudonym);
+        // console.log(this.gender);
+        this.submitted = true;
+      });
+      console.log("******hummmm name*******");
+    }
+
+    else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.schoolName == null) || (this.schoolName == "") || (this.levelStudy == null) || (this.levelStudy == ""))) {
+      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord=' + this.confirmPassword + '&meetingName=' + this.meetingName + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName=' + this.schoolName + '&levelStudy=' + this.levelStudy;
+      console.log("academique", this.firstName);
+
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log(this.collectionJson);
+        //  set success message and pass true paramater to persist the message after redirecting to the login page
+        this.alertService.success('Registration successful', true);
+        this.router.navigate(['/member-registration']);
+      },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+          console.log(this.pseudonym);
+          // console.log(this.gender);
+          this.submitted = true;
+        });
+    }
+
+    else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.levelStudy == null) || (this.levelStudy == "") || (this.profession == null) || (this.profession == ""))) {
+
+      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+        + this.confirmPassword + '&meetingName=' + this.meetingName
+        + '&firstName=' + this.firstName + '&lastName=' + this.lastName
+        + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession;
+
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log(this.collectionJson);
+        //  set success message and pass true paramater to persist the message after redirecting to the login page
+        this.alertService.success('Registration successful', true);
+        this.router.navigate(['/member-registration']);
+      },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+          console.log(this.pseudonym);
+          // console.log(this.gender);
+          this.submitted = true;
+        });
+    }
+
+    else if (!((this.fatherName == null) || (this.fatherName == "") || (this.motherName == null) || (this.motherName == "") || (this.countryName == null) || (this.countryName == "") || (this.regionName == null) || (this.regionName == ""))) {
+
+      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+        + this.confirmPassword + '&meetingName=' + this.meetingName
+        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
+        + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log(this.collectionJson);
+        //  set success message and pass true paramater to persist the message after redirecting to the login page
+        this.alertService.success('Registration successful', true);
+        this.router.navigate(['/member-registration']);
+      },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+          console.log(this.pseudonym);
+          // console.log(this.gender);
+          this.submitted = true;
+        });
+    }
+    else {
+      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+      + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+      + this.confirmPassword + '&meetingName=' + this.meetingName
+      + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
       + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
-    console.log(this.pseudonym);
-    console.log('meetingNAme', this.meetingName);
+
+    this.http.get(url).subscribe((resp) => {
+      this.results = resp['results'];
+      this.collectionJson = resp.json();
+      console.log(this.collectionJson);
+      //  set success message and pass true paramater to persist the message after redirecting to the login page
+      this.alertService.success('Registration successful', true);
+      this.router.navigate(['/member-registration']);
+    },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+        console.log(this.pseudonym);
+        // console.log(this.gender);
+        this.submitted = true;
+      });
+      console.log("******hummmm*******");
+    }
+    // const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
+    //   + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+    //   + this.confirmPassword + '&meetingName=' + this.meetingName
+    //   + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName='
+    //   + this.schoolName + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession
+    //   + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+
+    console.log('NAme', this.name);
     // this.rest.postAccount(this.pseudonym, this.birthDate, this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.name, this.meetingName, this.firstName, this.lastName,
     //   this.schoolName, this.levelStudy, this.profession, this.countryName, this.regionName, this.departmentName,
     //   this.boroughName, this.townName, this.concessionName)
@@ -212,21 +337,7 @@ export class MemberRegistrationComponent implements OnInit {
     //     // console.log(this.gender);
     //     this.submitted = true;
     //   });
-    this.http.get(url).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log(this.collectionJson);
-      //  set success message and pass true paramater to persist the message after redirecting to the login page
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/login-form']);
-      },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-        console.log(this.pseudonym);
-        // console.log(this.gender);
-        this.submitted = true;
-    });
+
 
   }
   ngOnInit() {

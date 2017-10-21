@@ -30,12 +30,32 @@
 
 <!--/.nav-collapse -->
 
-<div class="col-md-6 col-md-offset-3">
-        <font color="bleue">
-    <h1>Hi {{currentMember.pseudonym}}!</h1>
-        </font>
-    <p>You're logged inRencontre!!</p>
-    <!-- <h3>All registered users:</h3> -->
 
-    <p><a [routerLink]="['/login-form']">Logout</a></p>
-</div>
+<header class="intro-header">
+    <h1 class="pull-right index">Welcome {{currentMember.pseudonym}}!</h1>
+
+    <div class="container">
+        <div class="intro-message">
+            <p>You're logged inRencontre!!</p>
+        </div>
+    </div>
+</header>
+
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="cadre ">
+
+                <select class="statusName" (change)="Filter($event.target.value)" id="statusName" name="statusName">
+                                    
+                                    <option *ngFor="let currentStatus of statuss" 
+                                    >{{currentStatus.statusName}}
+                                    </option>
+                </select>
+
+
+
+            </div>
+        </div>
+    </div>
+</body>

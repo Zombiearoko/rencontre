@@ -31,31 +31,160 @@
 <!--/.nav-collapse -->
 
 
-<header class="intro-header">
-    <h1 class="pull-right index">Welcome {{currentMember.pseudonym}}!</h1>
+<div class="intro-header fixed-top">
+    <h4 class="pull-right index">Welcome <span class="green">{{currentMember.pseudonym}}! </span></h4>
+    <h4 class="pull-left index">
 
-    <div class="container">
-        <div class="intro-message">
-            <p>You're logged inRencontre!!</p>
-        </div>
-    </div>
-</header>
+        <select class="statusName" (change)="Filter($event.target.value)" id="statusName" name="statusName">
+                
+                <option *ngFor="let currentStatus of statuss" 
+                > {{currentStatus.statusName}}
+                </option>
+            </select>
+
+    </h4>
+
+    
+</div>
+
 
 <body>
-    <div class="container-fluid">
-        <div class="container">
-            <div class="cadre ">
-
-                <select class="statusName" (change)="Filter($event.target.value)" id="statusName" name="statusName">
-                                    
-                                    <option *ngFor="let currentStatus of statuss" 
-                                    >{{currentStatus.statusName}}
-                                    </option>
-                </select>
 
 
+    <div class="container">
+        <!-- MARKETING LINE-->
+        <div class="row-fluid">
+            <div class="well">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <p class="lead ">
 
+                                You're logged inRencontre!!                        </p>
+                    </div>
+                    <div class="span4">
+                        <a class="btn btn-large btn-danger btn-block" href="http://bootstrap3.kissr.com/" target="_blank"> Start upgrade →</a>
+
+                    </div>
+
+                </div>
             </div>
         </div>
+        <!-- /MARKETING LINE-->
     </div>
+
+    <hr>
+    <div class="container">
+        <div class="page-header">
+            <h1>Carousel with multi items with mobile support</h1>
+        </div>
+        <div id="myCarousel2" class="carousel slide">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+
+                <div class="item active">
+                    <div class="row text-center">
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="./slide-1.jpg"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row text-center">
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="http://www.sitediscount.ru/flatscroller/images/flatphone.png"></a>
+                            </div>
+                            <h3>Product name</h3>
+                            <p><a class="btn btn-large btn-block" href="http://www.bootstraptor.com">View details »</a></p>
+                        </div>
+                        <!-- ITEM-->
+                        <div class="dropdown clearfix">
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+                                <li><a tabindex="-1" href="#">Action</a></li>
+                                <li><a tabindex="-1" href="#">Another action</a></li>
+                                <li><a tabindex="-1" href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a tabindex="-1" href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /INNER-->
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel2" data-slide="prev"><i class="icon-chevron-left"></i></a>
+            <a class="carousel-control right" href="#myCarousel2" data-slide="next"><i class="icon-chevron-right"></i></a>
+        </div>
+
+    </div>
+    <!-- /CONTAINER -->
+
 </body>

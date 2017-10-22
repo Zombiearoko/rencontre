@@ -9,7 +9,7 @@ import { MemberService, StatusService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'home.component.html',
-    styleUrls: ['../../bootstrap/css/bootstrap.css']
+    styleUrls: ['./home.css', '../../bootstrap/css/bootstrap.css']
 })
 
 export class HomeComponent implements OnInit {

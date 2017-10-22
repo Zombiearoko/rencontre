@@ -808,7 +808,7 @@ public class AdministratorController {
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
 
-		String birth = request.getParameter("bithDate");
+		String birth = request.getParameter("birthDate");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
@@ -853,7 +853,7 @@ public class AdministratorController {
 			}
 
 		} catch (Exception e) {
-			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : dd/MM/YYYY"),
+			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
 		}
@@ -864,7 +864,7 @@ public class AdministratorController {
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.GET)
 	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
 
-		String birth = request.getParameter("bithDate");
+		String birth = request.getParameter("birthDate");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
@@ -909,7 +909,7 @@ public class AdministratorController {
 			}
 
 		} catch (Exception e) {
-			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : dd/MM/YYYY"),
+			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
 		}

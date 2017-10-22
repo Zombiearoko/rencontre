@@ -224,7 +224,7 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birthDate = request.getParameter("bithDate");
+		String birthDate = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");
@@ -1072,7 +1072,7 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birthDate = request.getParameter("bithDate");
+		String birthDate = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");

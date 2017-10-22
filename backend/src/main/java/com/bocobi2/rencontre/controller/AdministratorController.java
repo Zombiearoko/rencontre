@@ -1,5 +1,6 @@
 package com.bocobi2.rencontre.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -806,13 +807,13 @@ public class AdministratorController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.POST)
-	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) {
+	public ResponseEntity<List<TypeMeeting>> listTypeMeetingPost(HttpServletRequest request) throws ParseException {
 
 		String birth = request.getParameter("birthDate");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
-		try {
+		//try {
 			date = dateFormat.parse(birth);
 			System.out.println("Date parsée : " + date);
 
@@ -852,23 +853,23 @@ public class AdministratorController {
 				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 			}
 
-		} catch (Exception e) {
+		/*} catch (Exception e) {
 			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
-		}
+		}*/
 
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listTypeMeeting", method = RequestMethod.GET)
-	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) {
+	public ResponseEntity<List<TypeMeeting>> listTypeMeetingGet(HttpServletRequest request) throws ParseException {
 
 		String birth = request.getParameter("birthDate");
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
-		try {
+		//try {
 			date = dateFormat.parse(birth);
 			System.out.println("Date parsée : " + date);
 
@@ -908,11 +909,11 @@ public class AdministratorController {
 				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 			}
 
-		} catch (Exception e) {
+		/*} catch (Exception e) {
 			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
-		}
+		}*/
 
 	}
 

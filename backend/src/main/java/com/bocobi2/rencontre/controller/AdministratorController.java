@@ -813,7 +813,7 @@ public class AdministratorController {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
-		//try {
+		try {
 			date = dateFormat.parse(birth);
 			System.out.println("Date parsée : " + date);
 
@@ -853,11 +853,11 @@ public class AdministratorController {
 				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 			}
 
-		/*} catch (Exception e) {
+		} catch (Exception e) {
 			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
-		}*/
+		}
 
 	}
 
@@ -869,7 +869,7 @@ public class AdministratorController {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
-		//try {
+		try {
 			date = dateFormat.parse(birth);
 			System.out.println("Date parsée : " + date);
 
@@ -909,11 +909,11 @@ public class AdministratorController {
 				return new ResponseEntity<List<TypeMeeting>>(listOfTypeMeeting, HttpStatus.OK);
 			}
 
-		/*} catch (Exception e) {
+		} catch (Exception e) {
 			return new ResponseEntity(new MemberErrorType("Format de date invalide. Usage : yyyy-MM-dd"),
 					HttpStatus.CONFLICT);
 
-		}*/
+		}
 
 	}
 

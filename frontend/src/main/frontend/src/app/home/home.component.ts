@@ -30,9 +30,9 @@ export class HomeComponent implements OnInit {
 
     //getting meeting type when selected
   public Filter(value: string) {
-        console.log('age donne', value);
+        console.log('status donne', value);
         this.statusName = value;
-        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName' + this.statusName;
+        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName=' + this.statusName;
     
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];

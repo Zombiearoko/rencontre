@@ -8,17 +8,19 @@ import { RestProvider } from '../../providers/rest/rest';
 import { Router } from '@angular/router';
 
 
-import { LoginFormComponent } from '../login-form/index';
+
 import { AlertService, MemberService, MeetingService, CountryService, RegionService, DepartmentService, BoroughService, TownService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
 import { Town } from '../_models/town';
 import { Country, Region, Borough, Department } from '../_models/index';
+import { ConfimrAccountComponent } from './confimr-account/confimr-account.component';
+
 
 @Component({
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
   styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css'],
-  entryComponents: [LoginFormComponent]
+  entryComponents: [ ConfimrAccountComponent]
 })
 export class MemberRegistrationComponent implements OnInit {
   model: any = {};
@@ -129,7 +131,7 @@ export class MemberRegistrationComponent implements OnInit {
 
     console.log('age donne', value);
     this.birthDate = value;
-    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=' + this.birthDate;
+    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.birthDate;
 
     this.http.get(url).subscribe((resp) => {
       this.results = resp['results'];
@@ -206,17 +208,27 @@ export class MemberRegistrationComponent implements OnInit {
       this.collectionJson = resp.json();
       console.log(this.collectionJson);
       //  set success message and pass true paramater to persist the message after redirecting to the login page
-      this.alertService.success('Registration successful', true);
-      this.router.navigate(['/member-registration']);
-    },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-        console.log(this.pseudonym);
-        // console.log(this.gender);
-        this.submitted = true;
-      });
-      console.log("******hummmm name*******");
+      
+      console.log(typeof(resp));
+      console.log(resp.status);
+      // this.collectionJson.push(resp);
+       if(resp.status==0){
+        this.alertService.error('Registration failed', true);
+         this.router.navigate(['/member-registration']);
+         }
+         else{
+          //  if(resp.status==1){
+            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
+              this.router.navigate(['/login-form']);
+             
+          //  }
+          }
+
+    }
+    );
+      
     }
 
     else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.schoolName == null) || (this.schoolName == "") || (this.levelStudy == null) || (this.levelStudy == ""))) {
@@ -229,16 +241,36 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/member-registration']);
-      },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-          console.log(this.pseudonym);
-          // console.log(this.gender);
-          this.submitted = true;
-        });
+      //   this.alertService.success('Registration successful', true);
+      //   this.router.navigate(['/member-registration']);
+      // },
+      //   error => {
+      //     this.alertService.error(error);
+      //     this.loading = false;
+      //     console.log(this.pseudonym);
+      //     // console.log(this.gender);
+      //     this.submitted = true;
+      //   });
+      console.log(typeof(resp));
+      console.log(resp.status);
+      // this.collectionJson.push(resp);
+       if(resp.status==0){
+        this.alertService.error('Registration failed', true);
+         this.router.navigate(['/member-registration']);
+         }
+         else{
+          //  if(resp.status==1){
+            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
+              this.router.navigate(['/login-form']);
+             
+          //  }
+          }
+
+    }
+    );
+      
     }
 
     else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.levelStudy == null) || (this.levelStudy == "") || (this.profession == null) || (this.profession == ""))) {
@@ -254,16 +286,26 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/member-registration']);
-      },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-          console.log(this.pseudonym);
-          // console.log(this.gender);
-          this.submitted = true;
-        });
+        console.log(typeof(resp));
+        console.log(resp.status);
+        // this.collectionJson.push(resp);
+         if(resp.status==0){
+          this.alertService.error('Registration failed', true);
+           this.router.navigate(['/member-registration']);
+           }
+           else{
+            //  if(resp.status==1){
+              this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+                //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
+                this.router.navigate(['/login-form']);
+               
+            //  }
+            }
+  
+      }
+      );
+        
     }
 
     else if (!((this.fatherName == null) || (this.fatherName == "") || (this.motherName == null) || (this.motherName == "") || (this.countryName == null) || (this.countryName == "") || (this.regionName == null) || (this.regionName == ""))) {
@@ -279,16 +321,26 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/member-registration']);
-      },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-          console.log(this.pseudonym);
-          // console.log(this.gender);
-          this.submitted = true;
-        });
+        console.log(typeof(resp));
+        console.log(resp.status);
+        // this.collectionJson.push(resp);
+         if(resp.status==0){
+          this.alertService.error('Registration failed', true);
+           this.router.navigate(['/member-registration']);
+           }
+           else{
+            //  if(resp.status==1){
+              this.alertService.success('Registration successful', true);
+              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+                //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
+                this.router.navigate(['/login-form']);
+               
+            //  }
+            }
+  
+      }
+      );
+        
     }
     else {
       const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
@@ -302,16 +354,26 @@ export class MemberRegistrationComponent implements OnInit {
       this.collectionJson = resp.json();
       console.log(this.collectionJson);
       //  set success message and pass true paramater to persist the message after redirecting to the login page
-      this.alertService.success('Registration successful', true);
-      this.router.navigate(['/member-registration']);
-    },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-        console.log(this.pseudonym);
-        // console.log(this.gender);
-        this.submitted = true;
-      });
+      console.log(typeof(resp));
+      console.log(resp.status);
+      // this.collectionJson.push(resp);
+       if(resp.status==0){
+        this.alertService.error('Registration failed', true);
+         this.router.navigate(['/member-registration']);
+         }
+         else{
+          //  if(resp.status==1){
+            this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
+              this.router.navigate(['/login-form']);
+             
+          //  }
+          }
+
+    }
+    );
+      
       console.log("******hummmm*******");
     }
     // const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
@@ -340,6 +402,16 @@ export class MemberRegistrationComponent implements OnInit {
 
 
   }
+
+  confirmPass(post) {
+    this.password = post.password;
+   this.confirmPassword = post.confirmPassword;
+   console.log(this.password!=this.confirmPassword);
+if (this.password!=this.confirmPassword){
+const errorPassword = document.getElementById('errorPassword');
+errorPassword.innerHTML = 'le mot de passe non valide';
+}
+}
   ngOnInit() {
     this.loadAllCountries();
     // this.loadAllRegions() ;

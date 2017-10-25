@@ -54,8 +54,9 @@
     </div>
 </div>
 <div class="page-header">
-    Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
-</div>
+    <h2 class="text-center text-lg text-uppercase my-0"> Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
+    </h2>
+    </div>
 
 <body>
     <!-- Header -->
@@ -70,13 +71,13 @@
 
                     <label for="birthDate">Your age hier</label>
                     <span class="date">
-                        <input type="date" class="form-control" id="birthDate" class="form-control" name="birthDate" (change)="Filter($event.target.value)" formControlName="birthDate" ng-model="date.value" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" 
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" (change)="Filter($event.target.value)" formControlName="birthDate" placeholder="yyyy-MM-dd" min="1960-01-01" max="2009-12-31" 
                         />
                     </span>
                 </div>
 
                 <div class="form-group" *ngIf="clientForm.controls.birthDate.valid">
-                    <!-- <label for="meetingName">Select the Meeting Name</label> -->
+                     <label for="meetingName">Select the Meeting Name</label> 
                     <select class="form-control" formControlName="meetingName" name="meetingName" [(ngModel)]="model.meetingName">
                             <option [ngValue]="">
                             </option>
@@ -313,9 +314,9 @@
                 <div class="form-group">
                     <label for="confirmPassword">confirm the passWord</label>
 
-                    <input type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
+                    <input (blur)=confirmPass(clientForm.value) type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
                         placeholder=" ">
-
+                        <div *ngIf="!clientForm.controls.password.untouched" id="errorPassword" class="text-danger"></div>
                 </div>
                 <div class="form-group">
                     <label for="picture">Example file input</label>

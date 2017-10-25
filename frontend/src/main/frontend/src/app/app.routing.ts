@@ -15,6 +15,8 @@ import {AddStatusComponent  } from './add-status/add-status.component';
 import {LoginAdminComponent } from './login-admin/login-admin.component';
 import {AboutComponent } from './about/about.component';
 import {SessionAdminComponent } from './login-admin/session-admin/session-admin.component';
+import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
+
 
 
 
@@ -37,6 +39,7 @@ const appRoutes: Routes = [
     { path: 'login-admin', component: LoginAdminComponent },
     { path: 'about', component: AboutComponent },
     { path: 'session-admin', component: SessionAdminComponent },
+    { path: 'confimr-account', component: ConfimrAccountComponent },
     
     
     // otherwise redirect to home

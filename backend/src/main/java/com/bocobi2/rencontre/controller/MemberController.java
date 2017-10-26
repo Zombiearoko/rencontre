@@ -402,23 +402,23 @@ public class MemberController {
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
 	public ResponseEntity<?> changeStatusPost(HttpServletRequest request) {
 
-		try {
+		//try {
 			String statusName = request.getParameter("statusName");
 			Status status = statusRepository.findByStatusName(statusName);
 			System.out.println(status);
-			//String pseudonym = request.getParameter("pseudonym");
+			String pseudonym = request.getParameter("pseudonym");
 
-			HttpSession session= request.getSession();
-			 Member member= (Member) session.getAttribute("Member");
+			//HttpSession session= request.getSession();
+			 //Member member= (Member) session.getAttribute("Member");
 
-			//Member member = memberRepository.findByPseudonym(pseudonym);
+			Member member = memberRepository.findByPseudonym(pseudonym);
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		} catch (Exception ex) {
+		/*} catch (Exception ex) {
 			logger.error("Status not found.");
 			return new ResponseEntity(new MemberErrorType("Status not found."), HttpStatus.NOT_FOUND);
-		}
+		}*/
 
 	}
 

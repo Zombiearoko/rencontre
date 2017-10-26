@@ -201,7 +201,9 @@ export class LoginFormComponent implements OnInit {
             .subscribe(
             data => {
 
-                this.router.navigate(['this.returnUrl']);
+                // this.router.navigate(['this.returnUrl']);
+                this.router.navigate(['/home']);
+                
                 // this.router.navigateByUrl('/home');
             },
             error => {

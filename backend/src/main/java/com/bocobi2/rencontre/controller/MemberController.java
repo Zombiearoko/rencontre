@@ -406,12 +406,12 @@ public class MemberController {
 			String statusName = request.getParameter("statusName");
 			Status status = statusRepository.findByStatusName(statusName);
 			System.out.println(status);
-			String pseudonym = request.getParameter("pseudonym");
+			//String pseudonym = request.getParameter("pseudonym");
 
-			//HttpSession session= request.getSession();
-			 //Member member= (Member) session.getAttribute("Member");
+			HttpSession session= request.getSession();
+			 Member member= (Member) session.getAttribute("Member");
 
-			Member member = memberRepository.findByPseudonym(pseudonym);
+			//Member member = memberRepository.findByPseudonym(pseudonym);
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);

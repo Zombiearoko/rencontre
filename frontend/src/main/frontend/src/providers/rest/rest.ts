@@ -86,8 +86,8 @@ export class RestProvider {
     + '&emailAdress=' + emailAdress + '&phoneNumber=' 
     + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + '&name=' + name 
     + '&meetingName=' + meetingName+ '&firstName=' + firstName+ '&lastName=' + lastName+ '&schoolName=' 
-    + schoolName+ '&levelStudy=' + levelStudy+ '&profession=' + profession+ '&country=' + countryName
-    + '&region=' + regionName+ '&department=' + departmentName+ '&borough=' + boroughName+ '&town=' + townName+ '&concessionName=' + concessionName;
+    + schoolName+ '&levelStudy=' + levelStudy+ '&profession=' + profession+ '&countryName=' + countryName
+    + '&regionName=' + regionName+ '&departmentName=' + departmentName+ '&boroughName=' + boroughName+ '&townName=' + townName+ '&concessionName=' + concessionName;
     const url2 = 'https://jsonplaceholder.typicode.com/posts';
     const urlSaph = 'http://192.168.8.105:8091/rencontre/Member/registration';
     const urlInno = 'http://localhost:8092/customer/addCustomer';
@@ -118,7 +118,7 @@ export class RestProvider {
   public getAccount() {
 
   }
-
+// get meeting by birthdate
   public getAllByDate(date: Date) {
     // return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=' + date, this.jwt()).map((response: Response) => response.json());
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
@@ -155,10 +155,79 @@ export class RestProvider {
     };
      const urlD = 'http://localhost:8091/rencontre/Member/returnTypeMeeting?pseudonym='+pseudonym;
                   
-      return  this.http.post(urlD, options)
+      return  this.http.post(urlD, object, options)
         .do((res: Response) => console.log(res.json()))
         .map((res: Response) => res.json());
     }
+    // liste les region dun pays
+
+    public getAllRegionByCountry(countryName) {
+      const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+      const options = new RequestOptions({ headers: headers1 });
+      const object = {
+        countryName: countryName,
+      };
+       const urlD = 'http://localhost:8091/rencontre/Administrator/listRegion?countryName='+countryName;
+                    
+        return  this.http.post(urlD, object, options)
+          .do((res: Response) => console.log(res.json()))
+          .map((res: Response) => res.json());
+      }
+// liste les departement dune region
+      public getAllDepartmentByRegion(regionName) {
+        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+        const options = new RequestOptions({ headers: headers1 });
+        const object = {
+          regionName: regionName,
+        };
+         const urlD = 'http://localhost:8091/rencontre/Administrator/listDepartment?regionName='+regionName;
+                      
+          return  this.http.post(urlD, object, options)
+            .do((res: Response) => console.log(res.json()))
+            .map((res: Response) => res.json());
+        }
+// liste les arrondissement dun departement
+        public getAllBoroughByDepartment(departmentName) {
+          const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+          const options = new RequestOptions({ headers: headers1 });
+          const object = {
+            department: departmentName,
+          };
+           const urlD = 'http://localhost:8091/rencontre/Administrator/listBorough?departmentName='+departmentName;
+                        
+            return  this.http.post(urlD, object, options)
+              .do((res: Response) => console.log(res.json()))
+              .map((res: Response) => res.json());
+          }
+          // liste les villes dun arrondissemnt
+
+          public getAllTownByBorough(boroughName) {
+            const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+            const options = new RequestOptions({ headers: headers1 });
+            const object = {
+              boroughName: boroughName,
+            };
+             const urlD = 'http://localhost:8091/rencontre/Administrator/listTown?BoroughName='+boroughName;
+                          
+              return  this.http.post(urlD,object,options)
+                .do((res: Response) => console.log(res.json()))
+                .map((res: Response) => res.json());
+            }
+// liste les concessins dune vill
+            public getAllConcessionByTown(townName) {
+              const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+              const options = new RequestOptions({ headers: headers1 });
+              const object = {
+                townName: townName,
+              };
+               const urlD = 'http://localhost:8091/rencontre/Administrator/listConcession?townName='+townName;
+                            
+                return  this.http.post(urlD,object, options)
+                  .do((res: Response) => console.log(res.json()))
+                  .map((res: Response) => res.json());
+              }
+  
+   
   //       //for login
   //       public postLoginMember(pseudonym, password) {
   //         const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });

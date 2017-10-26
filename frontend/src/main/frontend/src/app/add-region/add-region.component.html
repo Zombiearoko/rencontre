@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="regionName">Select Country</label>
                         
-                            <select [(ngModel)]="selectedCountry" (change)="Filter($event.target.value)" formControlName="countryNameN" name="select">
+                            <select [(ngModel)]="selectedCountry" class="form-control" id="noir" (change)="Filter($event.target.value)" formControlName="countryNameN" name="select">
                                 <option [ngValue]="">
                                 </option>
                                 <option *ngFor="let currentCountry of countries" 

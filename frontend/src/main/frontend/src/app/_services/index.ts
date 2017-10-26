@@ -7,3 +7,4 @@ export * from './department.service';
 export * from './borough.service';
 export * from './town.service';
 export * from './meeting.service';
+export * from './status.service';

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CarouselModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
@@ -17,7 +18,7 @@ import { FooterComponent } from './footer/footer.component';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, MemberService, CountryService, RegionService, DepartmentService, BoroughService, TownService, MeetingService } from './_services/index';
+import { AlertService, AuthenticationService, MemberService, CountryService, RegionService, DepartmentService, BoroughService, TownService, MeetingService, StatusService} from './_services/index';
 import { HomeComponent } from './home/index';
 import { MemberSessionComponent } from './member-session/member-session.component';
 import { LoginAdminComponent } from './login-admin/login-admin.component';
@@ -31,17 +32,23 @@ import { AddBoroughComponent } from './add-borough/add-borough.component';
 import { AddTownComponent } from './add-town/add-town.component';
 import { AddMeetingComponent } from './add-meeting/add-meeting.component';
 import { MemberRegister1Component } from './member-register1/member-register1.component';
+import { AddStatusComponent } from './add-status/add-status.component';
+import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
+import { RencotreComponent } from './rencotre/rencotre.component';
 
 
 
 
 @NgModule({
   imports: [
+    // ngx-bootstrap
+    CarouselModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
     routing
+   
   ],
 
 
@@ -66,7 +73,10 @@ import { MemberRegister1Component } from './member-register1/member-register1.co
     AddBoroughComponent,
     AddTownComponent,
     AddMeetingComponent,
-    MemberRegister1Component
+    MemberRegister1Component,
+    AddStatusComponent,
+    ConfimrAccountComponent,
+    RencotreComponent
   ],
 
   providers: [
@@ -80,7 +90,8 @@ import { MemberRegister1Component } from './member-register1/member-register1.co
     DepartmentService,
     BoroughService,
     TownService,
-    MeetingService
+    MeetingService,
+    StatusService
   ],
   bootstrap: [AppComponent]
 })

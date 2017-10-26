@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   public Filter(value: string) {
         console.log('status donne', value);
         this.statusName = value;
-        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName=' + this.statusName;
+        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName='+value;
     
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];

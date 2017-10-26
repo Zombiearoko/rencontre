@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
 import java.text.SimpleDateFormat;
@@ -401,7 +402,7 @@ public class MemberController {
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
 	public ResponseEntity<?> changeStatusPost(HttpServletRequest request) {
 
-		try {
+		//try {
 			String statusName = request.getParameter("statusName");
 			Status status = statusRepository.findByStatusName(statusName);
 			System.out.println(status);
@@ -414,10 +415,10 @@ public class MemberController {
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		} catch (Exception ex) {
+		/*} catch (Exception ex) {
 			logger.error("Status not found.");
 			return new ResponseEntity(new MemberErrorType("Status not found."), HttpStatus.NOT_FOUND);
-		}
+		}*/
 
 	}
 
@@ -469,7 +470,7 @@ public class MemberController {
 		// private String imageFileId = "";
 		String testimonyType = requestTestimony.getParameter("testimonyType");
 		String author = requestTestimony.getParameter("author");
-		String fileName = "testimony" + author + ".mp4";
+		String fileName = "testimony" + author;
 		if (testimonyType.equalsIgnoreCase("videos")) {
 
 			try {
@@ -1144,7 +1145,7 @@ public class MemberController {
 	 */
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/savePictures", method = RequestMethod.POST)
+	@RequestMapping(value = "/savePicturessas", method = RequestMethod.POST)
 	public ResponseEntity<?> savePicturesPost(@RequestParam("file") MultipartFile file, HttpServletRequest request)
 			throws UnknownHostException, Exception, FileNotFoundException {
 
@@ -1176,29 +1177,44 @@ public class MemberController {
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value = "/downloadPicture", method = RequestMethod.POST)
-	public ResponseEntity<?> downloadPicturePost(@RequestParam("file") MultipartFile file, HttpServletRequest request)
+	@RequestMapping(value = "/downloadPicture", method = RequestMethod.GET)
+	public ResponseEntity<?> downloadPicturePost( HttpServletRequest request)
 			throws UnknownHostException, Exception, FileNotFoundException {
 
+		String SAVE_DIR_TESTIMONY = "/home/saphir/test1/";
+		File fileWay = new File(SAVE_DIR_TESTIMONY);
+		if (!fileWay.exists()){
+			fileWay.mkdir();}
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
 		// String pseudonym= member.getPseudonym();
 		String pseudonym = request.getParameter("monPseudo");
 		Member member = memberRepository.findByPseudonym(pseudonym);
-
+		
+		
+		
 		DBObject metaData = new BasicDBObject();
 
-		InputStream iamgeStream = file.getInputStream();
+		//InputStream iamgeStream = file.getInputStream();
 		metaData.put("type", "image");
-		String pictureName = "picture" + pseudonym;
-
+		
+		//String pictureName = "picture" + pseudonym;
+		String pictureName ="picture"+pseudonym;
+		
+		
+		GridFSDBFile pictureFile = gridOperations.findOne(new
+		 Query(Criteria.where("filename").is(pictureName)));
+		System.out.println(pictureFile);
+		System.out.println(fileWay+ File.separator + pictureName);
+		pictureFile.writeTo(fileWay+ File.separator + pictureName);
+		
 		// Store picture to MongoDB
-		imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
+		//imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
 
 		System.out.println("ImageFileId = " + imageFileId);
 
-		member.setPicture(pictureName);
-		memberRepository.save(member);
+		//member.setPicture(pictureName);
+		//memberRepository.save(member);
 		String status = "Upload has been successful";
 
 		return new ResponseEntity<String>(status, HttpStatus.OK);

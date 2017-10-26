@@ -412,6 +412,7 @@ public class MemberController {
 			 Member member= (Member) session.getAttribute("Member");
 
 			//Member member = memberRepository.findByPseudonym(pseudonym);
+			 System.out.println(member);
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
@@ -439,6 +440,7 @@ public class MemberController {
 			 Member member= (Member) session.getAttribute("Member");
 
 			//Member member = memberRepository.findByPseudonym(pseudonym);
+			 System.out.println(member);
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
@@ -1007,12 +1009,12 @@ public class MemberController {
 	@RequestMapping(value = "/searchMemberWithPseudonym", method = RequestMethod.POST)
 	public ResponseEntity<?> searchMemberWithPseudonymPost(HttpServletRequest request) throws Exception {
 
-		// HttpSession sessionMember = request.getSession();
-		// Member member = (Member) sessionMember.getAttribute("Member");
-		// String pseudo= member.getPseudonym();
-		String pseudo = request.getParameter("monPseudo");
+		HttpSession sessionMember = request.getSession();
+		Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudo= member.getPseudonym();
+		//String pseudo = request.getParameter("monPseudo");
 
-		Member member = memberRepository.findByPseudonym(pseudo);
+		//Member member = memberRepository.findByPseudonym(pseudo);
 
 		String gender = member.getGender();
 

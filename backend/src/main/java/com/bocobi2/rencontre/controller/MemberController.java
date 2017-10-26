@@ -429,7 +429,7 @@ public class MemberController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.GET)
 	public ResponseEntity<?> changeStatusGet(HttpServletRequest request) {
-		try {
+		//try {
 			String statusName = request.getParameter("statusName");
 			Status status = statusRepository.findByStatusName(statusName);
 			System.out.println(status);
@@ -442,10 +442,10 @@ public class MemberController {
 			member.setStatus(status);
 			memberRepository.save(member);
 			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		} catch (Exception ex) {
+		/*} catch (Exception ex) {
 			logger.error("Status not found.");
 			return new ResponseEntity(new MemberErrorType("Status not found."), HttpStatus.NOT_FOUND);
-		}
+		}*/
 
 	}
 

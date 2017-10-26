@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CarouselModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
@@ -33,17 +34,21 @@ import { AddMeetingComponent } from './add-meeting/add-meeting.component';
 import { MemberRegister1Component } from './member-register1/member-register1.component';
 import { AddStatusComponent } from './add-status/add-status.component';
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
+import { RencotreComponent } from './rencotre/rencotre.component';
 
 
 
 
 @NgModule({
   imports: [
+    // ngx-bootstrap
+    CarouselModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
     routing
+   
   ],
 
 
@@ -70,7 +75,8 @@ import { ConfimrAccountComponent } from './member-registration/confimr-account/c
     AddMeetingComponent,
     MemberRegister1Component,
     AddStatusComponent,
-    ConfimrAccountComponent
+    ConfimrAccountComponent,
+    RencotreComponent
   ],
 
   providers: [

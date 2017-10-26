@@ -10,9 +10,9 @@ import { RouterModule,Router, ActivatedRoute } from '@angular/router';
 export class ConfimrAccountComponent implements OnInit {
   @Input() item: any;
   private results: [any];
-  pseudo: any;
+  emailAdress: any;
   constructor( private route: ActivatedRoute) {
-    this.pseudo = route.snapshot.params['pseudo'];
+    this.emailAdress = route.snapshot.params['emailAdress'];
    }
 
   ngOnInit() {

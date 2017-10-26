@@ -220,8 +220,8 @@ export class MemberRegistrationComponent implements OnInit {
           //  if(resp.status==1){
             this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
-              this.router.navigate(['/login-form']);
+               this.router.navigate(['/confimr-account/'+this.emailAdress]);
+              // this.router.navigate(['/confimr-account']);
              
           //  }
           }

@@ -1,50 +1,54 @@
-<!-- Fixed navbar -->
-<app-nav-admin> </app-nav-admin>
-<!--/.nav-collapse -->
-
+<app-nav-admin></app-nav-admin>
 <!-- Page Content -->
-<div class="container">
-    <div class="cadre">
 
-        <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-            <div class="form-group">
+<font color="black">
+<h3 class="text-center text-lg text-uppercase my-0">Ajouter un pays </h3>
+</font>
+<body>
+    <div class="container-fluid">
+        <div class="cadre">
 
-                <label for="countryName">Country</label>
-                <div class="cols-lg-8">
-                    <div class="input-group">
-                        <input type="text" class="form-control" formControlName="countryName" name="countryName" id="countryName" placeholder=" add country hier "
-                        />
+            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+                <div class="form-group">
+
+                    <label for="countryName">Country</label>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" (change)="FilterC($event.target.value)" formControlName="countryName" name="countryName"
+                            id="countryName" placeholder=" add country hier " />
                     </div>
+
+
+                    <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+                    <div class="alert" *ngIf="!clientForm.controls.countryName.valid && clientForm.controls.countryName.touched">{{titleAlert}}</div>
+
                 </div>
-
-                <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                <div class="alert" *ngIf="!clientForm.controls.countryName.valid && clientForm.controls.countryName.touched">{{titleAlert}}</div>
-
-            </div>
-            <div>
-                <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+                <div>
+                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+                    <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 
-            </div>
-        </form>
+                </div>
+            </form>
+
+            <p>Form value: {{ clientForm.value | json }}</p>
+            <p>Form status: {{ clientForm.status | json }}</p>
+
+
+            <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
+            <h2>You submitted the following country:</h2>
+
+
+            <button class="btn btn-primary" (click)="submitted=false">Update</button>
+
+            <h3>All registered Countries:</h3>
+            <ul>
+                <li *ngFor="let currentCountry of countries">
+                    {{currentCountry.countryName}}
+                    <a (click)="deleteCountry(currentCountry.id)">Delete</a>
+                </li>
+            </ul>
+        </div>
+
     </div>
-
-</div>
-<p>Form value: {{ clientForm.value | json }}</p>
-<p>Form status: {{ clientForm.status | json }}</p>
-
-
-<!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-<h2>You submitted the following country:</h2>
-
-
-<button class="btn btn-primary" (click)="submitted=false">Update</button>
-
-<h3>All registered Countries:</h3>
-<ul>
-    <li *ngFor="let currentCountry of countries">
-        {{currentCountry.countryName}}
-        <a (click)="deleteCountry(currentCountry.id)">Delete</a>
-    </li>
-</ul>
+</body>

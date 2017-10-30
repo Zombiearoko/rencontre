@@ -262,8 +262,8 @@ export class MemberRegistrationComponent implements OnInit {
           //  if(resp.status==1){
             this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
-              this.router.navigate(['/login-form']);
+               this.router.navigate(['/confimr-account/'+this.pseudonym]);
+              // this.router.navigate(['/login-form']);
              
           //  }
           }
@@ -297,8 +297,8 @@ export class MemberRegistrationComponent implements OnInit {
             //  if(resp.status==1){
               this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
               alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-                //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
-                this.router.navigate(['/login-form']);
+                 this.router.navigate(['/confimr-account/'+this.pseudonym]);
+                // this.router.navigate(['/login-form']);
                
             //  }
             }
@@ -332,8 +332,8 @@ export class MemberRegistrationComponent implements OnInit {
             //  if(resp.status==1){
               this.alertService.success('Registration successful', true);
               alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-                //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
-                this.router.navigate(['/login-form']);
+                 this.router.navigate(['/confimr-account/'+this.pseudonym]);
+                // this.router.navigate(['/login-form']);
                
             //  }
             }
@@ -365,8 +365,8 @@ export class MemberRegistrationComponent implements OnInit {
           //  if(resp.status==1){
             this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-              //  this.router.navigate(['/confimr-account/'+this.pseudonym]);
-              this.router.navigate(['/login-form']);
+               this.router.navigate(['/confimr-account/'+this.pseudonym]);
+              // this.router.navigate(['/login-form']);
              
           //  }
           }

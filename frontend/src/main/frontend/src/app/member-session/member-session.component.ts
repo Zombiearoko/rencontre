@@ -50,6 +50,13 @@ private results: [any];
     this.currentCountry = JSON.parse(localStorage.getItem('currentCountry'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);
   }
+  //getting countryName for unicity
+  public FilterC(value: Date) {
+    
+        console.log('pays entré:', value);
+       
+      }
+    
 onSubmit(post){
 
   this.countryName = post.countryName;

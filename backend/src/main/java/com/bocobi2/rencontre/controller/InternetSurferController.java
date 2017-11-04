@@ -5,6 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -195,6 +198,7 @@ public class InternetSurferController {
 	 * @throws NoSuchPaddingException
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeyException
+	 * @throws ParseException 
 	 * 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -205,7 +209,7 @@ public class InternetSurferController {
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ResponseEntity<?> registrationPost(HttpServletRequest request, UriComponentsBuilder ucBuilder)
 			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
-			BadPaddingException, UnsupportedEncodingException {
+			BadPaddingException, UnsupportedEncodingException, ParseException {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -224,11 +228,29 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birthDate = request.getParameter("birthDate");
+		String birth = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		
+			date = dateFormat.parse(birth);
+			System.out.println("Date parsée : " + date);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int year = calendar.get(Calendar.YEAR);
+
+			Calendar calendarCourante = Calendar.getInstance();
+
+			int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+			int birthDat = yearCourante - year;
+			String birthDate= birthDat+"";
+			
 
 		// String pseudo = encrypt(pseudonym);
 		// String meeting = encrypt(meetingName);
@@ -1053,7 +1075,7 @@ public class InternetSurferController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-	public ResponseEntity<?> registrationGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<?> registrationGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ParseException {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -1072,12 +1094,32 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birthDate = request.getParameter("birthDate");
+		String birth = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
 
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		
+			date = dateFormat.parse(birth);
+			System.out.println("Date parsée : " + date);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int year = calendar.get(Calendar.YEAR);
+
+			Calendar calendarCourante = Calendar.getInstance();
+
+			int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+			int birthDat = yearCourante - year;
+			String birthDate= birthDat+"";
+			
+		
+		
 		// String pseudo = encrypt(pseudonym);
 		// String meeting = encrypt(meetingName);
 

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.nio.Buffer;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,6 +82,7 @@ import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
+
 import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.FriendlyRepository;
@@ -90,6 +96,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
@@ -138,6 +145,7 @@ public class MemberController {
 
 	@Autowired
 	FriendlyRepository freindlyRepository;
+
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
@@ -191,7 +199,41 @@ public class MemberController {
 	 */
 	/*
 	 * Version POST
+	 * 
 	 */
+	
+	@RequestMapping("/user")
+    public Principal user(Principal user) {
+        return user;
+    }
+
+    @RequestMapping("/resource")
+    public ResponseEntity<Member> home( UserDetails userDetails, HttpServletRequest request) {
+    	
+    	String pseudonym = request.getParameter("pseudonym");
+		String password = request.getParameter("password");
+		String meetingName = request.getParameter("meetingName");
+		System.out.println("-------------------------------");
+		System.out.println(pseudonym);
+		System.out.println("-------------------------------");
+
+		System.out.println("-------------------------------");
+		System.out.println(password);
+    	
+    	//Member members = member.findOne("{#: #}", Member.PSEUDONYM, userDetails.getPseudonym).as(Member.class);
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+    	//Member members = memberRepository.findOne("{#: #}", userDetails.getPseudonym);
+		String name = auth.getName();
+		Member members = memberRepository.findByPseudonym(name);
+		String status = "Connected";
+		Status statusDB = statusRepository.findByStatusName(status);
+		members.setStatus(statusDB);
+		members.setMeetingNameConnexion(meetingName);
+    
+        return new ResponseEntity<Member>(members, HttpStatus.OK);
+    }
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {

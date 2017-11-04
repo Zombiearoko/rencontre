@@ -7,7 +7,7 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-import { AlertService, RegionService } from '../_services/index';
+import { AlertService, RegionService,DepartmentService } from '../_services/index';
 import { Region } from '../_models/region';
 import { Department } from '../_models/department';
 
@@ -31,6 +31,7 @@ export class AddDepartmentComponent implements OnInit {
   public currentDepartment: Department;
   public region: Region;
   public regions: Region[] = [];
+  public departments: Department[] = [];
   loading = false;
   post: any;
   titleAlert: string = 'You must specify a Department';
@@ -38,6 +39,7 @@ export class AddDepartmentComponent implements OnInit {
 
 
   constructor(private regionService: RegionService,
+    private departmentService: DepartmentService,
     public fb: FormBuilder, private http: Http,
     private router: Router,
     private alertService: AlertService) {
@@ -45,7 +47,7 @@ export class AddDepartmentComponent implements OnInit {
 
     this.clientForm = this.fb.group({
       'regionNameN': [null, Validators.compose([Validators.required])],
-      'departmentName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(10)])]
+      'departmentName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
 
     });
 
@@ -56,20 +58,38 @@ export class AddDepartmentComponent implements OnInit {
 
   //getting region when selected
   public Filter(value: Region) {
-    alert(value);
+    console.log("valeur entré",value);
     this.region = value;
   }
 
-  onSubmit(post) {
+  onSubmit(post){
+    this.loadAllDepartments();
+    var j = 0;
+  
+    for (var i = 0; i < this.departments.length; i++) {
+      if (this.departments[i].departmentName == post.departmentName)
+        j++;
+    }
+  
+    if (j == 0) {
+      this.departmentName = post.departmentName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + this.departmentName + '&regionName=' + this.region;
+  
+      this.http.get(urlD).subscribe((resp)=>{
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+      console.log("pour la collection department",this.collectionJson);
+        this.loadAllDepartments();
+      });
+  
+      
+    }
+ 
+    else {
+      alert("désolé! Ce Departement existe déja ");
 
-    this.departmentName = post.departmentName;
-    const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + this.departmentName + '&regionName=' + this.region;
+    }
 
-    this.http.get(urlD).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log("pour la collection department", this.collectionJson);
-    });
 
   }
   ngOnInit() {
@@ -80,6 +100,10 @@ export class AddDepartmentComponent implements OnInit {
   private loadAllRegions() {
     this.regionService.getAll().subscribe(regions => { this.regions = regions; });
     console.log("regions", this.regions);
+  }
+  private loadAllDepartments() {
+    this.departmentService.getAll().subscribe(departments => { this.departments = departments; });
+    console.log("departments", this.departments);
   }
 
 }

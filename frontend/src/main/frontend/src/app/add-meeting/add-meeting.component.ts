@@ -46,15 +46,36 @@ export class AddMeetingComponent implements OnInit {
   }
 
   onSubmit(post) {
+    this.loadAllMeetings();
+    var j = 0;
+  
+    for (var i = 0; i < this.meetings.length; i++) {
+      if (this.meetings[i].meetingName == post.meetingName)
+        j++;
+    }
+  
+    if (j == 0) {
+      this.meetingName = post.meetingName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/typeMeeting?meetingName=' + this.meetingName;
+  
+      this.http.get(urlD).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log("pour la collection typeMeeting", this.collectionJson);
+     
+        this.loadAllMeetings();
+      });
+  
+      
+    }
+  
+  
+    else {
+      alert("désolé! Cet type de rencontre existe déja ");
+  
+    }
 
-    this.meetingName = post.meetingName;
-    const urlD = 'http://localhost:8091/rencontre/Administrator/typeMeeting?meetingName=' + this.meetingName;
-
-    this.http.get(urlD).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log("pour la collection typeMeeting", this.collectionJson);
-    });
+   
 
   }
   ngOnInit() {

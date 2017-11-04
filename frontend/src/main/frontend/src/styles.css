@@ -20,6 +20,7 @@ body {
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+  color:#ffffff;
 }
 
 h1, h2, h3, h4, h5, h6, .text-heading {
@@ -30,6 +31,9 @@ h1, h2, h3, h4, h5, h6, .text-heading {
 h1 {
   font-size: 4rem;
  
+}
+h2{
+  color: #000000;
 }
 
 .tagline-upper {
@@ -74,4 +78,13 @@ hr.divider {
 
 .map-container iframe.clicked {
   pointer-events: auto;
+}
+.cadre {
+  
+   font-weight: bold;
+   color:#ffffff;
+   /* border-radius: 15px; */
+}
+.date{
+   color:#000000;
 }

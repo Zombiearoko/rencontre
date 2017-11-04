@@ -1,11 +1,5 @@
-<div class="separators">
-
-</div>
-<!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/3.3.7/css/font-awesome.min.css" rel="stylesheet">   -->
-
-
 <!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -14,7 +8,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               </button>
-            <a class="navbar-brand" href="/">Rencontre Diversifiées</a>
+            <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -54,9 +48,12 @@
     </div>
 </div>
 <div class="page-header">
-    <h2 class="text-center text-lg text-uppercase my-0"> Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
-    </h2>
-    </div>
+    <font color="orange">
+        <h3 class="text-center text-lg text-uppercase my-0"> Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
+
+        </h3>
+    </font>
+</div>
 
 <body>
     <!-- Header -->
@@ -77,7 +74,7 @@
                 </div>
 
                 <div class="form-group" *ngIf="clientForm.controls.birthDate.valid">
-                     <label for="meetingName">Select the Meeting Name</label> 
+                    <label for="meetingName">Select the Meeting Name</label>
                     <select class="form-control" formControlName="meetingName" name="meetingName" [(ngModel)]="model.meetingName">
                             <option [ngValue]="">
                             </option>
@@ -314,10 +311,11 @@
                 <div class="form-group">
                     <label for="confirmPassword">confirm the passWord</label>
 
-                    <input (blur)=confirmPass(clientForm.value) type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword" id="confirmPassword"
-                        placeholder=" ">
-                        <div *ngIf="!clientForm.controls.password.untouched" id="errorPassword" class="text-danger"></div>
+                    <input (blur)=confirmPass(clientForm.value) type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
+                        id="confirmPassword" placeholder=" ">
+                    <div class="alert" *ngIf="clientForm.controls.password.touched" id="errorPassword" class="text-danger"></div>
                 </div>
+                <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
                 <div class="form-group">
                     <label for="picture">Example file input</label>
                     <input type="file" formControlName="customerPicture" id="picture" #customerPicture>

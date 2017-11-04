@@ -47,15 +47,37 @@ export class AddStatusComponent implements OnInit {
   }
 
   onSubmit(post) {
+    this.loadAllStatuss();
+    var j = 0;
+  
+    for (var i = 0; i < this.statuss.length; i++) {
+      if (this.statuss[i].statusName == post.statusName)
+        j++;
+    }
+  
+    if (j == 0) {
+      this.statusName = post.statusName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/addStatus?statusName='+this.statusName;
+  
+      this.http.get(urlD).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log("pour la collection status", this.collectionJson);
+      
+        this.loadAllStatuss();
+      });
+  
+      
+    }
+  
+  
+    else {
+      alert("désolé! Ce status existe déja ");
+  
+    }
 
-    this.statusName = post.statusName;
-    const urlD = 'http://localhost:8091/rencontre/Administrator/addStatus?statusName='+this.statusName;
 
-    this.http.get(urlD).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log("pour la collection status", this.collectionJson);
-    });
+    
 
   }
   ngOnInit() {

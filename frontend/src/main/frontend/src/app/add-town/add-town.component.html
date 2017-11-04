@@ -38,7 +38,7 @@
           <label for="townName">Ville</label>
 
 
-          <input type="text" class="form-control" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
+          <input type="text" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
           />
 
 

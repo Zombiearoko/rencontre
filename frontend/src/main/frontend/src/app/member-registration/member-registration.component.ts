@@ -20,7 +20,7 @@ import { ConfimrAccountComponent } from './confimr-account/confimr-account.compo
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
   styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css'],
-  entryComponents: [ ConfimrAccountComponent]
+  entryComponents: [ConfimrAccountComponent]
 })
 export class MemberRegistrationComponent implements OnInit {
   model: any = {};
@@ -199,36 +199,36 @@ export class MemberRegistrationComponent implements OnInit {
     if (!((this.name == null) || (this.name == ""))) {
       console.log("nooooo", this.name);
       const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-      + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-      + this.confirmPassword + '&meetingName=' + this.meetingName
-      + '&name=' + this.name ;
+        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+        + this.confirmPassword + '&meetingName=' + this.meetingName
+        + '&name=' + this.name;
 
-    this.http.get(url).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log(this.collectionJson);
-      //  set success message and pass true paramater to persist the message after redirecting to the login page
-      
-      console.log(typeof(resp));
-      console.log(resp.status);
-      // this.collectionJson.push(resp);
-       if(resp.status==0){
-        this.alertService.error('Registration failed', true);
-         this.router.navigate(['/member-registration']);
-         }
-         else{
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log(this.collectionJson);
+        //  set success message and pass true paramater to persist the message after redirecting to the login page
+
+        console.log(typeof (resp));
+        console.log(resp.status);
+        // this.collectionJson.push(resp);
+        if (resp.status == 0) {
+          this.alertService.error('Registration failed', true);
+          this.router.navigate(['/member-registration']);
+        }
+        else {
           //  if(resp.status==1){
-            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
-            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-               this.router.navigate(['/confimr-account/'+this.emailAdress]);
-              // this.router.navigate(['/confimr-account']);
-             
-          //  }
-          }
+          this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          this.router.navigate(['/confimr-account/' + this.emailAdress]);
+          // this.router.navigate(['/confimr-account']);
 
-    }
-    );
-      
+          //  }
+        }
+
+      }
+      );
+
     }
 
     else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.schoolName == null) || (this.schoolName == "") || (this.levelStudy == null) || (this.levelStudy == ""))) {
@@ -241,36 +241,36 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-      //   this.alertService.success('Registration successful', true);
-      //   this.router.navigate(['/member-registration']);
-      // },
-      //   error => {
-      //     this.alertService.error(error);
-      //     this.loading = false;
-      //     console.log(this.pseudonym);
-      //     // console.log(this.gender);
-      //     this.submitted = true;
-      //   });
-      console.log(typeof(resp));
-      console.log(resp.status);
-      // this.collectionJson.push(resp);
-       if(resp.status==0){
-        this.alertService.error('Registration failed', true);
-         this.router.navigate(['/member-registration']);
-         }
-         else{
+        //   this.alertService.success('Registration successful', true);
+        //   this.router.navigate(['/member-registration']);
+        // },
+        //   error => {
+        //     this.alertService.error(error);
+        //     this.loading = false;
+        //     console.log(this.pseudonym);
+        //     // console.log(this.gender);
+        //     this.submitted = true;
+        //   });
+        console.log(typeof (resp));
+        console.log(resp.status);
+        // this.collectionJson.push(resp);
+        if (resp.status == 0) {
+          this.alertService.error('Registration failed', true);
+          this.router.navigate(['/member-registration']);
+        }
+        else {
           //  if(resp.status==1){
-            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
-            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-               this.router.navigate(['/confimr-account/'+this.pseudonym]);
-              // this.router.navigate(['/login-form']);
-             
-          //  }
-          }
+          this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          this.router.navigate(['/confimr-account/' + this.pseudonym]);
+          // this.router.navigate(['/login-form']);
 
-    }
-    );
-      
+          //  }
+        }
+
+      }
+      );
+
     }
 
     else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.levelStudy == null) || (this.levelStudy == "") || (this.profession == null) || (this.profession == ""))) {
@@ -286,26 +286,26 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof(resp));
+        console.log(typeof (resp));
         console.log(resp.status);
         // this.collectionJson.push(resp);
-         if(resp.status==0){
+        if (resp.status == 0) {
           this.alertService.error('Registration failed', true);
-           this.router.navigate(['/member-registration']);
-           }
-           else{
-            //  if(resp.status==1){
-              this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
-              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-                 this.router.navigate(['/confimr-account/'+this.pseudonym]);
-                // this.router.navigate(['/login-form']);
-               
-            //  }
-            }
-  
+          this.router.navigate(['/member-registration']);
+        }
+        else {
+          //  if(resp.status==1){
+          this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          this.router.navigate(['/confimr-account/' + this.pseudonym]);
+          // this.router.navigate(['/login-form']);
+
+          //  }
+        }
+
       }
       );
-        
+
     }
 
     else if (!((this.fatherName == null) || (this.fatherName == "") || (this.motherName == null) || (this.motherName == "") || (this.countryName == null) || (this.countryName == "") || (this.regionName == null) || (this.regionName == ""))) {
@@ -321,59 +321,59 @@ export class MemberRegistrationComponent implements OnInit {
         this.collectionJson = resp.json();
         console.log(this.collectionJson);
         //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof(resp));
+        console.log(typeof (resp));
         console.log(resp.status);
         // this.collectionJson.push(resp);
-         if(resp.status==0){
+        if (resp.status == 0) {
           this.alertService.error('Registration failed', true);
-           this.router.navigate(['/member-registration']);
-           }
-           else{
-            //  if(resp.status==1){
-              this.alertService.success('Registration successful', true);
-              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-                 this.router.navigate(['/confimr-account/'+this.pseudonym]);
-                // this.router.navigate(['/login-form']);
-               
-            //  }
-            }
-  
+          this.router.navigate(['/member-registration']);
+        }
+        else {
+          //  if(resp.status==1){
+          this.alertService.success('Registration successful', true);
+          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          this.router.navigate(['/confimr-account/' + this.pseudonym]);
+          // this.router.navigate(['/login-form']);
+
+          //  }
+        }
+
       }
       );
-        
+
     }
     else {
       const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-      + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-      + this.confirmPassword + '&meetingName=' + this.meetingName
-      + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-      + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
+        + this.confirmPassword + '&meetingName=' + this.meetingName
+        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
+        + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
 
-    this.http.get(url).subscribe((resp) => {
-      this.results = resp['results'];
-      this.collectionJson = resp.json();
-      console.log(this.collectionJson);
-      //  set success message and pass true paramater to persist the message after redirecting to the login page
-      console.log(typeof(resp));
-      console.log(resp.status);
-      // this.collectionJson.push(resp);
-       if(resp.status==0){
-        this.alertService.error('Registration failed', true);
-         this.router.navigate(['/member-registration']);
-         }
-         else{
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+        console.log(this.collectionJson);
+        //  set success message and pass true paramater to persist the message after redirecting to the login page
+        console.log(typeof (resp));
+        console.log(resp.status);
+        // this.collectionJson.push(resp);
+        if (resp.status == 0) {
+          this.alertService.error('Registration failed', true);
+          this.router.navigate(['/member-registration']);
+        }
+        else {
           //  if(resp.status==1){
-            this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
-            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-               this.router.navigate(['/confimr-account/'+this.pseudonym]);
-              // this.router.navigate(['/login-form']);
-             
-          //  }
-          }
+          this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
+          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          this.router.navigate(['/confimr-account/' + this.pseudonym]);
+          // this.router.navigate(['/login-form']);
 
-    }
-    );
-      
+          //  }
+        }
+
+      }
+      );
+
       console.log("******hummmm*******");
     }
     // const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
@@ -405,13 +405,15 @@ export class MemberRegistrationComponent implements OnInit {
 
   confirmPass(post) {
     this.password = post.password;
-   this.confirmPassword = post.confirmPassword;
-   console.log(this.password!=this.confirmPassword);
-if (this.password!=this.confirmPassword){
-const errorPassword = document.getElementById('errorPassword');
-errorPassword.innerHTML = 'le mot de passe non valide';
-}
-}
+    this.confirmPassword = post.confirmPassword;
+    console.log(this.password != this.confirmPassword);
+    if (this.password != this.confirmPassword) {
+      this.alertService.error('passeword non identique', true);
+      // const errorPassword = document.getElementById('errorPassword');
+      // errorPassword.innerHTML = 'le mot de passe non valide';
+    }
+    
+  }
   ngOnInit() {
     this.loadAllCountries();
     // this.loadAllRegions() ;

@@ -32,13 +32,15 @@ export class AddBoroughComponent implements OnInit {
   public currentBorough: Borough;
   public department:Department;
   public departments: Department[] = [];
+  public boroughs: Borough[] = [];
   loading = false;
   post: any; 
   titleAlert:string = 'You must specify a borough';
 private results: [any];
 
 
-  constructor(private departmentService: DepartmentService, 
+  constructor(private departmentService: DepartmentService,
+    private boroughService: BoroughService,  
     public fb: FormBuilder, private http: Http, 
     private router: Router, 
     private alertService: AlertService) { 
@@ -46,7 +48,7 @@ private results: [any];
     
     this.clientForm = this.fb.group({
       'departmentNameN': [null, Validators.compose([Validators.required])],
-      'boroughName': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])]
+      'boroughName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
       
     });
     
@@ -57,21 +59,40 @@ private results: [any];
 //getting departement when selected
 public Filter(value: Department)
   {
-    alert(value)
+    console.log(value);
      this.department=value;
   }
   
 onSubmit(post){
+  this.loadAllBoroughs();
+  var j = 0;
 
-  this.boroughName = post.boroughName;
-  const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName='+this.boroughName+'&departmentName='+ this.department;
-  
-  this.http.get(urlB).subscribe((resp)=>{
-    this.results = resp['results'];
-    this.collectionJson = resp.json();
-  console.log("pour la collection borough",this.collectionJson);
-});
+  for (var i = 0; i < this.boroughs.length; i++) {
+    if (this.boroughs[i].boroughName == post.boroughName)
+      j++;
+  }
 
+  if (j == 0) {
+    this.boroughName = post.boroughName;
+    const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName='+this.boroughName+'&departmentName='+ this.department;
+    
+    this.http.get(urlB).subscribe((resp)=>{
+      this.results = resp['results'];
+      this.collectionJson = resp.json();
+    console.log("pour la collection borough",this.collectionJson);
+      this.loadAllBoroughs();
+    });
+
+    
+  }
+
+
+  else {
+    alert("désolé! Cet Arrondissemnt existe déja ");
+
+  }
+
+ 
 }
   ngOnInit() {
     this.loadAllDepartments();
@@ -83,6 +104,10 @@ onSubmit(post){
 private loadAllDepartments() {
     this.departmentService.getAll().subscribe(departments => { this.departments = departments; });
     console.log("departments", this.departments);
+}
+private loadAllBoroughs() {
+  this.boroughService.getAll().subscribe(boroughs => { this.boroughs = boroughs; });
+  console.log("boroughs", this.boroughs);
 }
 
 }

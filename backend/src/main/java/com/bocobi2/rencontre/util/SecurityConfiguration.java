@@ -1,4 +1,4 @@
-package com.bocobi2.rencontre.util;
+/*package com.bocobi2.rencontre.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -58,4 +58,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
-}
+}*/

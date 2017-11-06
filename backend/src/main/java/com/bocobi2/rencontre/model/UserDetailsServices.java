@@ -1,4 +1,4 @@
-package com.bocobi2.rencontre.model;
+/*package com.bocobi2.rencontre.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,4 +29,4 @@ public class UserDetailsServices  implements UserDetailsService  {
 	   
 	}
 
-}
+}*/

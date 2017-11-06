@@ -8,11 +8,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Document(collection="member")
-public class Member extends InternetSurfer implements UserDetails  {
+public class Member extends InternetSurfer {
+//implements UserDetails  
 
 	@Id
 	@Indexed
@@ -482,7 +482,7 @@ public class Member extends InternetSurfer implements UserDetails  {
 
 
 
-	@Override
+/*	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return null;
@@ -508,14 +508,14 @@ public class Member extends InternetSurfer implements UserDetails  {
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
 
 
 
 
 
-	@Override
+	/*@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return false;
@@ -541,7 +541,7 @@ public class Member extends InternetSurfer implements UserDetails  {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

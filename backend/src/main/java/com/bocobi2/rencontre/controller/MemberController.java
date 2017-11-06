@@ -49,10 +49,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -200,7 +197,7 @@ public class MemberController {
 	/*
 	 * Version POST
 	 * 
-	 */
+	
 	
 	@RequestMapping("/user")
     public Principal user(Principal user) {
@@ -232,7 +229,7 @@ public class MemberController {
 		members.setMeetingNameConnexion(meetingName);
     
         return new ResponseEntity<Member>(members, HttpStatus.OK);
-    }
+    } */
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)

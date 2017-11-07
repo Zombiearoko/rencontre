@@ -1039,7 +1039,56 @@ public class MemberController {
 	/*
 	 * Methode de recherche des membres
 	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/returnMember", method = RequestMethod.POST)
+	public ResponseEntity<?> returnMemberPost(HttpServletRequest request) throws Exception {
 
+		
+
+		String searhPseudonym = request.getParameter("pseudonym");
+		Member member=memberRepository.findByPseudonym(searhPseudonym);
+
+		if (member==null){
+
+				logger.error("Unable to find  member. The member " + searhPseudonym
+						+ " doesn't exist");
+				return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym
+						+ " doesn't exist"), HttpStatus.NO_CONTENT);
+			} else {
+				
+
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+			}
+
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/returnMember", method = RequestMethod.GET)
+	public ResponseEntity<?> returnMemberGet(HttpServletRequest request) throws Exception {
+
+		
+
+		String searhPseudonym = request.getParameter("pseudonym");
+		Member member=memberRepository.findByPseudonym(searhPseudonym);
+
+		if (member==null){
+
+				logger.error("Unable to find  member. The member " + searhPseudonym
+						+ " doesn't exist");
+				return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym
+						+ " doesn't exist"), HttpStatus.NO_CONTENT);
+			} else {
+				
+
+				return new ResponseEntity<Member>(member, HttpStatus.OK);
+			}
+
+		
+	}
+	
+	
+	
 	/*
 	 * Version post
 	 */

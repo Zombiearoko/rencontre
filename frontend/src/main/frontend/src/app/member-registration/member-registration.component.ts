@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { AlertService, MemberService, MeetingService, CountryService, RegionService, DepartmentService, BoroughService, TownService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
 import { Town } from '../_models/town';
-import { Country, Region, Borough, Department } from '../_models/index';
+import { Country, Region, Borough, Department, Member } from '../_models/index';
 import { ConfimrAccountComponent } from './confimr-account/confimr-account.component';
 
 
@@ -36,7 +36,9 @@ export class MemberRegistrationComponent implements OnInit {
   customerPictureFile: File;
   @ViewChild('customerPicture') customer_picture;
   post: any;
-  titleAlert: string = 'You must specify a pseudo thats between 3 and 5 characters';
+  titleAlert: string = 'You must specify an unused pseudo for this meeting type! characters between 3 and 5 ';
+  titleAlertP: string = 'password have to be same with preview one';
+  
   private birthDate: Date;
   private meetingName: string;
   public currentMeeting: Meeting;
@@ -68,6 +70,7 @@ export class MemberRegistrationComponent implements OnInit {
   private picture: string;
   private results: [any];
   private collectionJson: object;
+  private members: Member[] = [];
   submitted = false;
 
 
@@ -120,7 +123,7 @@ export class MemberRegistrationComponent implements OnInit {
 
   }
 
-  //getting meeting type when selected
+  //getting meeting type when selected age
   public Filter(value: Date) {
 
 
@@ -140,6 +143,55 @@ export class MemberRegistrationComponent implements OnInit {
       console.log(this.collectionJson);
     });
     //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
+    //  console.log("meetings", this.meetings);
+  }
+  //looking if pseudo is unique
+  public FilterS(value: string) {
+
+
+    // var ageDifMs = Date.now() - this.age.getTime();  
+    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
+    // alert(date);
+
+    console.log('pseudo donne', value);
+    this.pseudonym = value;
+    this.loadAllMeetings(this.pseudonym);
+    const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
+
+    this.http.get(url).subscribe((resp) => {
+      this.results = resp['results'];
+      this.members = resp.json();
+
+      console.log('****members****',this.members);
+      var j = 0;
+      
+          for (var i = 0; i < this.members.length; i++) {
+            if (this.members[i].pseudonym == this.pseudonym)
+              j++;
+          }
+      
+          if (j != 0) {
+            // this.loadAllMeetings(this.pseudonym);
+            var k = 0;
+            console.log('les types de rencontre liés au pseudo:',this.pseudonym,this.model.meetingName);
+            
+            for (var i = 0; i < this.meetings.length; i++) {
+              if (this.meetings[i].meetingName == this.model.meetingName)
+                console.log('dans la boucle meetingName',this.meetings[i].meetingName);
+                k++;
+            }
+            console.log('valeur de k',k,this.meetings);
+            if (k != 0)
+              {
+            console.log('ce pseudo est deja utilisé pour ce type de rencontre');
+            alert('ce pseudo est deja utilisé');
+        this.model.pseudonym = null;
+      }
+          }
+    });
+    
+    // this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
     //  console.log("meetings", this.meetings);
   }
 
@@ -403,17 +455,17 @@ export class MemberRegistrationComponent implements OnInit {
 
   }
 
-  confirmPass(post) {
-    this.password = post.password;
-    this.confirmPassword = post.confirmPassword;
-    console.log(this.password != this.confirmPassword);
-    if (this.password != this.confirmPassword) {
-      this.alertService.error('passeword non identique', true);
-      // const errorPassword = document.getElementById('errorPassword');
-      // errorPassword.innerHTML = 'le mot de passe non valide';
-    }
-    
-  }
+  // confirmPass(post) {
+  //   this.password = post.password;
+  //   this.confirmPassword = post.confirmPassword;
+  //   console.log(this.password != this.confirmPassword);
+  //   if (this.password != this.confirmPassword) {
+  //     this.alertService.error('passeword non identique', true);
+  //     // const errorPassword = document.getElementById('errorPassword');
+  //     // errorPassword.innerHTML = 'le mot de passe non valide';
+  //   }
+
+  // }
   ngOnInit() {
     this.loadAllCountries();
     // this.loadAllRegions() ;
@@ -464,5 +516,10 @@ export class MemberRegistrationComponent implements OnInit {
   //   this.rest.getAllTownByBorough(boroughName).subscribe(towns => { this.towns = towns; });
   //   console.log("departments", this.departments);
   // }
+  private loadAllMeetings(pseudonym: string) {
+    // this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
+    //  this.rest.getAll().subscribe(meetings => { this.meetings = meetings; });
+    this.rest.getAllByPeudo(pseudonym).subscribe(meetings => { this.meetings = meetings; });
+  }
 
 }

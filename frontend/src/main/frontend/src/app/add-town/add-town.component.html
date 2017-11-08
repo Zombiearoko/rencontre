@@ -18,11 +18,11 @@
       <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
         <div class="form-group">
-          <label for="regionName">Select Borough</label>
+          <label for="regionName">Select Arrondissement</label>
 
           <select [(ngModel)]="selectedBorough" class="form-control" (change)="Filter($event.target.value)" formControlName="boroughNameN"
             name="selectB">
-                        <option [ngValue]="">Select Borough
+                        <option [ngValue]="">
                         </option>
                         <option *ngFor="let currentBorough of boroughs" 
                            >{{currentBorough.boroughName}}
@@ -35,7 +35,7 @@
 
         <div class="form-group">
 
-          <label for="townName">Ville</label>
+          <label for="townName">Village</label>
 
 
           <input type="text" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "

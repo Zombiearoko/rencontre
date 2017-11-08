@@ -89,10 +89,10 @@
                 <div class="form-group">
                     <label for="pseudonym">Pseudo</label>
 
-                    <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
+                    <input type="text" class="form-control" (change)="FilterS($event.target.value)" [(ngModel)]="model.pseudonym" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
                     />
                     <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
+                    <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched"> {{titleAlert}}</div>
 
                 </div>
 
@@ -217,7 +217,7 @@
                             <label for="regionName">Select the RegionName</label>
 
                             <select class="form-control" (change)="FilterR($event.target.value)" formControlName="regionName" name="regionName">
-                                                <option [ngValue]="">Select Region
+                                                <option [ngValue]="">
                                                 </option>
                                                 <option *ngFor="let currentRegion of regions" 
                                                 >{{currentRegion.regionName}}
@@ -245,7 +245,7 @@
                             <label for="boroughgName">Select the Borough Name</label>
 
                             <select class="form-control" (change)="FilterB($event.target.value)" formControlName="boroughName" name="boroughName">
-                                        <option [ngValue]="">Select Borough
+                                        <option [ngValue]="">
                                         </option>
                                         <option *ngFor="let currentBorough of boroughs" 
                                         >{{currentBorough.boroughName}}
@@ -268,7 +268,7 @@
 
                             <label for="concessionName">Concession</label>
 
-                            <input type="text" class="form-control" formControlName="concessionName" name="concessionName" id="concessionName" placeholder=" your concession hier "
+                            <input type="text" class="form-control" (change)="FilterCc($event.target.value)" formControlName="concessionName" name="concessionName" id="concessionName" placeholder=" your concession hier "
                             />
                             <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
 
@@ -305,16 +305,17 @@
                 <div class="form-group">
                     <label for="password">PassWord</label>
 
-                    <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
+                    <input type="password" class="form-control" [(ngModel)]="model.password" formControlName="password" name="password" id="password" placeholder=" " />
 
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">confirm the passWord</label>
 
-                    <input (blur)=confirmPass(clientForm.value) type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
+                    <input [(ngModel)]="model.confirmPassword" type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
                         id="confirmPassword" placeholder=" ">
-                    <div class="alert" *ngIf="clientForm.controls.password.touched" id="errorPassword" class="text-danger"></div>
+                    <div class="alert" *ngIf="clientForm.controls.confirmPassword.valid && clientForm.controls.password.valid && model.password != model.confirmPassword" id="errorPassword">  {{titleAlertP}}</div>
                 </div>
+                        
                 <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
                 <div class="form-group">
                     <label for="picture">Example file input</label>
@@ -325,7 +326,7 @@
 
 
                 <div>
-                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid && model.password != model.confirmPassword">Submit</button>
                     <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 

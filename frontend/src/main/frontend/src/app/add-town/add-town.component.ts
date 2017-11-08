@@ -83,7 +83,7 @@ export class AddTownComponent implements OnInit {
         this.results = resp['results'];
         this.collectionJson = resp.json();
         console.log("pour la collection town", this.collectionJson);
-        // this.loadAllTowns();
+        this.loadAllTowns();
       });
     }
 

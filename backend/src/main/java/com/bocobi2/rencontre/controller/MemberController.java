@@ -49,9 +49,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -206,7 +206,7 @@ public class MemberController {
         return user;
     }
 
-    @RequestMapping("/resource")
+   /* @RequestMapping("/resource")
     public ResponseEntity<Member> home( UserDetails userDetails, HttpServletRequest request) {
     	
     	String pseudonym = request.getParameter("pseudonym");
@@ -231,7 +231,7 @@ public class MemberController {
 		members.setMeetingNameConnexion(meetingName);
     
         return new ResponseEntity<Member>(members, HttpStatus.OK);
-    } 
+    } */
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
@@ -371,17 +371,20 @@ public class MemberController {
 			typeMeeting = datingMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+		} 
+		if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
 			typeMeeting = professionnalMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+		} 
+		if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
 
 			typeMeeting = friendlyMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+		} 
+		if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
 			typeMeeting = schoolMeeting;
 			listTypeMeeting.add(typeMeeting);
 		}
@@ -412,17 +415,20 @@ public class MemberController {
 			typeMeeting = datingMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+		} 
+		if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
 			typeMeeting = professionnalMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+		}
+		if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
 
 			typeMeeting = friendlyMeeting;
 			listTypeMeeting.add(typeMeeting);
 
-		} else if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+		} 
+		if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
 			typeMeeting = schoolMeeting;
 			listTypeMeeting.add(typeMeeting);
 		}

@@ -1,4 +1,4 @@
-package com.bocobi2.rencontre.util;
+/*package com.bocobi2.rencontre.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -15,9 +15,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.bocobi2.rencontre.model.UserDetailsServices;
 
-@Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Configuration
+//@EnableGlobalMethodSecurity(securedEnabled = true)
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	// @Autowired
@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorities("ROLE_USER").build(),
 				User.withDefaultPasswordEncoder().username("admin").password("admin")
 				.authorities("ROLE_ACTUATOR", "ROLE_USER").build());
-	}*/
+	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -66,4 +66,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
-}
+}*/

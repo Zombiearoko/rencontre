@@ -8,12 +8,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Document(collection="member")
-public class Member extends InternetSurfer implements UserDetails {
+public class Member extends InternetSurfer {
 //implements UserDetails  
 
 	@Id
@@ -482,7 +482,7 @@ public class Member extends InternetSurfer implements UserDetails {
 
 
 
-
+/*
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -600,7 +600,7 @@ public class Member extends InternetSurfer implements UserDetails {
 		return false;
 	}
 
-
+/*
 
 
 

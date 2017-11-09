@@ -12,6 +12,12 @@ import { Router } from '@angular/router';
 import { AlertService, MemberService, MeetingService, CountryService, RegionService, DepartmentService, BoroughService, TownService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
 import { Town } from '../_models/town';
+
+import { ProfessionalMeetingInformation } from '../_models/professionalMeetingInformation';
+import { AcademicDatingInformation } from '../_models/academicDatingInformation';
+import { DatingInformation } from '../_models/datingInformation';
+import { FriendlyDatingInformation } from '../_models/friendlyDatingInformation';
+
 import { Country, Region, Borough, Department, Member } from '../_models/index';
 import { ConfimrAccountComponent } from './confimr-account/confimr-account.component';
 
@@ -38,9 +44,10 @@ export class MemberRegistrationComponent implements OnInit {
   post: any;
   titleAlert: string = 'You must specify an unused pseudo for this meeting type! characters between 3 and 5 ';
   titleAlertP: string = 'password have to be same with preview one';
-  
+
   private birthDate: Date;
   private meetingName: string;
+
   public currentMeeting: Meeting;
   public currentCountry: Country;
   public currentRegion: Region;
@@ -49,13 +56,18 @@ export class MemberRegistrationComponent implements OnInit {
   // public currentTown: Town;
   private pseudonym: string;
   private name: string = '';
+  private friendlyDatingInformatio: FriendlyDatingInformation = null;
   private firstName: string = '';
   private lastName: string = '';
   private schoolName: string = '';
   private levelStudy: string = '';
+  private academicDatingInformation: AcademicDatingInformation = null;
   private profession: string = '';
+  private professionalMeetingInformation: ProfessionalMeetingInformation = null;
   private fatherName: string = '';
   private motherName: string = '';
+  private datingInformation: DatingInformation = null;
+
   private countryName: string = '';
   private regionName: string = '';
   private departmentName: string = '';
@@ -70,6 +82,7 @@ export class MemberRegistrationComponent implements OnInit {
   private picture: string;
   private results: [any];
   private collectionJson: object;
+  private member: Member;
   private members: Member[] = [];
   submitted = false;
 
@@ -156,41 +169,92 @@ export class MemberRegistrationComponent implements OnInit {
 
     console.log('pseudo donne', value);
     this.pseudonym = value;
-    this.loadAllMeetings(this.pseudonym);
+    // this.loadAllMeetings(this.pseudonym);
+    // const url = 'http://localhost:8091/rencontre/Member/returnMember?pseudonym=' + this.pseudonym;
     const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
-
     this.http.get(url).subscribe((resp) => {
       this.results = resp['results'];
       this.members = resp.json();
-
-      console.log('****members****',this.members);
+      console.log('le membre avec le pseudo', this.pseudonym, 'est:', this.members,this.model.meetingName);
       var j = 0;
-      
-          for (var i = 0; i < this.members.length; i++) {
-            if (this.members[i].pseudonym == this.pseudonym)
-              j++;
-          }
-      
-          if (j != 0) {
-            // this.loadAllMeetings(this.pseudonym);
-            var k = 0;
-            console.log('les types de rencontre liés au pseudo:',this.pseudonym,this.model.meetingName);
-            
-            for (var i = 0; i < this.meetings.length; i++) {
-              if (this.meetings[i].meetingName == this.model.meetingName)
-                console.log('dans la boucle meetingName',this.meetings[i].meetingName);
-                k++;
-            }
-            console.log('valeur de k',k,this.meetings);
-            if (k != 0)
-              {
-            console.log('ce pseudo est deja utilisé pour ce type de rencontre');
-            alert('ce pseudo est deja utilisé');
-        this.model.pseudonym = null;
+
+      for (var i = 0; i < this.members.length; i++) {
+        if (this.members[i].pseudonym == this.pseudonym)
+          this.member = this.members[i];
+        i = this.members.length;
+
+
       }
-          }
+      console.log(this.member.datingInformation.fatherName,this.member.professionalMeetingInformation,this.member.academicDatingInformation);
+      if (!(this.member.friendlyDatingInformatio.name == null) && (this.model.meetingName == 'Amicale'))
+      // || (this.member.datingInformation != null)
+      // || (this.member.professionalMeetingInformation != null)
+      // || (this.member.academicDatingInformation != null) 
+      {
+
+        console.log('ce pseudo est deja utilisé pour le type de rencontre Amicale');
+        // alert('ce pseudo est deja utilisé');
+        this.model.pseudonym = null;
+
+
+      }
+      else if (((this.member.datingInformation.fatherName != null) || (this.member.datingInformation.fatherName != null)) && (this.model.meetingName == 'Amoureuse')) {
+
+        console.log('ce pseudo est deja utilisé pour le type de rencontre Amoureuse');
+        // alert('ce pseudo est deja utilisé');
+        this.model.pseudonym = null;
+
+      }
+      else if((this.member.academicDatingInformation != null) && (this.model.meetingName == 'Professionnelle' )) {
+
+        console.log('ce pseudo est deja utilisé pour le type de rencontre Académique');
+        // alert('ce pseudo est deja utilisé');
+        this.model.pseudonym = null;
+
+      }
+      else if((this.member.professionalMeetingInformation != null) && (this.model.meetingName == 'Professionnelle' )) {
+
+        console.log('ce pseudo est deja utilisé pour le type de rencontre Professionnelle');
+        // alert('ce pseudo est deja utilisé');
+        this.model.pseudonym = null;
+
+      }
+
     });
-    
+
+
+    //   console.log('****member****',this.member);
+    //   var j = 0;
+
+    //       for (var i = 0; i < this.members.length; i++) {
+    //         if (this.members[i].pseudonym == this.pseudonym)
+    //           j++;
+    //       }
+
+    //       if (j != 0) {
+    //         this.loadAllMeetings(this.pseudonym);
+
+    //               console.log('liste des type meeting de',this.pseudonym,'donne:',this.meetings);
+    //               var k = 0;
+    //               console.log('le type de rencontre selectionné pour:',this.pseudonym,'=',this.model.meetingName);
+
+    //               for (var i = 0; i < this.meetings.length; i++) {
+    //                 if (this.meetings[i].meetingName == this.model.meetingName)
+    //                   console.log('dans la boucle meetingName',this.meetings[i].meetingName);
+    //                   k++;
+    //               }
+    //               console.log('valeur de k',k,this.meetings.length);
+    //               if (k != 0)
+    //                 {
+    //               console.log('ce pseudo est deja utilisé pour ce type de rencontre');
+    //               // alert('ce pseudo est deja utilisé');
+    //           this.model.pseudonym = null;
+    //         }
+
+
+    //       }
+
+
     // this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
     //  console.log("meetings", this.meetings);
   }
@@ -271,7 +335,7 @@ export class MemberRegistrationComponent implements OnInit {
         else {
           //  if(resp.status==1){
           this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
           this.router.navigate(['/confimr-account/' + this.emailAdress]);
           // this.router.navigate(['/confimr-account']);
 
@@ -313,7 +377,7 @@ export class MemberRegistrationComponent implements OnInit {
         else {
           //  if(resp.status==1){
           this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+          // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
           this.router.navigate(['/confimr-account/' + this.pseudonym]);
           // this.router.navigate(['/login-form']);
 
@@ -519,7 +583,7 @@ export class MemberRegistrationComponent implements OnInit {
   private loadAllMeetings(pseudonym: string) {
     // this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
     //  this.rest.getAll().subscribe(meetings => { this.meetings = meetings; });
-    this.rest.getAllByPeudo(pseudonym).subscribe(meetings => { this.meetings = meetings; });
+    this.meetingService.getAllByPeudo(pseudonym).subscribe(meetings => { this.meetings = meetings; });
   }
 
 }

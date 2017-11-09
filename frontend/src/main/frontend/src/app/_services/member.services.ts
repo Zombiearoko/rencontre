@@ -14,6 +14,10 @@ export class MemberService {
     getById(id: number) {
         return this.http.get('localhost:8091/rencontre/Administrator/listAllMember' + id, this.jwt()).map((response: Response) => response.json());
     }
+
+    getByName(pseudonym: string) {
+        return this.http.get('http://localhost:8091/rencontre/Member/returnMember?pseudonym=' + pseudonym, this.jwt()).map((response: Response) => response.json());
+    }
  
     create(member: Member) {
         return this.http.post('localhost:8091/rencontre/Administrator/listAllMember', member, this.jwt()).map((response: Response) => response.json());

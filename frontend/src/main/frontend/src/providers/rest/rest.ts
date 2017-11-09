@@ -156,7 +156,7 @@ export class RestProvider {
      const urlD = 'http://localhost:8091/rencontre/Member/returnTypeMeeting?pseudonym='+pseudonym;
                   
       return  this.http.post(urlD, object, options)
-        .do((res: Response) => console.log(res.json()))
+        .do((res: Response) => console.log('de rest:',res.json()))
         .map((res: Response) => res.json());
     }
     // liste les region dun pays

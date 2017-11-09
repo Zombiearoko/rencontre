@@ -1,5 +1,10 @@
+import { FriendlyDatingInformation } from '../_models/friendlyDatingInformation';
+import { AcademicDatingInformation } from '../_models/academicDatingInformation';
+import { ProfessionalMeetingInformation } from '../_models/professionalMeetingInformation';
+import { DatingInformation } from '../_models/DatingInformation';
+
 export class Member {
-    id:number;
+    id: number;
     pseudonym: string;
     password: string;
     confirmPassword: string;
@@ -8,18 +13,28 @@ export class Member {
     gender: string;
     phoneNumber: string;
     picture: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    schoolName: string;
-    levelStudy: string;
-    profession:string;
-    fatherName: string;
-    motherName: string;
+    public friendlyDatingInformatio: FriendlyDatingInformation;
+    // name: string;
+    public academicDatingInformation: AcademicDatingInformation;
+    // firstName: string;
+    // lastName: string;
+    // schoolName: string;
+    // levelStudy: string;
+    public datingInformation: DatingInformation;
+    // fatherName: string;
+    // motherName: string;
+    // fatherProfession:string;
+    // motherProfession:string; 
+    public professionalMeetingInformation: ProfessionalMeetingInformation;
+    // firstName: string;
+    // lastName: string;
+    // profession:string;
+    // levelStudy: string;
     country: string;
     region: string;
     department: string;
     borough: string;
     town: string;
     concession: string;
+    meetingNameConnexion: string;
 }

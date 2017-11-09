@@ -27,13 +27,26 @@
 
 body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
-   /* background: url('./assets/img/bg.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
+    background: url('./assets/img/bg.jpg') no-repeat center center fixed; 
+  /* -webkit-background-size: cover;
+  -moz-background-size: cover; */
+  /* background-size: cover; */
+  /* -o-background-size: cover; */
   color:#ffffff;
- margin-left: 10px; */
+  margin-left: 50px; 
+  margin-right: 50px; 
+  margin-top: 50px; 
+  margin-bottom: 50px; 
+}
+aside{
+  
+  margin-left: 10px; 
+
+}
+footer {
+  /* padding: 50px 0; */
+ color: #000000;
+  
 }
 
 h1, h2, h3, h4, h5, h6, .text-heading {

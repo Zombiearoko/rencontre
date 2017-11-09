@@ -1,4 +1,5 @@
 <!-- Fixed navbar -->
+
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -48,11 +49,14 @@
     </div>
 </div>
 <div class="page-header">
-    <font color="orange">
+    <!-- <font color="orange">
         <h3 class="text-center text-lg text-uppercase my-0"> Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
 
         </h3>
-    </font>
+    </font> -->
+    <div class="tagline-upper text-center text-heading text-shadow text-white mt-5 d-none d-lg-block">Creer un compte</div>
+    <div class="tagline-lower text-center text-expanded text-shadow text-uppercase text-black mb-5 d-none d-lg-block">Amicale | Académique | Amoureuse | Professionnelle</div>
+    
 </div>
 
 <body>
@@ -92,7 +96,7 @@
                     <input type="text" class="form-control" (change)="FilterS($event.target.value)" [(ngModel)]="model.pseudonym" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
                     />
                     <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched"> {{titleAlert}}</div>
+                    <div class="alert1" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched"> {{titleAlert}}</div>
 
                 </div>
 
@@ -313,7 +317,7 @@
 
                     <input [(ngModel)]="model.confirmPassword" type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
                         id="confirmPassword" placeholder=" ">
-                    <div class="alert" *ngIf="clientForm.controls.confirmPassword.valid && clientForm.controls.password.valid && model.password != model.confirmPassword" id="errorPassword">  {{titleAlertP}}</div>
+                    <div class="alert1" *ngIf="clientForm.controls.confirmPassword.valid && clientForm.controls.password.valid && model.password != model.confirmPassword" id="errorPassword">  {{titleAlertP}}</div>
                 </div>
                         
                 <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
@@ -339,7 +343,7 @@
 
     </div>
 </body>
-<!-- <div class="clear-both"></div>
+   <div class="clear-both"></div>   
 <aside class="banner">
 
     <div class="container">
@@ -366,10 +370,10 @@
             </div>
         </div>
 
-    </div> -->
+    </div> 
 <!-- /.container -->
 
-<!-- </aside> -->
+ </aside> 
 
 
 <!-- /.banner -->

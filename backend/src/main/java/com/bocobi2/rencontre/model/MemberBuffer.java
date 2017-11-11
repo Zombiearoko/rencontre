@@ -18,6 +18,7 @@ public class MemberBuffer extends InternetSurfer {
 	private String registrationDate;
 	private String phoneNumber;
 	private String birthDate;
+	private String age;
 	private String meetingName;
 	@Indexed
 	private String gender;
@@ -36,8 +37,8 @@ public class MemberBuffer extends InternetSurfer {
 	@DBRef
 	private Profile profile;
 	
-	@DBRef
-	private List<TypeMeeting> typeMeeting;
+	//@DBRef
+	//private List<TypeMeeting> typeMeeting;
 
 
 	@DBRef
@@ -68,7 +69,7 @@ public class MemberBuffer extends InternetSurfer {
 			FriendlyDatingInformation friendlyDatingInformatio,
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
 			Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
-			List<Conversation> conversations, List<Testimony> testimonies, Status status, String meetingName) {
+			List<Conversation> conversations, List<Testimony> testimonies, Status status, String meetingName, String age) {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
@@ -83,12 +84,13 @@ public class MemberBuffer extends InternetSurfer {
 		this.datingInformation = datingInformation;
 		this.subscription = subscription;
 		this.profile = profile;
-		this.typeMeeting = typeMeeting;
+		//this.typeMeeting = typeMeeting;
 		this.messages = messages;
 		this.conversations = conversations;
 		this.testimonies = testimonies;
 		this.status = status;
 		this.meetingName= meetingName;
+		this.age= age;
 	}
 
 
@@ -114,9 +116,9 @@ public class MemberBuffer extends InternetSurfer {
 
 	
 
-	public List<TypeMeeting> getTypeMeeting() {
-		return typeMeeting;
-	}
+	//public List<TypeMeeting> getTypeMeeting() {
+	//	return typeMeeting;
+	//}
 
 
 
@@ -138,9 +140,27 @@ public class MemberBuffer extends InternetSurfer {
 
 
 
-	public void setTypeMeeting(List<TypeMeeting> list) {
-		this.typeMeeting = list;
+	//public void setTypeMeeting(List<TypeMeeting> list) {
+		//this.typeMeeting = list;
+	//}
+
+
+
+	public String getAge() {
+		return age;
 	}
+
+
+
+
+
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+
+
 
 
 

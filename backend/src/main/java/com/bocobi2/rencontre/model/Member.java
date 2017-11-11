@@ -26,6 +26,8 @@ public class Member extends InternetSurfer {
 	@Indexed
 	private String birthDate;
 	@Indexed
+	private String age;
+	@Indexed
 	private String meetingNameConnexion;
 	@Indexed
 	private String gender;
@@ -44,8 +46,8 @@ public class Member extends InternetSurfer {
 	@DBRef
 	private Profile profile;
 	
-	@DBRef
-	private List<TypeMeeting> typeMeeting;
+	//@DBRef
+	//private List<TypeMeeting> typeMeeting;
 
 
 	@DBRef
@@ -79,7 +81,7 @@ public class Member extends InternetSurfer {
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
 			Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
 			List<Conversation> conversations, List<Testimony> testimonies, Status status, 
-			String meetingNameConnexion, String numberPicture) {
+			String meetingNameConnexion, String numberPicture , String age) {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
@@ -94,13 +96,33 @@ public class Member extends InternetSurfer {
 		this.datingInformation = datingInformation;
 		this.subscription = subscription;
 		this.profile = profile;
-		this.typeMeeting = typeMeeting;
+		//this.typeMeeting = typeMeeting;
 		this.messages = messages;
 		this.conversations = conversations;
 		this.testimonies = testimonies;
 		this.status = status;
 		this.meetingNameConnexion=meetingNameConnexion;
+		this.age=age;
 		this.setNumberPicture(numberPicture);
+		
+	}
+
+
+
+
+
+
+	public String getAge() {
+		return age;
+	}
+
+
+
+
+
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
 
@@ -126,9 +148,9 @@ public class Member extends InternetSurfer {
 
 
 
-	public List<TypeMeeting> getTypeMeeting() {
-		return typeMeeting;
-	}
+	//public List<TypeMeeting> getTypeMeeting() {
+	//	return typeMeeting;
+	//}
 
 
 
@@ -150,9 +172,9 @@ public class Member extends InternetSurfer {
 
 
 
-	public void setTypeMeeting(List<TypeMeeting> list) {
-		this.typeMeeting = list;
-	}
+	//public void setTypeMeeting(List<TypeMeeting> list) {
+	//	this.typeMeeting = list;
+	//}
 
 	
 

@@ -145,7 +145,6 @@ public class MemberController {
 	@Autowired
 	FriendlyRepository freindlyRepository;
 
-
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
 	}
@@ -199,40 +198,40 @@ public class MemberController {
 	/*
 	 * Version POST
 	 */
-	
-	
+
 	@RequestMapping("/user")
-    public Principal user(Principal user) {
-        return user;
-    }
+	public Principal user(Principal user) {
+		return user;
+	}
 
-   /* @RequestMapping("/resource")
-    public ResponseEntity<Member> home( UserDetails userDetails, HttpServletRequest request) {
-    	
-    	String pseudonym = request.getParameter("pseudonym");
-		String password = request.getParameter("password");
-		String meetingName = request.getParameter("meetingName");
-		System.out.println("-------------------------------");
-		System.out.println(pseudonym);
-		System.out.println("-------------------------------");
+	/*
+	 * @RequestMapping("/resource") public ResponseEntity<Member> home(
+	 * UserDetails userDetails, HttpServletRequest request) {
+	 * 
+	 * String pseudonym = request.getParameter("pseudonym"); String password =
+	 * request.getParameter("password"); String meetingName =
+	 * request.getParameter("meetingName");
+	 * System.out.println("-------------------------------");
+	 * System.out.println(pseudonym);
+	 * System.out.println("-------------------------------");
+	 * 
+	 * System.out.println("-------------------------------");
+	 * System.out.println(password);
+	 * 
+	 * //Member members = member.findOne("{#: #}", Member.PSEUDONYM,
+	 * userDetails.getPseudonym).as(Member.class); Authentication auth =
+	 * SecurityContextHolder.getContext().getAuthentication();
+	 * 
+	 * //Member members = memberRepository.findOne("{#: #}",
+	 * userDetails.getPseudonym); String name = auth.getName(); Member members =
+	 * memberRepository.findByPseudonym(name); String status = "Connected";
+	 * Status statusDB = statusRepository.findByStatusName(status);
+	 * members.setStatus(statusDB);
+	 * members.setMeetingNameConnexion(meetingName);
+	 * 
+	 * return new ResponseEntity<Member>(members, HttpStatus.OK); }
+	 */
 
-		System.out.println("-------------------------------");
-		System.out.println(password);
-    	
-    	//Member members = member.findOne("{#: #}", Member.PSEUDONYM, userDetails.getPseudonym).as(Member.class);
-		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-    	//Member members = memberRepository.findOne("{#: #}", userDetails.getPseudonym);
-		String name = auth.getName();
-		Member members = memberRepository.findByPseudonym(name);
-		String status = "Connected";
-		Status statusDB = statusRepository.findByStatusName(status);
-		members.setStatus(statusDB);
-		members.setMeetingNameConnexion(meetingName);
-    
-        return new ResponseEntity<Member>(members, HttpStatus.OK);
-    } */
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
@@ -290,7 +289,6 @@ public class MemberController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
-
 
 		HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
@@ -354,42 +352,48 @@ public class MemberController {
 	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
 
 		// HttpSession sessionMember = request.getSession();
-		// Member member = (Member) sessionMember.getAttribute("Member");
-		String pseudonymMember = request.getParameter("pseudonym");
-		Member member = memberRepository.findByPseudonym(pseudonymMember);
-		String pseudonym = member.getPseudonym();
+				// Member member = (Member) sessionMember.getAttribute("Member");
+				String pseudonymMember = request.getParameter("pseudonym");
+				try {
+					Member member = memberRepository.findByPseudonym(pseudonymMember);
+					String pseudonym = member.getPseudonym();
 
-		List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-		TypeMeeting typeMeeting;
-		TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
-		TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
-		TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
-		TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+					List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+					TypeMeeting typeMeeting;
+					TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+					TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+					TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+					TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
 
-		if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+					if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
 
-			typeMeeting = datingMeeting;
-			listTypeMeeting.add(typeMeeting);
+						typeMeeting = datingMeeting;
+						listTypeMeeting.add(typeMeeting);
 
-		} 
-		if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+					}
+					if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
-			typeMeeting = professionnalMeeting;
-			listTypeMeeting.add(typeMeeting);
+						typeMeeting = professionnalMeeting;
+						listTypeMeeting.add(typeMeeting);
 
-		} 
-		if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+					}
+					if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
 
-			typeMeeting = friendlyMeeting;
-			listTypeMeeting.add(typeMeeting);
+						typeMeeting = friendlyMeeting;
+						listTypeMeeting.add(typeMeeting);
 
-		} 
-		if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
-			typeMeeting = schoolMeeting;
-			listTypeMeeting.add(typeMeeting);
-		}
+					}
+					if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+						typeMeeting = schoolMeeting;
+						listTypeMeeting.add(typeMeeting);
+					}
 
-		return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+					return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+
+				} catch (Exception ex) {
+					logger.error("Member doesn't exist.");
+					return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
+				}
 
 	}
 
@@ -400,45 +404,48 @@ public class MemberController {
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
 		String pseudonymMember = request.getParameter("pseudonym");
-		Member member = memberRepository.findByPseudonym(pseudonymMember);
-		String pseudonym = member.getPseudonym();
+		try {
+			Member member = memberRepository.findByPseudonym(pseudonymMember);
+			String pseudonym = member.getPseudonym();
 
-		List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-		TypeMeeting typeMeeting;
-		TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
-		TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
-		TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
-		TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+			TypeMeeting typeMeeting;
+			TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+			TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+			TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+			TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
 
-		if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+			if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
 
-			typeMeeting = datingMeeting;
-			listTypeMeeting.add(typeMeeting);
+				typeMeeting = datingMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-		} 
-		if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+			}
+			if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
-			typeMeeting = professionnalMeeting;
-			listTypeMeeting.add(typeMeeting);
+				typeMeeting = professionnalMeeting;
+				listTypeMeeting.add(typeMeeting);
 
+			}
+			if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+
+				typeMeeting = friendlyMeeting;
+				listTypeMeeting.add(typeMeeting);
+
+			}
+			if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+				typeMeeting = schoolMeeting;
+				listTypeMeeting.add(typeMeeting);
+			}
+
+			return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+
+		} catch (Exception ex) {
+			logger.error("Member doesn't exist.");
+			return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
 		}
-		if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
-
-			typeMeeting = friendlyMeeting;
-			listTypeMeeting.add(typeMeeting);
-
-		} 
-		if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
-			typeMeeting = schoolMeeting;
-			listTypeMeeting.add(typeMeeting);
-		}
-
-		return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
-
 	}
 
-	
-	
 	/**
 	 * Method change status
 	 */
@@ -449,24 +456,25 @@ public class MemberController {
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
 	public ResponseEntity<?> changeStatusPost(HttpServletRequest request) {
 
-		//try {
-			String statusName = request.getParameter("statusName");
-			Status status = statusRepository.findByStatusName(statusName);
-			System.out.println(status);
-			//String pseudonym = request.getParameter("pseudonym");
+		// try {
+		String statusName = request.getParameter("statusName");
+		Status status = statusRepository.findByStatusName(statusName);
+		System.out.println(status);
+		// String pseudonym = request.getParameter("pseudonym");
 
-			HttpSession session= request.getSession();
-			 Member member= (Member) session.getAttribute("Member");
+		HttpSession session = request.getSession();
+		Member member = (Member) session.getAttribute("Member");
 
-			//Member member = memberRepository.findByPseudonym(pseudonym);
-			 System.out.println(member);
-			member.setStatus(status);
-			memberRepository.save(member);
-			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		/*} catch (Exception ex) {
-			logger.error("Status not found.");
-			return new ResponseEntity(new MemberErrorType("Status not found."), HttpStatus.NOT_FOUND);
-		}*/
+		// Member member = memberRepository.findByPseudonym(pseudonym);
+		System.out.println(member);
+		member.setStatus(status);
+		memberRepository.save(member);
+		return new ResponseEntity<Member>(member, HttpStatus.OK);
+		/*
+		 * } catch (Exception ex) { logger.error("Status not found."); return
+		 * new ResponseEntity(new MemberErrorType("Status not found."),
+		 * HttpStatus.NOT_FOUND); }
+		 */
 
 	}
 
@@ -477,24 +485,25 @@ public class MemberController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.GET)
 	public ResponseEntity<?> changeStatusGet(HttpServletRequest request) {
-		//try {
-			String statusName = request.getParameter("statusName");
-			Status status = statusRepository.findByStatusName(statusName);
-			System.out.println(status);
-			//String pseudonym = request.getParameter("pseudonym");
+		// try {
+		String statusName = request.getParameter("statusName");
+		Status status = statusRepository.findByStatusName(statusName);
+		System.out.println(status);
+		// String pseudonym = request.getParameter("pseudonym");
 
-			 HttpSession session= request.getSession();
-			 Member member= (Member) session.getAttribute("Member");
+		HttpSession session = request.getSession();
+		Member member = (Member) session.getAttribute("Member");
 
-			//Member member = memberRepository.findByPseudonym(pseudonym);
-			 System.out.println(member);
-			member.setStatus(status);
-			memberRepository.save(member);
-			return new ResponseEntity<Member>(member, HttpStatus.OK);
-		/*} catch (Exception ex) {
-			logger.error("Status not found.");
-			return new ResponseEntity(new MemberErrorType("Status not found."), HttpStatus.NOT_FOUND);
-		}*/
+		// Member member = memberRepository.findByPseudonym(pseudonym);
+		System.out.println(member);
+		member.setStatus(status);
+		memberRepository.save(member);
+		return new ResponseEntity<Member>(member, HttpStatus.OK);
+		/*
+		 * } catch (Exception ex) { logger.error("Status not found."); return
+		 * new ResponseEntity(new MemberErrorType("Status not found."),
+		 * HttpStatus.NOT_FOUND); }
+		 */
 
 	}
 
@@ -608,18 +617,15 @@ public class MemberController {
 
 		if (testimonyType.equalsIgnoreCase("videos")) {
 
-			
 			String name = "testimony";
 			Part part = null;
-
 
 			part = requestTestimony.getPart("testimony");
 
 			try {
 
-
 				testimony.setTestimonyType(testimonyType);
-				
+
 				testimony.setAuthor(member.getPseudonym());
 				member = memberRepository.findByPseudonym(author);
 				testimony.setAuthor(member.getPseudonym());
@@ -1051,52 +1057,42 @@ public class MemberController {
 	@RequestMapping(value = "/returnMember", method = RequestMethod.POST)
 	public ResponseEntity<?> returnMemberPost(HttpServletRequest request) throws Exception {
 
-		
-
 		String searhPseudonym = request.getParameter("pseudonym");
-		Member member=memberRepository.findByPseudonym(searhPseudonym);
+		Member member = memberRepository.findByPseudonym(searhPseudonym);
 
-		if (member==null){
+		if (member == null) {
 
-				logger.error("Unable to find  member. The member " + searhPseudonym
-						+ " doesn't exist");
-				return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym
-						+ " doesn't exist"), HttpStatus.NO_CONTENT);
-			} else {
-				
+			logger.error("Unable to find  member. The member " + searhPseudonym + " doesn't exist");
+			return new ResponseEntity(
+					new MemberErrorType("Unable to find  member. The member " + searhPseudonym + " doesn't exist"),
+					HttpStatus.NO_CONTENT);
+		} else {
 
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-			}
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+		}
 
-		
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/returnMember", method = RequestMethod.GET)
 	public ResponseEntity<?> returnMemberGet(HttpServletRequest request) throws Exception {
 
-		
-
 		String searhPseudonym = request.getParameter("pseudonym");
-		Member member=memberRepository.findByPseudonym(searhPseudonym);
+		Member member = memberRepository.findByPseudonym(searhPseudonym);
 
-		if (member==null){
+		if (member == null) {
 
-				logger.error("Unable to find  member. The member " + searhPseudonym
-						+ " doesn't exist");
-				return new ResponseEntity(new MemberErrorType("Unable to find  member. The member " + searhPseudonym
-						+ " doesn't exist"), HttpStatus.NO_CONTENT);
-			} else {
-				
+			logger.error("Unable to find  member. The member " + searhPseudonym + " doesn't exist");
+			return new ResponseEntity(
+					new MemberErrorType("Unable to find  member. The member " + searhPseudonym + " doesn't exist"),
+					HttpStatus.NO_CONTENT);
+		} else {
 
-				return new ResponseEntity<Member>(member, HttpStatus.OK);
-			}
+			return new ResponseEntity<Member>(member, HttpStatus.OK);
+		}
 
-		
 	}
-	
-	
-	
+
 	/*
 	 * Version post
 	 */
@@ -1107,10 +1103,10 @@ public class MemberController {
 
 		HttpSession sessionMember = request.getSession();
 		Member member = (Member) sessionMember.getAttribute("Member");
-		String pseudo= member.getPseudonym();
-		//String pseudo = request.getParameter("monPseudo");
+		String pseudo = member.getPseudonym();
+		// String pseudo = request.getParameter("monPseudo");
 
-		//Member member = memberRepository.findByPseudonym(pseudo);
+		// Member member = memberRepository.findByPseudonym(pseudo);
 
 		String gender = member.getGender();
 
@@ -1273,46 +1269,43 @@ public class MemberController {
 
 	}
 
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/downloadPicture", method = RequestMethod.GET)
-	public ResponseEntity<?> downloadPicturePost( HttpServletRequest request)
+	public ResponseEntity<?> downloadPicturePost(HttpServletRequest request)
 			throws UnknownHostException, Exception, FileNotFoundException {
 
 		String SAVE_DIR_TESTIMONY = "/home/saphir/test1/";
 		File fileWay = new File(SAVE_DIR_TESTIMONY);
-		if (!fileWay.exists()){
-			fileWay.mkdir();}
+		if (!fileWay.exists()) {
+			fileWay.mkdir();
+		}
 		// HttpSession sessionMember = request.getSession();
 		// Member member = (Member) sessionMember.getAttribute("Member");
 		// String pseudonym= member.getPseudonym();
 		String pseudonym = request.getParameter("monPseudo");
 		Member member = memberRepository.findByPseudonym(pseudonym);
-		
-		
-		
+
 		DBObject metaData = new BasicDBObject();
 
-		//InputStream iamgeStream = file.getInputStream();
+		// InputStream iamgeStream = file.getInputStream();
 		metaData.put("type", "image");
-		
-		//String pictureName = "picture" + pseudonym;
-		String pictureName ="picture"+pseudonym;
-		
-		
-		GridFSDBFile pictureFile = gridOperations.findOne(new
-		 Query(Criteria.where("filename").is(pictureName)));
+
+		// String pictureName = "picture" + pseudonym;
+		String pictureName = "picture" + pseudonym;
+
+		GridFSDBFile pictureFile = gridOperations.findOne(new Query(Criteria.where("filename").is(pictureName)));
 		System.out.println(pictureFile);
-		System.out.println(fileWay+ File.separator + pictureName);
-		pictureFile.writeTo(fileWay+ File.separator + pictureName);
-		
+		System.out.println(fileWay + File.separator + pictureName);
+		pictureFile.writeTo(fileWay + File.separator + pictureName);
+
 		// Store picture to MongoDB
-		//imageFileId = gridOperations.store(iamgeStream, pictureName, "image/png", metaData).getId().toString();
+		// imageFileId = gridOperations.store(iamgeStream, pictureName,
+		// "image/png", metaData).getId().toString();
 
 		System.out.println("ImageFileId = " + imageFileId);
 
-		//member.setPicture(pictureName);
-		//memberRepository.save(member);
+		// member.setPicture(pictureName);
+		// memberRepository.save(member);
 		String status = "Upload has been successful";
 
 		return new ResponseEntity<String>(status, HttpStatus.OK);
@@ -1320,8 +1313,6 @@ public class MemberController {
 
 	}
 
-	
-	
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
 	public ResponseEntity<?> updateProfilePost(HttpServletRequest request) throws Exception {
 

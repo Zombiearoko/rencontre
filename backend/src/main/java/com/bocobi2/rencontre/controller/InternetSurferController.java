@@ -234,22 +234,7 @@ public class InternetSurferController {
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = null;
 		
-			date = dateFormat.parse(birthDate);
-			System.out.println("Date parsée : " + date);
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			int year = calendar.get(Calendar.YEAR);
-
-			Calendar calendarCourante = Calendar.getInstance();
-
-			int yearCourante = calendarCourante.get(Calendar.YEAR);
-
-			int birthDat = yearCourante - year;
-			String age= birthDat+"";
 			
 
 		// String pseudo = encrypt(pseudonym);
@@ -376,6 +361,7 @@ public class InternetSurferController {
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
 								HttpStatus.NOT_FOUND);
 					} else {
+						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
 						chooseMeetingRepository.save(chooseMeeting);
@@ -397,7 +383,7 @@ public class InternetSurferController {
 
 						member.setDatingInformation(datingInformation);
 
-						try {
+						
 
 							String idComeLocality = pseudonym + idLocalityDB;
 
@@ -411,7 +397,8 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
+							System.out.println(memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -442,7 +429,7 @@ public class InternetSurferController {
 
 							logger.error("Unable to create. A Member with name {} already exist",
 									member.getPseudonym());
-							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+							return new ResponseEntity(new MemberErrorType("Unable to create please try aigain"),
 									HttpStatus.NOT_FOUND);
 
 						}
@@ -457,6 +444,25 @@ public class InternetSurferController {
 								new MemberErrorType("this pseudonym is already using, please choose an another own"),
 								HttpStatus.NOT_FOUND);
 					} else {
+						
+						try {
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						Date date = null;
+						
+							date = dateFormat.parse(birthDate);
+							System.out.println("Date parsée : " + date);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(date);
+							int year = calendar.get(Calendar.YEAR);
+
+							Calendar calendarCourante = Calendar.getInstance();
+
+							int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+							int birthDat = yearCourante - year;
+							String age= birthDat+"";
+						
 						// Member memberBD =
 						// memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
@@ -480,7 +486,7 @@ public class InternetSurferController {
 
 						member.setDatingInformation(datingInformation);
 
-						try {
+						
 							String idComeLocality = pseudonym + idLocalityDB;
 
 							if (comeLocalityRepository.exists(idComeLocality)) {
@@ -519,12 +525,12 @@ public class InternetSurferController {
 							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
-						} catch (Exception ex) {
+					} catch (Exception ex) {
 							System.out.println(ex.getMessage());
 
 							logger.error("Unable to create. A Member with name {} already exist",
 									member.getPseudonym());
-							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+							return new ResponseEntity(new MemberErrorType("the email is not validate am"),
 									HttpStatus.NOT_FOUND);
 
 						}
@@ -564,14 +570,14 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingBd != null) {
+					//ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
 								HttpStatus.NOT_FOUND);
 					} else {
-
+						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
 						chooseMeetingRepository.save(chooseMeeting);
@@ -595,13 +601,14 @@ public class InternetSurferController {
 
 						member.setProfessionalMeetingInformation(professionalMeeting);
 
-						try {
+						
 							// enregistrement dans la zone tampon
 
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
+							System.out.println(memberBD.getEmailAdress()+"pour le mail");
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -644,6 +651,26 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							try {
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
+							
+							
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -666,7 +693,7 @@ public class InternetSurferController {
 
 							member.setProfessionalMeetingInformation(professionalMeeting);
 
-							try {
+							
 								// enregistrement dans la zone tampon
 
 								// String form="saphirmfogo@gmail.com";V
@@ -782,7 +809,7 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -825,6 +852,23 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -957,7 +1001,7 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -1000,6 +1044,25 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
+							
+							
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -1109,22 +1172,7 @@ public class InternetSurferController {
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = null;
 		
-			date = dateFormat.parse(birthDate);
-			System.out.println("Date parsée : " + date);
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			int year = calendar.get(Calendar.YEAR);
-
-			Calendar calendarCourante = Calendar.getInstance();
-
-			int yearCourante = calendarCourante.get(Calendar.YEAR);
-
-			int birthDat = yearCourante - year;
-			String age= birthDat+"";
 			
 
 		// String pseudo = encrypt(pseudonym);
@@ -1251,6 +1299,7 @@ public class InternetSurferController {
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
 								HttpStatus.NOT_FOUND);
 					} else {
+						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
 						chooseMeetingRepository.save(chooseMeeting);
@@ -1272,7 +1321,7 @@ public class InternetSurferController {
 
 						member.setDatingInformation(datingInformation);
 
-						try {
+						
 
 							String idComeLocality = pseudonym + idLocalityDB;
 
@@ -1286,7 +1335,8 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
+							System.out.println(memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -1317,7 +1367,7 @@ public class InternetSurferController {
 
 							logger.error("Unable to create. A Member with name {} already exist",
 									member.getPseudonym());
-							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+							return new ResponseEntity(new MemberErrorType("Unable to create please try aigain"),
 									HttpStatus.NOT_FOUND);
 
 						}
@@ -1332,6 +1382,25 @@ public class InternetSurferController {
 								new MemberErrorType("this pseudonym is already using, please choose an another own"),
 								HttpStatus.NOT_FOUND);
 					} else {
+						
+						try {
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						Date date = null;
+						
+							date = dateFormat.parse(birthDate);
+							System.out.println("Date parsée : " + date);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(date);
+							int year = calendar.get(Calendar.YEAR);
+
+							Calendar calendarCourante = Calendar.getInstance();
+
+							int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+							int birthDat = yearCourante - year;
+							String age= birthDat+"";
+						
 						// Member memberBD =
 						// memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
@@ -1355,7 +1424,7 @@ public class InternetSurferController {
 
 						member.setDatingInformation(datingInformation);
 
-						try {
+						
 							String idComeLocality = pseudonym + idLocalityDB;
 
 							if (comeLocalityRepository.exists(idComeLocality)) {
@@ -1394,12 +1463,12 @@ public class InternetSurferController {
 							cryptographRepository.save(cryptograph);
 
 							return new ResponseEntity<MemberBuffer>(member, HttpStatus.CREATED);
-						} catch (Exception ex) {
+					} catch (Exception ex) {
 							System.out.println(ex.getMessage());
 
 							logger.error("Unable to create. A Member with name {} already exist",
 									member.getPseudonym());
-							return new ResponseEntity(new MemberErrorType("the email is not validate"),
+							return new ResponseEntity(new MemberErrorType("the email is not validate am"),
 									HttpStatus.NOT_FOUND);
 
 						}
@@ -1439,14 +1508,14 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingBd != null) {
+					//ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
 								HttpStatus.NOT_FOUND);
 					} else {
-
+						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
 						chooseMeeting.setIdChooseMeeting(idChoose);
 						chooseMeetingRepository.save(chooseMeeting);
@@ -1470,13 +1539,14 @@ public class InternetSurferController {
 
 						member.setProfessionalMeetingInformation(professionalMeeting);
 
-						try {
+						
 							// enregistrement dans la zone tampon
 
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
+							System.out.println(memberBD.getEmailAdress()+"pour le mail");
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -1519,6 +1589,26 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							try {
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
+							
+							
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -1541,7 +1631,7 @@ public class InternetSurferController {
 
 							member.setProfessionalMeetingInformation(professionalMeeting);
 
-							try {
+							
 								// enregistrement dans la zone tampon
 
 								// String form="saphirmfogo@gmail.com";V
@@ -1657,7 +1747,7 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -1700,6 +1790,23 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -1832,7 +1939,7 @@ public class InternetSurferController {
 							// String form="saphirmfogo@gmail.com";V
 							MimeMessage msg = new MimeMessage(session);
 							/// msg.setFrom(new InternetAddress(form));
-							msg.setRecipients(MimeMessage.RecipientType.TO, emailAdress);
+							msg.setRecipients(MimeMessage.RecipientType.TO, memberBD.getEmailAdress());
 							msg.setSubject(subject1);
 							msg.setText(content1);
 							msg.setSentDate(new Date());
@@ -1875,6 +1982,25 @@ public class InternetSurferController {
 											"this pseudonym is already using, please choose an another own"),
 									HttpStatus.NOT_FOUND);
 						} else {
+							
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = null;
+							
+								date = dateFormat.parse(birthDate);
+								System.out.println("Date parsée : " + date);
+
+								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(date);
+								int year = calendar.get(Calendar.YEAR);
+
+								Calendar calendarCourante = Calendar.getInstance();
+
+								int yearCourante = calendarCourante.get(Calendar.YEAR);
+
+								int birthDat = yearCourante - year;
+								String age= birthDat+"";
+							
+							
 							chooseMeeting.setIdChooseMeeting(idChoose);
 							chooseMeetingRepository.save(chooseMeeting);
 
@@ -1954,6 +2080,25 @@ public class InternetSurferController {
 	/**
 	 * end registration
 	 */
+	
+	/*
+	 * delete all
+	 */
+	 @ResponseBody
+	 @RequestMapping(value = "/deleteAll", method = RequestMethod.GET)
+	 public String delete(HttpServletRequest request) {
+		memberBufferRepository.deleteAll();
+		memberRepository.deleteAll();
+		chooseMeetingRepository.deleteAll();
+		townRepository.deleteAll();
+		concessionRepository.deleteAll();
+		comeLocalityRepository.deleteAll();
+		cryptographRepository.deleteAll();
+		localityRepository.deleteAll();
+		 
+		 return "bien";
+	 }
+	
 	/**
 	 * start confirm registration
 	 */

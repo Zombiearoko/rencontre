@@ -228,7 +228,7 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birth = request.getParameter("birthDate");
+		String birthDate = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");
@@ -237,7 +237,7 @@ public class InternetSurferController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		
-			date = dateFormat.parse(birth);
+			date = dateFormat.parse(birthDate);
 			System.out.println("Date parsée : " + date);
 
 			Calendar calendar = Calendar.getInstance();
@@ -249,7 +249,7 @@ public class InternetSurferController {
 			int yearCourante = calendarCourante.get(Calendar.YEAR);
 
 			int birthDat = yearCourante - year;
-			String birthDate= birthDat+"";
+			String age= birthDat+"";
 			
 
 		// String pseudo = encrypt(pseudonym);
@@ -386,6 +386,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -468,6 +469,7 @@ public class InternetSurferController {
 						member.setPseudonym(pseudonym);
 						member.setGender(gender);
 						member.setBirthDate(birthDate);
+						member.setAge(age);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
 						member.setPassword(password);
@@ -582,6 +584,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -652,6 +655,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -761,6 +765,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -831,6 +836,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -934,6 +940,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -1001,6 +1008,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -1069,13 +1077,14 @@ public class InternetSurferController {
 		return new ResponseEntity(new MemberErrorType("the type of meeting is not available"), HttpStatus.NOT_FOUND);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	/*
 	 * Version Get
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public ResponseEntity<?> registrationGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ParseException {
+
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -1094,17 +1103,16 @@ public class InternetSurferController {
 		 */
 		String meetingName = request.getParameter("meetingName");
 		String pseudonym = request.getParameter("pseudonym");
-		String birth = request.getParameter("birthDate");
+		String birthDate = request.getParameter("birthDate");
 		String gender = request.getParameter("gender");
 		String emailAdress = request.getParameter("emailAdress");
 		String password = request.getParameter("password");
 		String phoneNumber = request.getParameter("phoneNumber");
-
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		
-			date = dateFormat.parse(birth);
+			date = dateFormat.parse(birthDate);
 			System.out.println("Date parsée : " + date);
 
 			Calendar calendar = Calendar.getInstance();
@@ -1116,10 +1124,9 @@ public class InternetSurferController {
 			int yearCourante = calendarCourante.get(Calendar.YEAR);
 
 			int birthDat = yearCourante - year;
-			String birthDate= birthDat+"";
+			String age= birthDat+"";
 			
-		
-		
+
 		// String pseudo = encrypt(pseudonym);
 		// String meeting = encrypt(meetingName);
 
@@ -1254,6 +1261,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -1336,6 +1344,7 @@ public class InternetSurferController {
 						member.setPseudonym(pseudonym);
 						member.setGender(gender);
 						member.setBirthDate(birthDate);
+						member.setAge(age);
 						member.setEmailAdress(emailAdress);
 						member.setPhoneNumber(phoneNumber);
 						member.setPassword(password);
@@ -1450,6 +1459,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -1520,6 +1530,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -1629,6 +1640,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -1699,6 +1711,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -1802,6 +1815,7 @@ public class InternetSurferController {
 						member.setPseudonym(memberBD.getPseudonym());
 						member.setGender(memberBD.getGender());
 						member.setBirthDate(memberBD.getBirthDate());
+						member.setAge(memberBD.getAge());
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
@@ -1869,6 +1883,7 @@ public class InternetSurferController {
 							member.setPseudonym(pseudonym);
 							member.setGender(gender);
 							member.setBirthDate(birthDate);
+							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(password);
@@ -1920,7 +1935,7 @@ public class InternetSurferController {
 						System.out.println(ex.getMessage());
 
 						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-					return new ResponseEntity(new MemberErrorType("the email is not validate"),
+						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
 					}
@@ -1936,7 +1951,6 @@ public class InternetSurferController {
 		}
 		return new ResponseEntity(new MemberErrorType("the type of meeting is not available"), HttpStatus.NOT_FOUND);
 	}
-
 	/**
 	 * end registration
 	 */
@@ -2086,7 +2100,7 @@ public class InternetSurferController {
 	 * 
 	 * /* Version GET
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> confirmRegistrationGet(HttpServletRequest request) {
@@ -2221,6 +2235,7 @@ public class InternetSurferController {
 	/**
 	 * Start visualize testimony
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*
 	 * Version Post
 	 */
@@ -2238,7 +2253,7 @@ public class InternetSurferController {
 	/*
 	 * Version Get
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/visualizeVideoTestimony", method = RequestMethod.GET)
 	public ResponseEntity<List<Testimony>> visualizeVideoTestimonyGet(HttpServletRequest request) {
 		// JSONObject listOfTestimony = new JSONObject();
@@ -2262,7 +2277,7 @@ public class InternetSurferController {
 	/*
 	 * Version POST
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/visualizeWriteTestimony", method = RequestMethod.POST)
 	public ResponseEntity<List<Testimony>> visualizeWriteTestimonyPost(HttpServletRequest request) {
 
@@ -2277,7 +2292,7 @@ public class InternetSurferController {
 	/*
 	 * Version GET
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/visualizeWriteTestimony", method = RequestMethod.GET)
 	public ResponseEntity<List<Testimony>> visualizeWriteTestimonyGet(HttpServletRequest request) {
 

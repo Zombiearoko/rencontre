@@ -17,23 +17,19 @@ import { AboutComponent } from './about/about.component';
 import { SessionAdminComponent } from './login-admin/session-admin/session-admin.component';
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
 import { RencotreComponent } from './rencotre/rencotre.component';
-
-
-
-
 import { AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
-   
-    
     { path: 'confimr-account', component: ConfimrAccountComponent },
-    { path: '', component: RencotreComponent, canActivate: [AuthGuard] },
+    { path: 'rencotre', component: RencotreComponent },
+    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent },
 
     { path: 'login-form', component: LoginFormComponent },
     { path: 'member-registration', component: MemberRegistrationComponent },
+    
+    
     { path: 'member-register1', component: MemberRegister1Component },
-
     // { path: 'add-country', component: AddCountryComponent },add country=member-session
     { path: 'add-region', component: AddRegionComponent },
     { path: 'add-department', component: AddDepartmentComponent },
@@ -45,10 +41,8 @@ const appRoutes: Routes = [
     { path: 'login-admin', component: LoginAdminComponent },
     { path: 'about', component: AboutComponent },
     { path: 'session-admin', component: SessionAdminComponent },
-    
 
-
-    // otherwise redirect to home
+    // otherwise redirect to rencotre
     { path: '**', redirectTo: '' }
 ];
 

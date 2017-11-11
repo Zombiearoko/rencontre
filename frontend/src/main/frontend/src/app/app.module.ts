@@ -34,7 +34,7 @@ import { AddMeetingComponent } from './add-meeting/add-meeting.component';
 import { MemberRegister1Component } from './member-register1/member-register1.component';
 import { AddStatusComponent } from './add-status/add-status.component';
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
-import { RencotreComponent } from './rencotre/rencotre.component';
+import { RencotreComponent } from './rencotre/index';
 
 
 

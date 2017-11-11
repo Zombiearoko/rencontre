@@ -56,7 +56,7 @@
     </font> -->
     <div class="tagline-upper text-center text-heading text-shadow text-white mt-5 d-none d-lg-block">Creer un compte</div>
     <div class="tagline-lower text-center text-expanded text-shadow text-uppercase text-black mb-5 d-none d-lg-block">Amicale | Académique | Amoureuse | Professionnelle</div>
-    
+
 </div>
 
 <body>
@@ -89,16 +89,33 @@
 
 
                 </div>
-
+                <!-- pseodo -->
+                <span *ngIf="!clientForm.controls.pseudonym.valid ">
+                <div class="form-group">
+                        <label for="countryName">choisir pseudo si vous êtes deja inscrit a un type de rencontre</label>
+                       
+                            <select class="form-control" formControlName="pseudonym1" [(ngModel)]="model.pseudonym" (change)="FilterS($event.target.value)" name="pseudonym">
+                                        <option [ngValue]="">
+                                        </option>
+                                        <option *ngFor="let currentMember of members" 
+                                        >{{currentMember.pseudonym}}
+                                        </option>
+                            </select>
+                        
+                </div>
+                </span>
+                <span *ngIf="!clientForm.controls.pseudonym1.valid ">
+                                    
                 <div class="form-group">
                     <label for="pseudonym">Pseudo</label>
 
-                    <input type="text" class="form-control" (change)="FilterS($event.target.value)" [(ngModel)]="model.pseudonym" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier "
-                    />
+                    <input type="text" class="form-control" formControlName="pseudonym"  [(ngModel)]="model.pseudonym" (change)="FilterS($event.target.value)" name="pseudonym" id="pseudonym" placeholder=" your login hier "
+                     />
                     <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                     <div class="alert1" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched"> {{titleAlert}}</div>
 
                 </div>
+                </span>
 
                 <!-- showing only for Amicale -->
                 <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amicale' ">
@@ -240,7 +257,7 @@
                                         <option *ngFor="let currentDepartment of departments" 
                                                 >{{currentDepartment.departmentName}}
                                         </option>
-                                </select>
+                            </select>
 
                         </div>
                         <!-- borough -->
@@ -272,7 +289,7 @@
 
                             <label for="concessionName">Concession</label>
 
-                            <input type="text" class="form-control" (change)="FilterCc($event.target.value)" formControlName="concessionName" name="concessionName" id="concessionName" placeholder=" your concession hier "
+                            <input type="text" class="form-control" formControlName="concessionName" name="concessionName" id="concessionName" placeholder=" your concession hier "
                             />
                             <!-- <div class="alert" *ngIf="!clientForm.controls.profession.valid && clientForm.controls.profession.touched">your profession hier</div> -->
 
@@ -280,46 +297,51 @@
                     
                 </span>
                 <!-- collectionJson?.length != 2" -->
-                <div class="form-group">
-                    <label for="gender">choice your gender</label>
+                <!-- <span *ngIf="((model.confirmPassword == '') || !(model.password == model.confirmPassword) && (!clientForm.controls.pseudonym.valid)) "> -->
+                <span *ngIf="clientForm.controls.pseudonym.valid">      
+                    <div class="form-group">
+                        <label for="gender">choice your gender</label>
 
-                    <select class="form-control" id="gender" name="gender" formControlName="gender">
-                              <option>Man</option>
-                              <option>Woman</option>
-                              
-                    </select>
+                        <select class="form-control" id="gender" name="gender"[(ngModel)]="model.gender"  formControlName="gender">
+                                <option>Man</option>
+                                <option>Woman</option>
+                                
+                        </select>
 
-                </div>
-                <div class="form-group" *ngIf="clientForm.controls.meetingName.valid ">
-                    <label for="email">Email</label>
+                    </div>
+                    
+                        <label for="email">Email</label>
 
-                    <input type="email" class="form-control" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
-                    />
+                        <input type="email" class="form-control" [(ngModel)]="model.emailAdress" formControlName="emailAdress" name="emailAdress" id="emailAdress" placeholder=" "
+                        />
 
-                </div>
+                
 
-                <div class="form-group">
-                    <label for="tel">Phone Nomber</label>
+                    <div class="form-group">
+                        <label for="tel">Phone Nomber</label>
 
-                    <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
-                    />
+                        <input type="text" class="form-control" [(ngModel)]="model.phoneNumber" formControlName="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder=" "
+                        />
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="password">PassWord</label>
+                    <div class="form-group">
+                        <label for="password">PassWord</label>
 
-                    <input type="password" class="form-control" [(ngModel)]="model.password" formControlName="password" name="password" id="password" placeholder=" " />
+                        <input type="password" class="form-control" [(ngModel)]="model.password" formControlName="password" name="password" id="password"
+                            placeholder=" " />
 
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">confirm the passWord</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">confirm the passWord</label>
 
-                    <input [(ngModel)]="model.confirmPassword" type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
-                        id="confirmPassword" placeholder=" ">
-                    <div class="alert1" *ngIf="clientForm.controls.confirmPassword.valid && clientForm.controls.password.valid && model.password != model.confirmPassword" id="errorPassword">  {{titleAlertP}}</div>
-                </div>
-                        
+                        <input [(ngModel)]="model.confirmPassword" type="password" class="form-control" formControlName="confirmPassword" name="confirmPassword"
+                            id="confirmPassword" placeholder=" ">
+                        <div class="alert1" *ngIf="clientForm.controls.confirmPassword.valid && clientForm.controls.password.valid && model.password != model.confirmPassword"
+                            id="errorPassword"> {{titleAlertP}}
+                        </div>
+                    </div>
+                </span>
                 <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
                 <div class="form-group">
                     <label for="picture">Example file input</label>
@@ -330,7 +352,11 @@
 
 
                 <div>
-                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid && model.password != model.confirmPassword">Submit</button>
+
+                    <button class="btn btn-primary " type="submit" [disabled]="model.gender == '' && model.phoneNumber == '' && model.emailAdress == '' && model.password && model.confirmPassword == '' && model.password != model.confirmPassword">Submit</button>
+
+                    <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid && model.password != model.confirmPassword">Submit</button>  -->
+
                     <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 
@@ -343,7 +369,7 @@
 
     </div>
 </body>
-   <div class="clear-both"></div>   
+<!-- <div class="clear-both"></div>
 <aside class="banner">
 
     <div class="container">
@@ -358,22 +384,22 @@
                         <a href="/login-admin" class="btn btn-secondary btn-lg">
                             <i class="fa fa-github fa-fw"></i>
                             <span class="network-name">Github</span>
-                    </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#" class="btn btn-secondary btn-lg">
+                </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="btn btn-secondary btn-lg">
                             <i class="fa fa-linkedin fa-fw"></i>
                             <span class="network-name">Linkedin</span>
                         </a>
-                    </li>
-                    </ul>
-            </div>
+                </li>
+                </ul>
         </div>
+    </div>
 
-    </div> 
-<!-- /.container -->
+    </div>
+    /.container -->
 
- </aside> 
+<!-- </aside> -->
 
 
 <!-- /.banner -->

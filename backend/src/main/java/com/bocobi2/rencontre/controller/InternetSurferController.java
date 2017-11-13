@@ -213,6 +213,7 @@ public class InternetSurferController {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
+		properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		// properties.put("mail.smtp.host", "smtp-relay.gmail.com");
 		properties.put("mail.smtp.port", "587");
 		properties.put("mail.smtp.auth", "true");
@@ -363,8 +364,7 @@ public class InternetSurferController {
 					} else {
 						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						datingInformation.setFatherName(fatherName);
 						datingInformation.setMotherName(motherName);
@@ -417,7 +417,10 @@ public class InternetSurferController {
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
-
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -465,9 +468,6 @@ public class InternetSurferController {
 						
 						// Member memberBD =
 						// memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						// chooseMeetingRepository.deleteAll();
-						chooseMeetingRepository.save(chooseMeeting);
 
 						datingInformation.setFatherName(fatherName);
 						datingInformation.setMotherName(motherName);
@@ -518,6 +518,10 @@ public class InternetSurferController {
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							// chooseMeetingRepository.deleteAll();
+							chooseMeetingRepository.save(chooseMeeting);
 
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
@@ -579,8 +583,7 @@ public class InternetSurferController {
 					} else {
 						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						professionalMeeting.setFirstName(firstName);
 						professionalMeeting.setLastName(lastName);
@@ -621,7 +624,10 @@ public class InternetSurferController {
 							//memberBufferRepository.deleteAll();
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
-
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -670,9 +676,7 @@ public class InternetSurferController {
 								int birthDat = yearCourante - year;
 								String age= birthDat+"";
 							
-							
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							professionalMeeting.setFirstName(firstName);
 							professionalMeeting.setLastName(lastName);
@@ -713,6 +717,10 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -781,8 +789,7 @@ public class InternetSurferController {
 								HttpStatus.NOT_FOUND);
 					} else {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						academicDatingInformation.setFirstName(firstName);
 						academicDatingInformation.setLastName(lastName);
@@ -823,6 +830,9 @@ public class InternetSurferController {
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -869,8 +879,7 @@ public class InternetSurferController {
 
 								int birthDat = yearCourante - year;
 								String age= birthDat+"";
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							academicDatingInformation.setFirstName(firstName);
 							academicDatingInformation.setLastName(lastName);
@@ -911,6 +920,9 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -976,8 +988,7 @@ public class InternetSurferController {
 								HttpStatus.NOT_FOUND);
 					} else {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						friendlyDatingInformation.setName(name);
 
@@ -1015,6 +1026,9 @@ public class InternetSurferController {
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -1063,8 +1077,7 @@ public class InternetSurferController {
 								String age= birthDat+"";
 							
 							
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							friendlyDatingInformation.setName(name);
 
@@ -1102,6 +1115,9 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -1148,9 +1164,9 @@ public class InternetSurferController {
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public ResponseEntity<?> registrationGet(HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ParseException {
 
-
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com");
+		properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		// properties.put("mail.smtp.host", "smtp-relay.gmail.com");
 		properties.put("mail.smtp.port", "587");
 		properties.put("mail.smtp.auth", "true");
@@ -1301,8 +1317,7 @@ public class InternetSurferController {
 					} else {
 						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						datingInformation.setFatherName(fatherName);
 						datingInformation.setMotherName(motherName);
@@ -1355,7 +1370,10 @@ public class InternetSurferController {
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
-
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -1403,9 +1421,6 @@ public class InternetSurferController {
 						
 						// Member memberBD =
 						// memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						// chooseMeetingRepository.deleteAll();
-						chooseMeetingRepository.save(chooseMeeting);
 
 						datingInformation.setFatherName(fatherName);
 						datingInformation.setMotherName(motherName);
@@ -1456,6 +1471,10 @@ public class InternetSurferController {
 							comeLocality.setId(idComeLocality);
 
 							comeLocalityRepository.save(comeLocality);
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							// chooseMeetingRepository.deleteAll();
+							chooseMeetingRepository.save(chooseMeeting);
 
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
@@ -1517,8 +1536,7 @@ public class InternetSurferController {
 					} else {
 						try {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						professionalMeeting.setFirstName(firstName);
 						professionalMeeting.setLastName(lastName);
@@ -1559,7 +1577,10 @@ public class InternetSurferController {
 							//memberBufferRepository.deleteAll();
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
-
+							
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -1608,9 +1629,7 @@ public class InternetSurferController {
 								int birthDat = yearCourante - year;
 								String age= birthDat+"";
 							
-							
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							professionalMeeting.setFirstName(firstName);
 							professionalMeeting.setLastName(lastName);
@@ -1651,6 +1670,10 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -1719,8 +1742,7 @@ public class InternetSurferController {
 								HttpStatus.NOT_FOUND);
 					} else {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						academicDatingInformation.setFirstName(firstName);
 						academicDatingInformation.setLastName(lastName);
@@ -1761,6 +1783,9 @@ public class InternetSurferController {
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -1807,8 +1832,7 @@ public class InternetSurferController {
 
 								int birthDat = yearCourante - year;
 								String age= birthDat+"";
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							academicDatingInformation.setFirstName(firstName);
 							academicDatingInformation.setLastName(lastName);
@@ -1849,6 +1873,9 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -1914,8 +1941,7 @@ public class InternetSurferController {
 								HttpStatus.NOT_FOUND);
 					} else {
 						Member memberBD = memberRepository.findByPseudonym(pseudonym);
-						chooseMeeting.setIdChooseMeeting(idChoose);
-						chooseMeetingRepository.save(chooseMeeting);
+
 
 						friendlyDatingInformation.setName(name);
 
@@ -1953,6 +1979,9 @@ public class InternetSurferController {
 							//memberRepository.deleteAll();
 							memberBufferRepository.save(member);
 
+							chooseMeeting.setIdChooseMeeting(idChoose);
+							chooseMeetingRepository.save(chooseMeeting);
+							
 							cryptograph.setId(idCryptograph);
 							cryptograph.setPseudonym(pseudonym);
 							cryptograph.setMeetingName(meetingName);
@@ -2001,8 +2030,7 @@ public class InternetSurferController {
 								String age= birthDat+"";
 							
 							
-							chooseMeeting.setIdChooseMeeting(idChoose);
-							chooseMeetingRepository.save(chooseMeeting);
+
 
 							friendlyDatingInformation.setName(name);
 
@@ -2040,6 +2068,9 @@ public class InternetSurferController {
 								//memberRepository.deleteAll();
 								memberBufferRepository.save(member);
 
+								chooseMeeting.setIdChooseMeeting(idChoose);
+								chooseMeetingRepository.save(chooseMeeting);
+								
 								cryptograph.setId(idCryptograph);
 								cryptograph.setPseudonym(pseudonym);
 								cryptograph.setMeetingName(meetingName);
@@ -2272,6 +2303,7 @@ public class InternetSurferController {
 
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setAge(memberBuffer.getAge());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
@@ -2294,6 +2326,7 @@ public class InternetSurferController {
 
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setAge(memberBuffer.getAge());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
@@ -2315,6 +2348,7 @@ public class InternetSurferController {
 
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setAge(memberBuffer.getAge());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
@@ -2336,6 +2370,7 @@ public class InternetSurferController {
 
 				member.setPseudonym(memberBuffer.getPseudonym());
 				member.setBirthDate(memberBuffer.getBirthDate());
+				member.setAge(memberBuffer.getAge());
 				member.setEmailAdress(memberBuffer.getEmailAdress());
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
@@ -2356,6 +2391,7 @@ public class InternetSurferController {
 		} else {
 			member.setPseudonym(memberBuffer.getPseudonym());
 			member.setBirthDate(memberBuffer.getBirthDate());
+			member.setAge(memberBuffer.getAge());
 			member.setEmailAdress(memberBuffer.getEmailAdress());
 			member.setGender(memberBuffer.getGender());
 			member.setPhoneNumber(memberBuffer.getPhoneNumber());

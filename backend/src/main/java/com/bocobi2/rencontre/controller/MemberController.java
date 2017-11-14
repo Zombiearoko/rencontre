@@ -111,6 +111,9 @@ public class MemberController {
 
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	HttpSession httpSession;
 
 	@Autowired
 	MemberBufferRepository memberBufferRepository;
@@ -236,7 +239,7 @@ public class MemberController {
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
 
-		HttpSession session = requestConnexion.getSession();
+		//HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -259,10 +262,11 @@ public class MemberController {
 					member.setStatus(statusDB);
 					member.setMeetingNameConnexion(meetingName);
 					memberRepository.save(member);
-					session.setAttribute("Member", member);
+					httpSession.setAttribute("MEMBER", member);
+					//session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
-					session.setAttribute("Member", null);
+					httpSession.invalidate();
 					logger.error("Member with password {} not found.", password);
 					return new ResponseEntity(
 							new MemberErrorType("Member with " + "password " + password + " not found."),
@@ -290,7 +294,7 @@ public class MemberController {
 	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
-		HttpSession session = requestConnexion.getSession();
+		//HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -313,10 +317,10 @@ public class MemberController {
 					member.setStatus(statusDB);
 					member.setMeetingNameConnexion(meetingName);
 					memberRepository.save(member);
-					session.setAttribute("Member", member);
+					httpSession.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
-					session.setAttribute("Member", null);
+					httpSession.invalidate();
 					logger.error("Member with password {} not found.", password);
 					return new ResponseEntity(
 							new MemberErrorType("Member with " + "password " + password + " not found."),
@@ -462,8 +466,9 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		HttpSession session = request.getSession();
-		Member member = (Member) session.getAttribute("Member");
+		//HttpSession session = request.getSession();
+		//Member member = (Member) session.getAttribute("Member");
+		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);
 		System.out.println(member);
@@ -491,8 +496,9 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		HttpSession session = request.getSession();
-		Member member = (Member) session.getAttribute("Member");
+		//HttpSession session = request.getSession();
+		//Member member = (Member) session.getAttribute("Member");
+		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);
 		System.out.println(member);

@@ -37,4 +37,5 @@ export class Member {
     town: string;
     concession: string;
     meetingNameConnexion: string;
+    age:string;
 }

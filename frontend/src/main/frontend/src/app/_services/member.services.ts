@@ -16,7 +16,7 @@ export class MemberService {
     }
 
     getByName(pseudonym: string) {
-        return this.http.get('http://localhost:8091/rencontre/Member/returnMember?pseudonym=' + pseudonym, this.jwt()).map((response: Response) => response.json());
+        return this.http.get(' http://localhost:8091/rencontre/Member/searchMemberWithPseudonym?pseudonym=' + pseudonym, this.jwt()).map((response: Response) => response.json());
     }
  
     create(member: Member) {

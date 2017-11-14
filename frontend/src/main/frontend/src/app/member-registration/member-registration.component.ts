@@ -7,8 +7,6 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-
-
 import { AlertService, MemberService, MeetingService, CountryService, RegionService, DepartmentService, BoroughService, TownService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
 import { Town } from '../_models/town';
@@ -45,7 +43,7 @@ export class MemberRegistrationComponent implements OnInit {
   titleAlert: string = 'You must specify an unused pseudo for this meeting type! characters between 3 and 6 ';
   titleAlertP: string = 'password have to be same with preview one';
 
-  private birthDate: Date;
+  private birthDate: string;
   private meetingName: string;
 
   public currentMeeting: Meeting;
@@ -67,7 +65,7 @@ export class MemberRegistrationComponent implements OnInit {
   private fatherName: string = '';
   private motherName: string = '';
   private datingInformation: DatingInformation = null;
-
+  private choix: string = '';
   private countryName: string = '';
   private regionName: string = '';
   private departmentName: string = '';
@@ -101,11 +99,12 @@ export class MemberRegistrationComponent implements OnInit {
 
 
     this.clientForm = this.fb.group({
-      'birthDate': [null, Validators.compose([Validators.required])],
-      'meetingName': [null, Validators.compose([Validators.required])],
+      'choix': [null, Validators.compose([Validators.required])],
       'pseudonym': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(6)])],
-
       'pseudonym1': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(6)])],
+      'birthDate': [null, Validators.compose([Validators.required])],
+      'birthDate1': [null, Validators.compose([Validators.required])],
+      'meetingName': [null, Validators.compose([Validators.required])],
       'name': '',
       'firstName': '',
       'lastName': '',
@@ -141,11 +140,86 @@ export class MemberRegistrationComponent implements OnInit {
 
 
   }
-  FilterSe(value: Date) {
+
+  public FilterChoix(value: string) {
+    this.choix = value;
+
+    this.model.meetingName = '';
+    this.model.pseudonym = '';
+    this.model.gender = '';
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
   }
 
+  //looking if pseudo is unique
+  public FilterS(value: string) {
+    // var ageDifMs = Date.now() - this.age.getTime();  
+    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
+    // alert(date);
+this.model.pseudonym=value;
+this.model.birthDate = '';
+    console.log('pseudo donne', this.model.pseudonym);
+    if (this.choix == 'oui') {
+      const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.members = resp.json();
+        console.log(resp.status);
+
+        console.log('le membre avec le pseudo', this.model.pseudonym,this.members);
+
+        var j = 0;
+
+        for (var i = 0; i < this.members.length; i++) {
+          if (this.members[i].pseudonym == this.model.pseudonym) {
+            this.model.birthDate = this.members[i].birthDate;
+            console.log('pour voir les info du membre deja existant', this.members[i]);
+            i = this.members.length;
+
+          }
+
+        }
+
+      });
+      console.log('age de select donne', this.model.birthDate);
+      const url2 = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
+
+      this.http.get(url2).subscribe((resp) => {
+        this.results = resp['results'];
+        this.collectionJson = resp.json();
+
+        console.log(this.collectionJson);
+      });
+    }
+    this.model.gender = '';
+    console.log(this.model.gender);
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
+  }
+
+
   //getting meeting type when selected age
-  public Filter(value: Date) {
+  public Filter(value: string) {
+    this.model.name = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.schoolName = '';
+    this.model.levelStudy = '';
+    this.model.profession = '';
+    this.model.fatherName = '';
+    this.model.motherName = '';
+    this.model.fatherName = '';
+    this.model.regionName = '';
+    this.model.departmentName = '';
+    this.model.boroughName = '';
+    this.model.townName = '';
+    this.model.concessionName = '';
+
     this.model.gender = '';
     console.log(this.model.gender);
     this.model.phoneNumber = '';
@@ -159,8 +233,8 @@ export class MemberRegistrationComponent implements OnInit {
     // alert(date);
 
     console.log('age donne', value);
-    this.birthDate = value;
-    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.birthDate;
+
+    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
 
     this.http.get(url).subscribe((resp) => {
       this.results = resp['results'];
@@ -171,186 +245,139 @@ export class MemberRegistrationComponent implements OnInit {
     //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
     //  console.log("meetings", this.meetings);
   }
-  //looking if pseudo is unique
-  public FilterS(value: string) {
+  FilterM(value: string) {
+    if (this.choix == 'oui') {
+      console.log(this.choix);
+      console.log(value);
+      const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.members = resp.json();
+        console.log(resp.status);
+        if (resp.status == 204) {
+          // if (this.choix=='non'){
+          console.log('aucun membre existant');
+          this.existe = 0;
+        }
+        else {
+          console.log('le membres', this.members);
+
+          var j = 0;
+
+          for (var i = 0; i < this.members.length; i++) {
+            if (this.members[i].pseudonym == this.model.pseudonym) {
+              this.member = this.members[i];
+              console.log('pour voir les info du membre deja existant', this.member);
+              i = this.members.length;
+              j++;
+
+
+            }
+            j++;
+          }
+
+          this.existe = j;
+          console.log('j', j, 'membelengh', this.members.length);
+          if (!(j == this.members.length)) {
+            // console.log(this.me mber.datingInformation,this.member.professionalMeetingInformation,this.member.professionalMeetingInformation,'this.member.academicDatingInformation',this.member.academicDatingInformation);
+            if (!(this.member.friendlyDatingInformatio == null) && (this.model.meetingName == 'Amicale')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Amicale');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
 
 
 
-    // var ageDifMs = Date.now() - this.age.getTime();  
-    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
-    // alert(date);
+            }
+            else if (!(this.member.datingInformation == null) && (this.model.meetingName == 'Amoureuse')) {
 
-    console.log('pseudo donne', value);
-    this.model.pseudonym = value;
-    this.model.gender = '';
-    console.log(this.model.gender);
-    this.model.phoneNumber = '';
-    this.model.emailAdress = '';
-    this.model.password = '';
-    this.model.confirmPassword = '';
-    // this.loadAllMeetings(this.pseudonym);
-    // const url = 'http://localhost:8091/rencontre/Member/returnMember?pseudonym=' + this.pseudonym;
-    const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
-    this.http.get(url).subscribe((resp) => {
-      this.results = resp['results'];
-      this.members = resp.json();
-      console.log('le membre avec le pseudo', this.model.pseudonym, 'est:', this.members, this.model.meetingName);
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Amoureuse');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
 
-      var j = 0;
+            }
+            else if (!(this.member.academicDatingInformation == null) && (this.model.meetingName == 'Academique')) {
 
-      for (var i = 0; i < this.members.length; i++) {
-        if (this.members[i].pseudonym == this.model.pseudonym) {
-          this.member = this.members[i];
-          console.log('pour voir les info du membre deja existant', this.member);
-          i = this.members.length;
-          j++;
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Académique');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
 
+            }
+            else if (!(this.member.professionalMeetingInformation == null) && (this.model.meetingName == 'Professionnelle')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Professionnelle');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
+
+            }
+
+          }
 
         }
-        j++;
-      }
-      this.existe = j;
-      console.log('j', j, 'membelengh', this.members.length);
-      if (!(j == this.members.length)) {
-        // console.log(this.me mber.datingInformation,this.member.professionalMeetingInformation,this.member.professionalMeetingInformation,'this.member.academicDatingInformation',this.member.academicDatingInformation);
-        if (!(this.member.friendlyDatingInformatio == null) && (this.model.meetingName == 'Amicale')) {
-
-          console.log('ce pseudo est deja utilisé pour le type de rencontre Amicale');
-          // alert('ce pseudo est deja utilisé');
-          this.model.pseudonym = null;
+      });
 
 
-        }
-        else if (!(this.member.datingInformation == null) && (this.model.meetingName == 'Amoureuse')) {
-
-          console.log('ce pseudo est deja utilisé pour le type de rencontre Amoureuse');
-          // alert('ce pseudo est deja utilisé');
-          this.model.pseudonym = null;
-
-        }
-        else if (!(this.member.academicDatingInformation == null) && (this.model.meetingName == 'Academique')) {
-
-          console.log('ce pseudo est deja utilisé pour le type de rencontre Académique');
-          // alert('ce pseudo est deja utilisé');
-          this.model.pseudonym = null;
-
-        }
-        else if (!(this.member.professionalMeetingInformation == null) && (this.model.meetingName == 'Professionnelle')) {
-
-          console.log('ce pseudo est deja utilisé pour le type de rencontre Professionnelle');
-          // alert('ce pseudo est deja utilisé');
-          this.model.pseudonym = null;
-
-        }
-
-      }
-      else {
-
-        console.log('membre non existant');
-
-      }
-    });
-
-
-    //   console.log('****member****',this.member);
-    //   var j = 0;
-
-    //       for (var i = 0; i < this.members.length; i++) {
-    //         if (this.members[i].pseudonym == this.pseudonym)
-    //           j++;
-    //       }
-
-    //       if (j != 0) {
-    //         this.loadAllMeetings(this.pseudonym);
-
-    //               console.log('liste des type meeting de',this.pseudonym,'donne:',this.meetings);
-    //               var k = 0;
-    //               console.log('le type de rencontre selectionné pour:',this.pseudonym,'=',this.model.meetingName);
-
-    //               for (var i = 0; i < this.meetings.length; i++) {
-    //                 if (this.meetings[i].meetingName == this.model.meetingName)
-    //                   console.log('dans la boucle meetingName',this.meetings[i].meetingName);
-    //                   k++;
-    //               }
-    //               console.log('valeur de k',k,this.meetings.length);
-    //               if (k != 0)
-    //                 {
-    //               console.log('ce pseudo est deja utilisé pour ce type de rencontre');
-    //               // alert('ce pseudo est deja utilisé');
-    //           this.model.pseudonym = null;
-    //         }
-
-
-    //       }
-
-
-    // this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
-    //  console.log("meetings", this.meetings);
+    }
   }
 
   public FilterC(value: string) {
     // alert(value);
-    this.countryName = value;
-    this.loadAllRegionsByCountry(this.countryName);
+    this.model.fatherName = value;
+    this.loadAllRegionsByCountry(this.model.fatherName);
     // this.loadAllRegions();
   }
   public FilterR(value: string) {
     // alert(value);
-    this.regionName = value;
-    this.loadAllDepartmentsByRegion(this.regionName);
+    this.model.regionName = value;
+    this.loadAllDepartmentsByRegion(this.model.regionName);
   }
   public FilterD(value: string) {
     // alert(value);
-    this.departmentName = value;
-    this.loadAllBoroughsByDepartment(this.departmentName);
+    this.model.departmentName = value;
+    this.loadAllBoroughsByDepartment(this.model.departmentName);
   }
   public FilterB(value: string) {
     // console.log(value);
-    this.boroughName = value;
-    // this.loadAllTownsByBorough(this.boroughName);
+    this.model.boroughName = value;
+    // this.loadAllTownsByBorough(this.model.boroughName);
   }
   // public FilterT(value: string) {
   //   alert(value);
-  //   this.townName = value;
+  //   this.model.townName = value;
   //  this.loadAllConcessionByTown pour la concession une fois que les membres auront fournir les différents concessions
   // }
 
   onSubmit(post) {
 
-    this.birthDate = post.birthDate;
-    this.meetingName = post.meetingName;
-
-    this.model.gender = post.gender;
-    this.model.phoneNumber = post.phoneNumber;
-    this.model.emailAdress = post.emailAdress;
-    this.model.password = post.password;
-    this.model.confirmPassword = post.password;
-    this.name = post.name;
-    this.firstName = post.firstName;
-    this.lastName = post.lastName;
-    this.schoolName = post.schoolName;
-    this.levelStudy = post.levelStudy;
-    this.profession = post.profession;
-    this.fatherName = post.fatherName;
-    this.motherName = post.motherName;
-    this.countryName = post.countryName;
-    this.regionName = post.regionNAme;
-    this.departmentName = post.departementName;
-    this.boroughName = post.boroughName;
-    this.townName = post.townName;
-    this.concessionName = post.concessionName;
-    // this.gender = post.gender;
-    // this.emailAdress = post.emailAdress;
-    // this.phoneNumber = post.phoneNumber;
-    // this.password = post.password;
-    // this.confirmPassword = post.confirmPassword;
+    // this.model.birthDate = post.birthDate;
+    // this.model.meetingName = post.meetingName;
+    // this.model.name = post.name;
+    // this.model.firstName = post.firstName;
+    // this.model.lastName = post.lastName;
+    // this.model.schoolName = post.schoolName;
+    // this.model.levelStudy = post.levelStudy;
+    // this.model.profession = post.profession;
+    // this.model.fatherName = post.fatherName;
+    // this.model.motherName = post.motherName;
+    // this.model.fatherName = post.countryName;
+    // this.model.regionName = post.regionNAme;
+    // this.model.departmentName = post.departementName;
+    // this.model.boroughName = post.boroughName;
+    // this.model.townName = post.townName;
+    // this.model.concessionName = post.concessionName;
+    // this.model.gender = post.gender;
+    // this.model.emailAdress = post.emailAdress;
+    // this.model.phoneNumber = post.phoneNumber;
+    // this.model.password = post.password;
+    // this.model.confirmPassword = post.confirmPassword;
     this.picture = post.picture;
 
-    if (!((this.name == null) || (this.name == ""))) {
-      if (!(this.existe == this.members.length)) {
-        console.log("helloooooo", this.name, 'membre deja existant qui sinscrit pour le type Amicale', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.meetingName + '&name=' + this.name;
+    if (this.model.meetingName == 'Amicale') {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, "new member with  type Amicale");
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&name=' + this.model.name;
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
@@ -369,7 +396,7 @@ export class MemberRegistrationComponent implements OnInit {
             //  if(resp.status==1){
             this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-            // this.router.navigate(['/confimr-account/' + this.emailAdress]);
+            // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
             this.router.navigate(['/rencotre']);
 
             //  }
@@ -377,13 +404,11 @@ export class MemberRegistrationComponent implements OnInit {
 
         }
         );
-
       }
+
       else {
-        console.log("helooooo", this.name, 'new member with  type Amicale', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
-          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.meetingName
-          + '&name=' + this.name;
+        console.log("helloooooo", this.model.pseudonym, 'membre deja existant qui sinscrit pour le type Amicale');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName + '&name=' + this.model.name;
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
@@ -402,7 +427,7 @@ export class MemberRegistrationComponent implements OnInit {
             //  if(resp.status==1){
             this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-            // this.router.navigate(['/confimr-account/' + this.emailAdress]);
+            // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
             this.router.navigate(['/rencotre']);
 
             //  }
@@ -410,30 +435,25 @@ export class MemberRegistrationComponent implements OnInit {
 
         }
         );
+
       }
+
     }
     // pour inscrire pour Académique
-    else if ((this.firstName != null) || (this.firstName != "") || (this.lastName != null) || (this.lastName != "") || (this.schoolName != null) || (this.schoolName != "") || (this.levelStudy != null) || (this.levelStudy != "")) {
-      if (!(this.existe == this.members.length)) {
-        console.log("hi your firstname is", this.firstName, 'pour un membre deja existant qui sousscrit pour le type Académique', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.meetingName + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName=' + this.schoolName + '&levelStudy=' + this.levelStudy;
-        console.log("academique", this.firstName);
+    else if ((this.model.meetingName == 'Academique') && ((this.model.firstName != null) || (this.model.firstName != "") || (this.model.lastName != null) || (this.model.lastName != "") || (this.model.schoolName != null) || (this.model.schoolName != "") || (this.model.levelStudy != null) || (this.model.levelStudy != ""))) {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Académique');
+
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password
+          + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName + '&schoolName=' + this.model.schoolName + '&levelStudy=' + this.model.levelStudy;
+        console.log("academique", this.model.firstName);
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
           this.collectionJson = resp.json();
           console.log(this.collectionJson);
-          //  set success message and pass true paramater to persist the message after redirecting to the login page
-          //   this.alertService.success('Registration successful', true);
-          //   this.router.navigate(['/member-registration']);
-          // },
-          //   error => {
-          //     this.alertService.error(error);
-          //     this.loading = false;
-          //     console.log(this.pseudonym);
-          //     // console.log(this.gender);
-          //     this.submitted = true;
-          //   });
+
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
@@ -453,29 +473,18 @@ export class MemberRegistrationComponent implements OnInit {
 
         }
         );
+
       }
+
       else {
-        console.log("helooooo", this.firstName, 'new member with  type Académique', this.existe, '==', this.members.length);
-
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-          + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord=' + this.confirmPassword + '&meetingName=' + this.meetingName + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName=' + this.schoolName + '&levelStudy=' + this.levelStudy;
-        console.log("academique", this.firstName);
+        console.log("hi", this.model.pseudonym, 'pour un membre deja existant qui sousscrit pour le type Académique');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName + '&schoolName=' + this.model.schoolName + '&levelStudy=' + this.model.levelStudy;
+        console.log("academique", this.model.firstName);
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
           this.collectionJson = resp.json();
           console.log(this.collectionJson);
-          //  set success message and pass true paramater to persist the message after redirecting to the login page
-          //   this.alertService.success('Registration successful', true);
-          //   this.router.navigate(['/member-registration']);
-          // },
-          //   error => {
-          //     this.alertService.error(error);
-          //     this.loading = false;
-          //     console.log(this.pseudonym);
-          //     // console.log(this.gender);
-          //     this.submitted = true;
-          //   });
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
@@ -496,15 +505,19 @@ export class MemberRegistrationComponent implements OnInit {
         }
         );
       }
+
     }
     //  pour inscrire un member professionnel
 
-    else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.levelStudy == null) || (this.levelStudy == "") || (this.profession == null) || (this.profession == ""))) {
-      if (!(this.existe == this.members.length)) {
-        console.log("hi your firstname is", this.firstName, 'pour un membre deja existant qui souscrit pour le type Professionnel', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.meetingName
-          + '&firstName=' + this.firstName + '&lastName=' + this.lastName
-          + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession;
+    else if (this.model.meetingName == 'Professionnelle') {
+      if (this.choix == 'non') {
+
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Professionnelle');
+
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName
+          + '&levelStudy=' + this.model.levelStudy + '&profession=' + this.model.profession;
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
@@ -518,6 +531,7 @@ export class MemberRegistrationComponent implements OnInit {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
+
           else {
             //  if(resp.status==1){
             this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
@@ -530,15 +544,13 @@ export class MemberRegistrationComponent implements OnInit {
 
         }
         );
-
       }
+
       else {
-        console.log("helooooo", this.firstName, 'new member with  type Professionnelle', this.existe, '==', this.members.length);
-
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-          + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='+ this.confirmPassword + '&meetingName=' + this.meetingName
-          + '&firstName=' + this.firstName + '&lastName=' + this.lastName
-          + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession;
+        console.log("hi ", this.model.pseudonym, 'pour un membre deja existant qui souscrit pour le type Professionnel');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName
+          + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName
+          + '&levelStudy=' + this.model.levelStudy + '&profession=' + this.model.profession;
 
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
@@ -564,151 +576,83 @@ export class MemberRegistrationComponent implements OnInit {
 
         }
         );
+
       }
+
     }
 
     // pour inscrire un membre Amoureuse
-    else if (!((this.fatherName == null) || (this.fatherName == "") || (this.motherName == null) || (this.motherName == "") || (this.countryName == null) || (this.countryName == "") || (this.regionName == null) || (this.regionName == ""))) {
-      if (!(this.existe == this.members.length)) {
-        console.log("hi your ", this.model.pseudonym, 'pour un membre deja existant qui souscrit pour le type Amoureuse', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.meetingName
-        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-        + '&countryName=' + this.countryName + '&regionName=' + this.regionName
-        + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+    else if (this.model.meetingName == 'Amoureuse') {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Amoureuse');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&fatherName=' + this.model.fatherName + '&motherName=' + this.model.motherName
+          + '&countryName=' + this.model.fatherName + '&regionName=' + this.model.regionName
+          + '&departmentName=' + this.model.departmentName + '&boroughName=' + this.model.boroughName + '&townName=' + this.model.townName + '&concessionName=' + this.model.concessionName;
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if (resp.status == 0) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          // this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          this.router.navigate(['/rencotre']);
-
-          //  }
-        }
-
-      }
-      );
+        );
 
       }
       else {
-        console.log("helooooo", this.firstName, 'new member with  type Professionnelle', this.existe, '==', this.members.length);
-        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord=' + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-        + '&countryName=' + this.countryName + '&regionName=' + this.regionName
-        + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+        console.log("helooooo", this.model.pseudonym, 'member existant with  type Amoureuse');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName
+          + '&fatherName=' + this.model.fatherName + '&motherName=' + this.model.motherName
+          + '&countryName=' + this.model.fatherName + '&regionName=' + this.model.regionName
+          + '&departmentName=' + this.model.departmentName + '&boroughName=' + this.model.boroughName + '&townName=' + this.model.townName + '&concessionName=' + this.model.concessionName;
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
-        }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          // this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          this.router.navigate(['/rencotre']);
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if (resp.status == 0) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
 
-          //  }
+            //  }
+          }
+
         }
+        );
 
       }
-      );
 
-            }
     }
-    else {
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-        + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-        + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
-
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
-        }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          // this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          this.router.navigate(['/rencotre']);
-
-          //  }
-        }
-
-      }
-      );
-
-      console.log("******hummmm*******");
-    }
-    // const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-    //   + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-    //   + this.confirmPassword + '&meetingName=' + this.meetingName
-    //   + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName='
-    //   + this.schoolName + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession
-    //   + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
-
-    console.log('NAme', this.name);
-    // this.rest.postAccount(this.pseudonym, this.birthDate, this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.name, this.meetingName, this.firstName, this.lastName,
-    //   this.schoolName, this.levelStudy, this.profession, this.countryName, this.regionName, this.departmentName,
-    //   this.boroughName, this.townName, this.concessionName)
-    //   .subscribe((data) => {
-    //     // set success message and pass true paramater to persist the message after redirecting to the login page
-    //     this.alertService.success('Registration successful', true);
-    //     this.router.navigate(['/login-form']);
-    //   },
-    //   error => {
-    //     this.alertService.error(error);
-    //     this.loading = false;
-    //     console.log(this.pseudonym);
-    //     // console.log(this.gender);
-    //     this.submitted = true;
-    //   });
-
-
   }
-
-  // confirmPass(post) {
-  //   this.password = post.password;
-  //   this.confirmPassword = post.confirmPassword;
-  //   console.log(this.password != this.confirmPassword);
-  //   if (this.password != this.confirmPassword) {
-  //     this.alertService.error('passeword non identique', true);
-  //     // const errorPassword = document.getElementById('errorPassword');
-  //     // errorPassword.innerHTML = 'le mot de passe non valide';
-  //   }
-
-  // }
   ngOnInit() {
     this.loadAllCountries();
     this.loadAllMembers();

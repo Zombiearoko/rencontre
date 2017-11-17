@@ -781,8 +781,8 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingBd != null) {
+					//ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
@@ -1734,8 +1734,8 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingBd != null) {
+					//ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
@@ -1933,8 +1933,8 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingBd != null) {
+					//ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),

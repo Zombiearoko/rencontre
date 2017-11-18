@@ -143,14 +143,32 @@ export class MemberRegistrationComponent implements OnInit {
 
   public FilterChoix(value: string) {
     this.choix = value;
+    this.model.pseudonym1 = value;
 
     this.model.meetingName = '';
+    this.model.birthDate = '';
+    this.model.pseudonym1 = 'null';
     this.model.pseudonym = '';
     this.model.gender = '';
     this.model.phoneNumber = '';
     this.model.emailAdress = '';
     this.model.password = '';
     this.model.confirmPassword = '';
+    this.model.name = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.schoolName = '';
+    this.model.levelStudy = '';
+    this.model.profession = '';
+    this.model.fatherName = '';
+    this.model.motherName = '';
+    this.model.fatherName = '';
+    this.model.regionName = '';
+    this.model.departmentName = '';
+    this.model.boroughName = '';
+    this.model.townName = '';
+    this.model.concessionName = '';
+
   }
 
   //looking if pseudo is unique
@@ -160,7 +178,7 @@ export class MemberRegistrationComponent implements OnInit {
     // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
     // alert(date);
 this.model.pseudonym=value;
-this.model.birthDate = '';
+
     console.log('pseudo donne', this.model.pseudonym);
     if (this.choix == 'oui') {
       const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
@@ -176,7 +194,16 @@ this.model.birthDate = '';
         for (var i = 0; i < this.members.length; i++) {
           if (this.members[i].pseudonym == this.model.pseudonym) {
             this.model.birthDate = this.members[i].birthDate;
-            console.log('pour voir les info du membre deja existant', this.members[i]);
+            console.log('pour voir les info du membre deja existant',this.model.birthDate, this.members[i]);
+            console.log('age de select donne', this.model.birthDate);
+            const url2 = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
+      
+            this.http.get(url2).subscribe((resp) => {
+              this.results = resp['results'];
+              this.collectionJson = resp.json();
+      
+              console.log(this.collectionJson);
+            });
             i = this.members.length;
 
           }
@@ -184,15 +211,7 @@ this.model.birthDate = '';
         }
 
       });
-      console.log('age de select donne', this.model.birthDate);
-      const url2 = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
-
-      this.http.get(url2).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-
-        console.log(this.collectionJson);
-      });
+     
     }
     this.model.gender = '';
     console.log(this.model.gender);
@@ -285,6 +304,7 @@ this.model.birthDate = '';
               console.log('ce pseudo est deja utilisé pour le type de rencontre Amicale');
               // alert('ce pseudo est deja utilisé');
               this.model.pseudonym = '';
+              this.model.meetingName = '';
 
 
 
@@ -388,7 +408,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -419,7 +439,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -440,7 +460,7 @@ this.model.birthDate = '';
 
     }
     // pour inscrire pour Académique
-    else if ((this.model.meetingName == 'Academique') && ((this.model.firstName != null) || (this.model.firstName != "") || (this.model.lastName != null) || (this.model.lastName != "") || (this.model.schoolName != null) || (this.model.schoolName != "") || (this.model.levelStudy != null) || (this.model.levelStudy != ""))) {
+    else if (this.model.meetingName == 'Academique') {
       if (this.choix == 'non') {
         console.log("helooooo", this.model.pseudonym, 'new member with  type Académique');
 
@@ -457,7 +477,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -488,7 +508,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -527,7 +547,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -560,7 +580,7 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
@@ -599,13 +619,13 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful', true);
+              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);              
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -632,14 +652,14 @@ this.model.birthDate = '';
           console.log(typeof (resp));
           console.log(resp.status);
           // this.collectionJson.push(resp);
-          if (resp.status == 0) {
+          if ((resp.status == 500) || (resp.status == 404)) {
             this.alertService.error('Registration failed', true);
             this.router.navigate(['/member-registration']);
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful', true);
-            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
+              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
 

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import com.bocobi2.rencontre.model.Department;
 import com.bocobi2.rencontre.model.Member;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.Region;
+import com.bocobi2.rencontre.model.Role;
 import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
@@ -39,6 +41,7 @@ import com.bocobi2.rencontre.repositories.DepartmentRepository;
 import com.bocobi2.rencontre.repositories.LocalityRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.RegionRepository;
+import com.bocobi2.rencontre.repositories.RoleRepository;
 import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TownRepository;
 import com.bocobi2.rencontre.repositories.TypeMeetingRepository;
@@ -82,11 +85,32 @@ public class AdministratorController {
 
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/addRole", method = RequestMethod.GET)
+	public ResponseEntity<?> role(HttpServletRequest request) {
+		
+		String name = request.getParameter("nameRole");
+		Role role=new Role();
+		
+		role .setName(name);
+		if(name.equalsIgnoreCase("ROLE_USER"))
+		role.setUsers(new HashSet<>(memberRepository.findAll()));
+		roleRepository.deleteAll();
+		roleRepository.save(role);
+		
+		return new ResponseEntity<Role>(role,HttpStatus.OK);
+	}
 	/**
 	 * connexion of the member
 	 * 
 	 * cette methode permet de connecter un membre dans une session
 	 */
+	
 	/*
 	 * Version POST
 	 */

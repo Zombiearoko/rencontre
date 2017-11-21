@@ -49,7 +49,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
-//import org.springframework.security.core.Authentication;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -81,7 +84,7 @@ import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
-
+import com.bocobi2.rencontre.model.UserDetailsServices;
 import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.FriendlyRepository;
@@ -207,33 +210,35 @@ public class MemberController {
 		return user;
 	}
 
-	/*
-	 * @RequestMapping("/resource") public ResponseEntity<Member> home(
-	 * UserDetails userDetails, HttpServletRequest request) {
-	 * 
-	 * String pseudonym = request.getParameter("pseudonym"); String password =
-	 * request.getParameter("password"); String meetingName =
-	 * request.getParameter("meetingName");
-	 * System.out.println("-------------------------------");
-	 * System.out.println(pseudonym);
-	 * System.out.println("-------------------------------");
-	 * 
-	 * System.out.println("-------------------------------");
-	 * System.out.println(password);
-	 * 
-	 * //Member members = member.findOne("{#: #}", Member.PSEUDONYM,
-	 * userDetails.getPseudonym).as(Member.class); Authentication auth =
-	 * SecurityContextHolder.getContext().getAuthentication();
-	 * 
-	 * //Member members = memberRepository.findOne("{#: #}",
-	 * userDetails.getPseudonym); String name = auth.getName(); Member members =
-	 * memberRepository.findByPseudonym(name); String status = "Connected";
-	 * Status statusDB = statusRepository.findByStatusName(status);
-	 * members.setStatus(statusDB);
-	 * members.setMeetingNameConnexion(meetingName);
-	 * 
-	 * return new ResponseEntity<Member>(members, HttpStatus.OK); }
-	 */
+	
+	 @SuppressWarnings("unchecked")
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	    public  ResponseEntity<?> login(String error, String logout, HttpServletRequest requestConnexion) {
+	        String login=null;
+	        
+	        String pseudonym = requestConnexion.getParameter("pseudonym");
+			String password = requestConnexion.getParameter("password");
+			 Member user = memberRepository.findByPseudonym(pseudonym);
+			 System.out.println(user.getRoles());
+	        if (user == null){
+	        	  login="You have been logged out successfully.";
+	        	  return new ResponseEntity(
+							new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
+							HttpStatus.NOT_FOUND);
+	        }else{
+	        	UserDetailsServices use= new UserDetailsServices();
+	        	System.out.println(pseudonym);
+	        	UserDetails users= use.loadUserByMember(user);
+	        	System.out.println(users);
+	        	
+	        	
+	        	login="You have been logged  in  successfully.";
+	        	
+	        	return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
+	        }
+	      
+	    }
+	 
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
@@ -263,6 +268,7 @@ public class MemberController {
 					member.setMeetingNameConnexion(meetingName);
 					memberRepository.save(member);
 					httpSession.setAttribute("MEMBER", member);
+					
 					//session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {

@@ -9,8 +9,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -50,6 +52,7 @@ import com.bocobi2.rencontre.model.MemberBuffer;
 import com.bocobi2.rencontre.model.MemberErrorType;
 import com.bocobi2.rencontre.model.ProfessionalMeetingInformation;
 import com.bocobi2.rencontre.model.Region;
+import com.bocobi2.rencontre.model.Role;
 import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
@@ -65,6 +68,7 @@ import com.bocobi2.rencontre.repositories.LocalityRepository;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.RegionRepository;
+import com.bocobi2.rencontre.repositories.RoleRepository;
 import com.bocobi2.rencontre.repositories.StatusRepository;
 import com.bocobi2.rencontre.repositories.TestimonyRepository;
 import com.bocobi2.rencontre.repositories.TownRepository;
@@ -124,6 +128,9 @@ public class InternetSurferController {
 
 	@Autowired
 	CryptographRepository cryptographRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
 
 	/**
 	 * Methode de cryptographie
@@ -2296,7 +2303,11 @@ public class InternetSurferController {
 
 		MemberBuffer memberBuffer = memberBufferRepository.findByPseudonym(pseudonym);
 		Member memberDB = memberRepository.findByPseudonym(pseudonym);
-
+		
+		Role role= roleRepository.findByName("ROLE_USER");
+		Set<Role> setRole=new HashSet<>();
+		setRole.add(role);
+		
 		if (memberDB != null) {
 
 			if (meetingName.equals("Amoureuse")) {
@@ -2314,6 +2325,7 @@ public class InternetSurferController {
 				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
 				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+				member.setRoles(setRole);
 
 				//memberRepository.deleteAll();
 				memberRepository.save(member);
@@ -2337,6 +2349,7 @@ public class InternetSurferController {
 				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
 				member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+				member.setRoles(setRole);
 
 				// memberRepository.deleteAll();
 				memberRepository.save(member);
@@ -2359,6 +2372,7 @@ public class InternetSurferController {
 				member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
 				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberDB.getFriendlyDatingInformatio());
+				member.setRoles(setRole);
 
 				// memberRepository.deleteAll();
 				memberRepository.save(member);
@@ -2381,6 +2395,7 @@ public class InternetSurferController {
 				member.setAcademicDatingInformation(memberDB.getAcademicDatingInformation());
 				member.setProfessionalMeetingInformation(memberDB.getProfessionalMeetingInformation());
 				member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
+				member.setRoles(setRole);
 
 				memberRepository.save(member);
 				memberBufferRepository.delete(memberBuffer);
@@ -2402,6 +2417,7 @@ public class InternetSurferController {
 			member.setAcademicDatingInformation(memberBuffer.getAcademicDatingInformation());
 			member.setProfessionalMeetingInformation(memberBuffer.getProfessionalMeetingInformation());
 			member.setFriendlyDatingInformatio(memberBuffer.getFriendlyDatingInformatio());
+			member.setRoles(setRole);
 
 			memberRepository.save(member);
 			memberBufferRepository.delete(memberBuffer);

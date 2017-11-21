@@ -1,20 +1,23 @@
 package com.bocobi2.rencontre.model;
 
 import java.util.Collection;
+//import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Document(collection="member")
-public class Member extends InternetSurfer {
-//implements UserDetails  
+public class Member extends InternetSurfer implements UserDetails  {
+ 
 
 	@Id
 	@Indexed
@@ -32,6 +35,9 @@ public class Member extends InternetSurfer {
 	@Indexed
 	private String gender;
 	private String picture;
+	
+	@DBRef
+	private Set<Role> roles;
 	
 	private AcademicDatingInformation academicDatingInformation;
 	private FriendlyDatingInformation friendlyDatingInformatio;
@@ -81,7 +87,7 @@ public class Member extends InternetSurfer {
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
 			Subscription subscription, Profile profile, List<TypeMeeting> typeMeeting, List<Message> messages,
 			List<Conversation> conversations, List<Testimony> testimonies, Status status, 
-			String meetingNameConnexion, String numberPicture , String age) {
+			String meetingNameConnexion, String numberPicture , String age,  Set<Role> roles) {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
@@ -103,6 +109,7 @@ public class Member extends InternetSurfer {
 		this.status = status;
 		this.meetingNameConnexion=meetingNameConnexion;
 		this.age=age;
+		this.roles=roles;
 		this.setNumberPicture(numberPicture);
 		
 	}
@@ -123,6 +130,24 @@ public class Member extends InternetSurfer {
 
 	public void setAge(String age) {
 		this.age = age;
+	}
+
+
+
+
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+
+
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 
@@ -504,13 +529,8 @@ public class Member extends InternetSurfer {
 
 
 
-/*
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 
 
@@ -572,7 +592,7 @@ public class Member extends InternetSurfer {
 
 
 
-/*	@Override
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return null;
@@ -582,56 +602,6 @@ public class Member extends InternetSurfer {
 
 
 
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}*/
-
-
-
-
-
-
-	/*@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-
-
-
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-/*
-
-
-
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}*/
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

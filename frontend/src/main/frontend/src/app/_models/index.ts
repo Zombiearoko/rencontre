@@ -6,3 +6,8 @@ export * from './borough';
 export * from './meeting';
 export * from './town';
 export * from './status';
+export * from './concession';
+export * from './professionalMeetingInformation';
+export * from './friendlyDatingInformation';
+export * from './academicDatingInformation';
+export * from './datingInformation';

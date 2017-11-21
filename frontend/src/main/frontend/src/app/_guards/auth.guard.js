@@ -20,7 +20,9 @@ var AuthGuard = /** @class */ (function () {
             // logged in so return true
             return true;
         }
-        // not logged in so redirect to login page with the return url
+        // not logged in so redirect to (login) rencotre page with the return url
+        // this.router.navigate(['/login-form'], { queryParams: { returnUrl: state.url } });
+        
         this.router.navigate(['/login-form'], { queryParams: { returnUrl: state.url } });
         return false;
     };

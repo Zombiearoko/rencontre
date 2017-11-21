@@ -7,12 +7,16 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-
-
 import { AlertService, MemberService, MeetingService, CountryService, RegionService, DepartmentService, BoroughService, TownService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
 import { Town } from '../_models/town';
-import { Country, Region, Borough, Department } from '../_models/index';
+
+import { ProfessionalMeetingInformation } from '../_models/professionalMeetingInformation';
+import { AcademicDatingInformation } from '../_models/academicDatingInformation';
+import { DatingInformation } from '../_models/datingInformation';
+import { FriendlyDatingInformation } from '../_models/friendlyDatingInformation';
+
+import { Country, Region, Borough, Department, Member } from '../_models/index';
 import { ConfimrAccountComponent } from './confimr-account/confimr-account.component';
 
 
@@ -36,9 +40,12 @@ export class MemberRegistrationComponent implements OnInit {
   customerPictureFile: File;
   @ViewChild('customerPicture') customer_picture;
   post: any;
-  titleAlert: string = 'You must specify a pseudo thats between 3 and 5 characters';
-  private birthDate: Date;
+  titleAlert: string = 'You must specify an unused pseudo for this meeting type! characters between 3 and 6 ';
+  titleAlertP: string = 'password have to be same with preview one';
+
+  private birthDate: string;
   private meetingName: string;
+
   public currentMeeting: Meeting;
   public currentCountry: Country;
   public currentRegion: Region;
@@ -47,13 +54,18 @@ export class MemberRegistrationComponent implements OnInit {
   // public currentTown: Town;
   private pseudonym: string;
   private name: string = '';
+  private friendlyDatingInformatio: FriendlyDatingInformation = null;
   private firstName: string = '';
   private lastName: string = '';
   private schoolName: string = '';
   private levelStudy: string = '';
+  private academicDatingInformation: AcademicDatingInformation = null;
   private profession: string = '';
+  private professionalMeetingInformation: ProfessionalMeetingInformation = null;
   private fatherName: string = '';
   private motherName: string = '';
+  private datingInformation: DatingInformation = null;
+  private choix: string = '';
   private countryName: string = '';
   private regionName: string = '';
   private departmentName: string = '';
@@ -68,11 +80,16 @@ export class MemberRegistrationComponent implements OnInit {
   private picture: string;
   private results: [any];
   private collectionJson: object;
+  private currentMember: Member;
+  private member: Member;
+  private members: Member[] = [];
   submitted = false;
+  private existe: number;
 
 
   constructor(public rest: RestProvider,
     private meetingService: MeetingService,
+    private memberService: MemberService,
     private countryService: CountryService,
     private regionService: RegionService,
     private departmentService: DepartmentService,
@@ -82,9 +99,12 @@ export class MemberRegistrationComponent implements OnInit {
 
 
     this.clientForm = this.fb.group({
+      'choix': [null, Validators.compose([Validators.required])],
+      'pseudonym': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(6)])],
+      'pseudonym1': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(6)])],
       'birthDate': [null, Validators.compose([Validators.required])],
+      'birthDate1': [null, Validators.compose([Validators.required])],
       'meetingName': [null, Validators.compose([Validators.required])],
-      'pseudonym': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(5)])],
       'name': '',
       'firstName': '',
       'lastName': '',
@@ -109,20 +129,122 @@ export class MemberRegistrationComponent implements OnInit {
       // 'customerPicture': [null, Validators.required]
       'customerPicture': ''
     });
-
+    // this.currentMember = JSON.parse(localStorage.getItem('currentMember'));
     this.currentMeeting = JSON.parse(localStorage.getItem('currentMeeting'));
     this.currentCountry = JSON.parse(localStorage.getItem('currentCountry'));
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     this.currentDepartment = JSON.parse(localStorage.getItem('currentDepartment'));
     this.currentBorough = JSON.parse(localStorage.getItem('currentBorough'));
+
     // this.currentTown = JSON.parse(localStorage.getItem('currentTown'));
 
 
   }
 
-  //getting meeting type when selected
-  public Filter(value: Date) {
+  public FilterChoix(value: string) {
+    this.choix = value;
+    this.model.pseudonym1 = value;
 
+    this.model.meetingName = '';
+    this.model.birthDate = '';
+    this.model.pseudonym1 = 'null';
+    this.model.pseudonym = '';
+    this.model.gender = '';
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
+    this.model.name = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.schoolName = '';
+    this.model.levelStudy = '';
+    this.model.profession = '';
+    this.model.fatherName = '';
+    this.model.motherName = '';
+    this.model.fatherName = '';
+    this.model.regionName = '';
+    this.model.departmentName = '';
+    this.model.boroughName = '';
+    this.model.townName = '';
+    this.model.concessionName = '';
+
+  }
+
+  //looking if pseudo is unique
+  public FilterS(value: string) {
+    // var ageDifMs = Date.now() - this.age.getTime();  
+    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
+    // alert(date);
+this.model.pseudonym=value;
+
+    console.log('pseudo donne', this.model.pseudonym);
+    if (this.choix == 'oui') {
+      const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.members = resp.json();
+        console.log(resp.status);
+
+        console.log('le membre avec le pseudo', this.model.pseudonym,this.members);
+
+        var j = 0;
+
+        for (var i = 0; i < this.members.length; i++) {
+          if (this.members[i].pseudonym == this.model.pseudonym) {
+            this.model.birthDate = this.members[i].birthDate;
+            console.log('pour voir les info du membre deja existant',this.model.birthDate, this.members[i]);
+            console.log('age de select donne', this.model.birthDate);
+            const url2 = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
+      
+            this.http.get(url2).subscribe((resp) => {
+              this.results = resp['results'];
+              this.collectionJson = resp.json();
+      
+              console.log(this.collectionJson);
+            });
+            i = this.members.length;
+
+          }
+
+        }
+
+      });
+     
+    }
+    this.model.gender = '';
+    console.log(this.model.gender);
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
+  }
+
+
+  //getting meeting type when selected age
+  public Filter(value: string) {
+    this.model.name = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.schoolName = '';
+    this.model.levelStudy = '';
+    this.model.profession = '';
+    this.model.fatherName = '';
+    this.model.motherName = '';
+    this.model.fatherName = '';
+    this.model.regionName = '';
+    this.model.departmentName = '';
+    this.model.boroughName = '';
+    this.model.townName = '';
+    this.model.concessionName = '';
+
+    this.model.gender = '';
+    console.log(this.model.gender);
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
 
     // var ageDifMs = Date.now() - this.age.getTime();  
     // var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -130,8 +252,8 @@ export class MemberRegistrationComponent implements OnInit {
     // alert(date);
 
     console.log('age donne', value);
-    this.birthDate = value;
-    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.birthDate;
+
+    const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?birthDate=' + this.model.birthDate;
 
     this.http.get(url).subscribe((resp) => {
       this.results = resp['results'];
@@ -142,283 +264,434 @@ export class MemberRegistrationComponent implements OnInit {
     //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
     //  console.log("meetings", this.meetings);
   }
+  FilterM(value: string) {
+    if (this.choix == 'oui') {
+      console.log(this.choix);
+      console.log(value);
+      const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
+      this.http.get(url).subscribe((resp) => {
+        this.results = resp['results'];
+        this.members = resp.json();
+        console.log(resp.status);
+        if (resp.status == 204) {
+          // if (this.choix=='non'){
+          console.log('aucun membre existant');
+          this.existe = 0;
+        }
+        else {
+          console.log('le membres', this.members);
+
+          var j = 0;
+
+          for (var i = 0; i < this.members.length; i++) {
+            if (this.members[i].pseudonym == this.model.pseudonym) {
+              this.member = this.members[i];
+              console.log('pour voir les info du membre deja existant', this.member);
+              i = this.members.length;
+              j++;
+
+
+            }
+            j++;
+          }
+
+          this.existe = j;
+          console.log('j', j, 'membelengh', this.members.length);
+          if (!(j == this.members.length)) {
+            // console.log(this.me mber.datingInformation,this.member.professionalMeetingInformation,this.member.professionalMeetingInformation,'this.member.academicDatingInformation',this.member.academicDatingInformation);
+            if (!(this.member.friendlyDatingInformatio == null) && (this.model.meetingName == 'Amicale')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Amicale');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
+              this.model.meetingName = '';
+
+
+
+            }
+            else if (!(this.member.datingInformation == null) && (this.model.meetingName == 'Amoureuse')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Amoureuse');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
+
+            }
+            else if (!(this.member.academicDatingInformation == null) && (this.model.meetingName == 'Academique')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Académique');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
+
+            }
+            else if (!(this.member.professionalMeetingInformation == null) && (this.model.meetingName == 'Professionnelle')) {
+
+              console.log('ce pseudo est deja utilisé pour le type de rencontre Professionnelle');
+              // alert('ce pseudo est deja utilisé');
+              this.model.pseudonym = '';
+
+            }
+
+          }
+
+        }
+      });
+
+
+    }
+  }
 
   public FilterC(value: string) {
     // alert(value);
-    this.countryName = value;
-    this.loadAllRegionsByCountry(this.countryName);
+    this.model.fatherName = value;
+    this.loadAllRegionsByCountry(this.model.fatherName);
     // this.loadAllRegions();
   }
   public FilterR(value: string) {
     // alert(value);
-    this.regionName = value;
-    this.loadAllDepartmentsByRegion(this.regionName);
+    this.model.regionName = value;
+    this.loadAllDepartmentsByRegion(this.model.regionName);
   }
   public FilterD(value: string) {
     // alert(value);
-    this.departmentName = value;
-    this.loadAllBoroughsByDepartment(this.departmentName);
+    this.model.departmentName = value;
+    this.loadAllBoroughsByDepartment(this.model.departmentName);
   }
   public FilterB(value: string) {
     // console.log(value);
-    this.boroughName = value;
-    // this.loadAllTownsByBorough(this.boroughName);
+    this.model.boroughName = value;
+    // this.loadAllTownsByBorough(this.model.boroughName);
   }
   // public FilterT(value: string) {
   //   alert(value);
-  //   this.townName = value;
+  //   this.model.townName = value;
   //  this.loadAllConcessionByTown pour la concession une fois que les membres auront fournir les différents concessions
   // }
 
   onSubmit(post) {
 
-    this.birthDate = post.birthDate;
-    this.meetingName = post.meetingName;
-    this.pseudonym = post.pseudonym;
-    this.name = post.name;
-    this.firstName = post.firstName;
-    this.lastName = post.lastName;
-    this.schoolName = post.schoolName;
-    this.levelStudy = post.levelStudy;
-    this.profession = post.profession;
-    this.fatherName = post.fatherName;
-    this.motherName = post.motherName;
-    this.countryName = post.countryName;
-    this.regionName = post.regionNAme;
-    this.departmentName = post.departementName;
-    this.boroughName = post.boroughName;
-    this.townName = post.townName;
-    this.concessionName = post.concessionName;
-    this.gender = post.gender;
-    this.emailAdress = post.emailAdress;
-    this.phoneNumber = post.phoneNumber;
-    this.password = post.password;
-    this.confirmPassword = post.confirmPassword;
+    // this.model.birthDate = post.birthDate;
+    // this.model.meetingName = post.meetingName;
+    // this.model.name = post.name;
+    // this.model.firstName = post.firstName;
+    // this.model.lastName = post.lastName;
+    // this.model.schoolName = post.schoolName;
+    // this.model.levelStudy = post.levelStudy;
+    // this.model.profession = post.profession;
+    // this.model.fatherName = post.fatherName;
+    // this.model.motherName = post.motherName;
+    // this.model.fatherName = post.countryName;
+    // this.model.regionName = post.regionNAme;
+    // this.model.departmentName = post.departementName;
+    // this.model.boroughName = post.boroughName;
+    // this.model.townName = post.townName;
+    // this.model.concessionName = post.concessionName;
+    // this.model.gender = post.gender;
+    // this.model.emailAdress = post.emailAdress;
+    // this.model.phoneNumber = post.phoneNumber;
+    // this.model.password = post.password;
+    // this.model.confirmPassword = post.confirmPassword;
     this.picture = post.picture;
 
-    if (!((this.name == null) || (this.name == ""))) {
-      console.log("nooooo", this.name);
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-        + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&name=' + this.name;
+    if (this.model.meetingName == 'Amicale') {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, "new member with  type Amicale");
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&name=' + this.model.name;
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
 
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+            // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          this.router.navigate(['/confimr-account/' + this.emailAdress]);
-          // this.router.navigate(['/confimr-account']);
+        );
+      }
 
-          //  }
+      else {
+        console.log("helloooooo", this.model.pseudonym, 'membre deja existant qui sinscrit pour le type Amicale');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName + '&name=' + this.model.name;
+
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+            // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
+        );
 
       }
-      );
 
     }
+    // pour inscrire pour Académique
+    else if (this.model.meetingName == 'Academique') {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Académique');
 
-    else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.schoolName == null) || (this.schoolName == "") || (this.levelStudy == null) || (this.levelStudy == ""))) {
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord=' + this.confirmPassword + '&meetingName=' + this.meetingName + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName=' + this.schoolName + '&levelStudy=' + this.levelStudy;
-      console.log("academique", this.firstName);
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password
+          + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName + '&schoolName=' + this.model.schoolName + '&levelStudy=' + this.model.levelStudy;
+        console.log("academique", this.model.firstName);
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        //   this.alertService.success('Registration successful', true);
-        //   this.router.navigate(['/member-registration']);
-        // },
-        //   error => {
-        //     this.alertService.error(error);
-        //     this.loading = false;
-        //     console.log(this.pseudonym);
-        //     // console.log(this.gender);
-        //     this.submitted = true;
-        //   });
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+            // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          // this.router.navigate(['/login-form']);
-
-          //  }
-        }
+        );
 
       }
-      );
+
+      else {
+        console.log("hi", this.model.pseudonym, 'pour un membre deja existant qui sousscrit pour le type Académique');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName + '&schoolName=' + this.model.schoolName + '&levelStudy=' + this.model.levelStudy;
+        console.log("academique", this.model.firstName);
+
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+            // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
+        }
+        );
+      }
 
     }
+    //  pour inscrire un member professionnel
 
-    else if (!((this.firstName == null) || (this.firstName == "") || (this.lastName == null) || (this.lastName == "") || (this.levelStudy == null) || (this.levelStudy == "") || (this.profession == null) || (this.profession == ""))) {
+    else if (this.model.meetingName == 'Professionnelle') {
+      if (this.choix == 'non') {
 
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-        + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&firstName=' + this.firstName + '&lastName=' + this.lastName
-        + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession;
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Professionnelle');
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName
+          + '&levelStudy=' + this.model.levelStudy + '&profession=' + this.model.profession;
+
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          // this.router.navigate(['/login-form']);
+        );
+      }
 
-          //  }
+      else {
+        console.log("hi ", this.model.pseudonym, 'pour un membre deja existant qui souscrit pour le type Professionnel');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName
+          + '&firstName=' + this.model.firstName + '&lastName=' + this.model.lastName
+          + '&levelStudy=' + this.model.levelStudy + '&profession=' + this.model.profession;
+
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+            this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
+
+            //  }
+          }
+
         }
+        );
 
       }
-      );
 
     }
 
-    else if (!((this.fatherName == null) || (this.fatherName == "") || (this.motherName == null) || (this.motherName == "") || (this.countryName == null) || (this.countryName == "") || (this.regionName == null) || (this.regionName == ""))) {
+    // pour inscrire un membre Amoureuse
+    else if (this.model.meetingName == 'Amoureuse') {
+      if (this.choix == 'non') {
+        console.log("helooooo", this.model.pseudonym, 'new member with  type Amoureuse');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&birthDate=' + this.model.birthDate + '&gender=' + this.model.gender + '&emailAdress=' + this.model.emailAdress
+          + '&phoneNumber=' + this.model.phoneNumber + '&password=' + this.model.password + '&confirmPassWord=' + this.model.confirmPassword + '&meetingName=' + this.model.meetingName
+          + '&fatherName=' + this.model.fatherName + '&motherName=' + this.model.motherName
+          + '&countryName=' + this.model.fatherName + '&regionName=' + this.model.regionName
+          + '&departmentName=' + this.model.departmentName + '&boroughName=' + this.model.boroughName + '&townName=' + this.model.townName + '&concessionName=' + this.model.concessionName;
 
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-        + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-        + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);              
+            alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          // this.router.navigate(['/login-form']);
-
-          //  }
-        }
+        );
 
       }
-      );
+      else {
+        console.log("helooooo", this.model.pseudonym, 'member existant with  type Amoureuse');
+        const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.model.pseudonym + '&meetingName=' + this.model.meetingName
+          + '&fatherName=' + this.model.fatherName + '&motherName=' + this.model.motherName
+          + '&countryName=' + this.model.fatherName + '&regionName=' + this.model.regionName
+          + '&departmentName=' + this.model.departmentName + '&boroughName=' + this.model.boroughName + '&townName=' + this.model.townName + '&concessionName=' + this.model.concessionName;
 
-    }
-    else {
-      const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-        + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-        + this.confirmPassword + '&meetingName=' + this.meetingName
-        + '&fatherName=' + this.fatherName + '&motherName=' + this.motherName
-        + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
+        this.http.get(url).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log(this.collectionJson);
+          //  set success message and pass true paramater to persist the message after redirecting to the login page
+          console.log(typeof (resp));
+          console.log(resp.status);
+          // this.collectionJson.push(resp);
+          if ((resp.status == 500) || (resp.status == 404)) {
+            this.alertService.error('Registration failed', true);
+            this.router.navigate(['/member-registration']);
+          }
+          else {
+            //  if(resp.status==1){
+              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
+              alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
+            // this.router.navigate(['/confimr-account/' + this.pseudonym]);
+            this.router.navigate(['/rencotre']);
 
-      this.http.get(url).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log(this.collectionJson);
-        //  set success message and pass true paramater to persist the message after redirecting to the login page
-        console.log(typeof (resp));
-        console.log(resp.status);
-        // this.collectionJson.push(resp);
-        if (resp.status == 0) {
-          this.alertService.error('Registration failed', true);
-          this.router.navigate(['/member-registration']);
+            //  }
+          }
+
         }
-        else {
-          //  if(resp.status==1){
-          this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
-          alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
-          this.router.navigate(['/confimr-account/' + this.pseudonym]);
-          // this.router.navigate(['/login-form']);
-
-          //  }
-        }
+        );
 
       }
-      );
 
-      console.log("******hummmm*******");
     }
-    // const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + this.pseudonym + '&birthDate=' + this.birthDate + '&gender=' + this.gender + '&emailAdress=' + this.emailAdress
-    //   + '&phoneNumber=' + this.phoneNumber + '&password=' + this.password + '&confirmPassWord='
-    //   + this.confirmPassword + '&meetingName=' + this.meetingName
-    //   + '&firstName=' + this.firstName + '&lastName=' + this.lastName + '&schoolName='
-    //   + this.schoolName + '&levelStudy=' + this.levelStudy + '&profession=' + this.profession
-    //   + '&countryName=' + this.countryName + '&regionName=' + this.regionName + '&departmentName=' + this.departmentName + '&boroughName=' + this.boroughName + '&townName=' + this.townName + '&concessionName=' + this.concessionName;
-
-    console.log('NAme', this.name);
-    // this.rest.postAccount(this.pseudonym, this.birthDate, this.gender, this.emailAdress, this.phoneNumber, this.password, this.confirmPassword, this.name, this.meetingName, this.firstName, this.lastName,
-    //   this.schoolName, this.levelStudy, this.profession, this.countryName, this.regionName, this.departmentName,
-    //   this.boroughName, this.townName, this.concessionName)
-    //   .subscribe((data) => {
-    //     // set success message and pass true paramater to persist the message after redirecting to the login page
-    //     this.alertService.success('Registration successful', true);
-    //     this.router.navigate(['/login-form']);
-    //   },
-    //   error => {
-    //     this.alertService.error(error);
-    //     this.loading = false;
-    //     console.log(this.pseudonym);
-    //     // console.log(this.gender);
-    //     this.submitted = true;
-    //   });
-
-
-  }
-
-  confirmPass(post) {
-    this.password = post.password;
-    this.confirmPassword = post.confirmPassword;
-    console.log(this.password != this.confirmPassword);
-    if (this.password != this.confirmPassword) {
-      this.alertService.error('passeword non identique', true);
-      // const errorPassword = document.getElementById('errorPassword');
-      // errorPassword.innerHTML = 'le mot de passe non valide';
-    }
-    
   }
   ngOnInit() {
     this.loadAllCountries();
+    this.loadAllMembers();
     // this.loadAllRegions() ;
     console.log(this.countries);
+    this.model.gender = '';
+    console.log(this.model.gender);
+    this.model.gender = '';
+    console.log(this.model.gender);
+    this.model.phoneNumber = '';
+    this.model.emailAdress = '';
+    this.model.password = '';
+    this.model.confirmPassword = '';
 
+  }
+  // recupere les members
+  private loadAllMembers() {
+    this.memberService.getAll().subscribe(members => { this.members = members; });
+    console.log("members", this.members);
   }
   // recuperation pays 
   private loadAllCountries() {
@@ -464,5 +737,10 @@ export class MemberRegistrationComponent implements OnInit {
   //   this.rest.getAllTownByBorough(boroughName).subscribe(towns => { this.towns = towns; });
   //   console.log("departments", this.departments);
   // }
+  private loadAllMeetings(pseudonym: string) {
+    // this.meetingService.getAll().subscribe(meetings => { this.meetings = meetings; });
+    //  this.rest.getAll().subscribe(meetings => { this.meetings = meetings; });
+    this.meetingService.getAllByPeudo(pseudonym).subscribe(meetings => { this.meetings = meetings; });
+  }
 
 }

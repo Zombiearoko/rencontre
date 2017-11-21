@@ -11,6 +11,11 @@ export class MeetingService {
         return this.http.get('http://localhost:8091/rencontre/Administrator/listAllTypeMeeting', this.jwt()).map((response: Response) => response.json());
        
     }
+
+    getAllByPeudo(pseudonym:string) {
+        return this.http.get('http://localhost:8091/rencontre/Member/returnTypeMeeting?pseudonym=' + pseudonym, this.jwt()).map((response: Response) => response.json());
+      
+    }
     
     getAllByDate(date:Date) {
         return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=' + date, this.jwt()).map((response: Response) => response.json());

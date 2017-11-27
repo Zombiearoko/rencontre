@@ -49,6 +49,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -114,7 +115,7 @@ public class MemberController {
 
 	@Autowired
 	MemberRepository memberRepository;
-	
+
 	@Autowired
 	HttpSession httpSession;
 
@@ -210,41 +211,47 @@ public class MemberController {
 		return user;
 	}
 
-	
-	 @SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	    public  ResponseEntity<?> login(String error, String logout, HttpServletRequest requestConnexion) {
-	        String login=null;
-	        
-	        String pseudonym = requestConnexion.getParameter("pseudonym");
-			String password = requestConnexion.getParameter("password");
-			 Member user = memberRepository.findByPseudonym(pseudonym);
-			 System.out.println(user.getRoles());
-	        if (user == null){
-	        	  login="You have been logged out successfully.";
-	        	  return new ResponseEntity(
-							new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
-							HttpStatus.NOT_FOUND);
-	        }else{
-	        	UserDetailsServices use= new UserDetailsServices();
-	        	System.out.println(pseudonym);
-	        	UserDetails users= use.loadUserByMember(user);
-	        	System.out.println(users);
-	        	
-	        	
-	        	login="You have been logged  in  successfully.";
-	        	
-	        	return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
-	        }
-	      
-	    }
-	 
+	public ResponseEntity<?> login(String error, String logout, HttpServletRequest requestConnexion,Authentication authentication) {
+		String login = null;
+
+		String pseudonym = requestConnexion.getParameter("pseudonym");
+		String password = requestConnexion.getParameter("password");
+		Member user = memberRepository.findByPseudonym(pseudonym);
+		System.out.println(user.getRoles());
+		if (user == null) {
+			login = "You have been logged out successfully.";
+			return new ResponseEntity(
+					new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
+					HttpStatus.NOT_FOUND);
+		} else {
+			UserDetailsServices use = new UserDetailsServices();
+			System.out.println(pseudonym);
+			UserDetails users = use.loadUserByMember(user);
+			System.out.println(users);
+
+			login = "You have been logged  in  successfully.";
+			//String name= authentication.getName();
+			//System.out.println(name+"username de la personne connectee");
+			
+			return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
+	public String retrieve(String error, String logout, Authentication authentication, Principal principal) {
+
+		return authentication.getName();
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
 
-		//HttpSession session = requestConnexion.getSession();
+		// HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -268,8 +275,8 @@ public class MemberController {
 					member.setMeetingNameConnexion(meetingName);
 					memberRepository.save(member);
 					httpSession.setAttribute("MEMBER", member);
-					
-					//session.setAttribute("Member", member);
+
+					// session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
 					httpSession.invalidate();
@@ -300,7 +307,7 @@ public class MemberController {
 	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
-		//HttpSession session = requestConnexion.getSession();
+		// HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -362,48 +369,48 @@ public class MemberController {
 	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
 
 		// HttpSession sessionMember = request.getSession();
-				// Member member = (Member) sessionMember.getAttribute("Member");
-				String pseudonymMember = request.getParameter("pseudonym");
-				try {
-					Member member = memberRepository.findByPseudonym(pseudonymMember);
-					String pseudonym = member.getPseudonym();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudonymMember = request.getParameter("pseudonym");
+		try {
+			Member member = memberRepository.findByPseudonym(pseudonymMember);
+			String pseudonym = member.getPseudonym();
 
-					List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-					TypeMeeting typeMeeting;
-					TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
-					TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
-					TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
-					TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+			TypeMeeting typeMeeting;
+			TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+			TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+			TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+			TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
 
-					if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+			if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
 
-						typeMeeting = datingMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = datingMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+			}
+			if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
-						typeMeeting = professionnalMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = professionnalMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+			}
+			if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
 
-						typeMeeting = friendlyMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = friendlyMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
-						typeMeeting = schoolMeeting;
-						listTypeMeeting.add(typeMeeting);
-					}
+			}
+			if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+				typeMeeting = schoolMeeting;
+				listTypeMeeting.add(typeMeeting);
+			}
 
-					return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+			return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
 
-				} catch (Exception ex) {
-					logger.error("Member doesn't exist.");
-					return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
-				}
+		} catch (Exception ex) {
+			logger.error("Member doesn't exist.");
+			return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
+		}
 
 	}
 
@@ -472,8 +479,8 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		//HttpSession session = request.getSession();
-		//Member member = (Member) session.getAttribute("Member");
+		// HttpSession session = request.getSession();
+		// Member member = (Member) session.getAttribute("Member");
 		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);
@@ -502,8 +509,8 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		//HttpSession session = request.getSession();
-		//Member member = (Member) session.getAttribute("Member");
+		// HttpSession session = request.getSession();
+		// Member member = (Member) session.getAttribute("Member");
 		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);

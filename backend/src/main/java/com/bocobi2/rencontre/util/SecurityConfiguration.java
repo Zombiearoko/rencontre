@@ -18,63 +18,47 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import com.bocobi2.rencontre.model.UserDetailsServices;
 
 @Configuration
-//@EnableWebSecurity
+// @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	
-
 	@Autowired
 	private UserDetailsServices userDetailsService;
-
-
-
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/js/**", "/css/**");
 	}
 
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-        		
-    .authorizeRequests()
-                	/*.antMatchers("rencontre/InternetSurfer").hasRole(role)*/
-                    .antMatchers("/rencontre/**", "/registration/**").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                    .and()
-                
-        
-            		.csrf().disable();
-    }
-    
-    private CsrfTokenRepository csrfTokenRepository() 
-    { 
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository(); 
-        repository.setSessionAttributeName("_csrf");
-        return repository; 
-    }
+				.authorizeRequests()
+				/* .antMatchers("rencontre/InternetSurfer").hasRole(role) */
+				.antMatchers("/rencontre/**", "/registration/**").permitAll().anyRequest().authenticated().and()
+				.formLogin().loginPage("/login").permitAll().and().logout().permitAll().and()
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-    
+				.csrf().disable();
+	}
+
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setSessionAttributeName("_csrf");
+		return repository;
+	}
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
+
 	@Bean
 	public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
 		return super.userDetailsService();

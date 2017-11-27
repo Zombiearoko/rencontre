@@ -5,14 +5,14 @@ import java.util.Set;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="role")
+@Document(collection = "role")
 public class Role {
-	
+
 	@Id
 	private String id;
-    private String name;
-    private Set<Member> users;
-    
+	private String name;
+	private Set<Member> users;
+
 	public Role() {
 
 	}
@@ -46,7 +46,5 @@ public class Role {
 	public void setUsers(Set<Member> users) {
 		this.users = users;
 	}
-    
-    
 
 }

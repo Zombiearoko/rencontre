@@ -11,10 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bocobi2.rencontre.repositories.MemberRepository;
 
 @Component
+@Service
 public class UserDetailsServices  implements UserDetailsService  {
 	
 
@@ -37,9 +40,18 @@ public class UserDetailsServices  implements UserDetailsService  {
 
 
 	@Override
-	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String pseudonym) throws UsernameNotFoundException {
+		System.out.println(pseudonym+" donne pardon");
+		//Member user = memberRepository.findByPseudonym(pseudonym);
+				System.out.println(memberRepository.findByPseudonym(pseudonym)+"toototot");
+		        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		        for (Role role : memberRepository.findByPseudonym(pseudonym).getRoles()){
+		            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		        }
+
+		        return new org.springframework.security.core.userdetails.User(memberRepository.findByPseudonym(pseudonym).getPseudonym(), 
+		        		memberRepository.findByPseudonym(pseudonym).getPassword(), grantedAuthorities);
 	}
 
 }

@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -50,6 +51,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -89,6 +92,7 @@ import com.bocobi2.rencontre.model.UserDetailsServices;
 import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.FriendlyRepository;
+//import com.bocobi2.rencontre.repositories.IAuthenticationFacade;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
@@ -105,6 +109,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
 @CrossOrigin(origins = "*")
+@Scope("session")
 @RestController
 @RequestMapping("/rencontre/Member")
 
@@ -151,6 +156,9 @@ public class MemberController {
 
 	@Autowired
 	FriendlyRepository freindlyRepository;
+
+	@Autowired
+	UserDetailsServices use;
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
@@ -211,40 +219,73 @@ public class MemberController {
 		return user;
 	}
 
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
 	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<?> login(String error, String logout, HttpServletRequest requestConnexion,Authentication authentication) {
+	public ResponseEntity<?> login(String error, Principal principal, String logout,
+			HttpServletRequest requestConnexion, Authentication authentication) {
 		String login = null;
 
 		String pseudonym = requestConnexion.getParameter("pseudonym");
 		String password = requestConnexion.getParameter("password");
 		Member user = memberRepository.findByPseudonym(pseudonym);
 		System.out.println(user.getRoles());
-		if (user == null) {
-			login = "You have been logged out successfully.";
-			return new ResponseEntity(
-					new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
-					HttpStatus.NOT_FOUND);
-		} else {
-			UserDetailsServices use = new UserDetailsServices();
-			System.out.println(pseudonym);
-			UserDetails users = use.loadUserByMember(user);
-			System.out.println(users);
+		
+		  if (user == null) { 
+			  login = "You have been logged out successfully.";
+			  return new ResponseEntity( new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
+		  HttpStatus.NOT_FOUND); 
+			  } else { //UserDetailsServices use = new UserDetailsServices(); System.out.println(pseudonym); 
+				  UserDetails  users = use.loadUserByUsername(pseudonym); System.out.println(users);
+		  
+		  login = "You have been logged  in  successfully."; //String name= authentication.getName(); 
+		  //System.out.println(name+ "username de la personne connectee");
+		 // System.out.println(principal.getName());
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
+					new UsernamePasswordAuthenticationToken(
+							users, password, users.getAuthorities());
+			authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+		 return new ResponseEntity<UserDetails>(users, HttpStatus.OK); }
+		 
+		//UserDetails userDetails = use.loadUserByUsername(pseudonym);
+	
 
-			login = "You have been logged  in  successfully.";
-			//String name= authentication.getName();
-			//System.out.println(name+"username de la personne connectee");
-			
-			return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
-		}
+		
+
+		/*if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+			logger.debug(String.format("Auto login %s successfully!", pseudonym));
+			return new ResponseEntity<String>(pseudonym, HttpStatus.OK);
+		}*/
+	
 
 	}
 
+	// @Autowired
+	// private IAuthenticationFacade authenticationFacade;
+	/*
+	 * @SuppressWarnings("unchecked")
+	 * 
+	 * @RequestMapping(value = "/retrieve", method = RequestMethod.GET) public
+	 * Authentication retrieve(String error, String logout, Authentication
+	 * authenticationg, Principal principale,HttpServletRequest request) {
+	 * 
+	 * // Authentication authentication =
+	 * authenticationFacade.getAuthentication(); return
+	 * SecurityContextHolder.getContext().getAuthentication();
+	 * 
+	 * }
+	 */
+	// @Autowired
+	// private IAuthenticationFacade authenticationFacade;
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
-	public String retrieve(String error, String logout, Authentication authentication, Principal principal) {
+	public String retrieve(String error, String logout, Authentication authenticationg, Principal principal,
+			HttpServletRequest request) {
+		return principal.getName();
 
-		return authentication.getName();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -261,6 +261,8 @@ public class InternetSurferController {
 		System.out.println("-------------------------------");
 		System.out.println(phoneNumber);
 		System.out.println("-------------------------------");
+		System.out.println(birthDate);
+		System.out.println("-------------------------------");
 
 		long numberMember = memberRepository.count() + 1;
 		String idCryptograph = "" + numberMember;
@@ -846,7 +848,7 @@ public class InternetSurferController {
 					}
 				} else {
 
-					try {
+					//try {
 
 						// ChooseMeeting chooseMeetingBd
 						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
@@ -860,7 +862,7 @@ public class InternetSurferController {
 
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 							Date date = null;
-
+							System.out.println(birthDate);
 							date = dateFormat.parse(birthDate);
 							System.out.println("Date parsée : " + date);
 
@@ -934,20 +936,20 @@ public class InternetSurferController {
 							}
 
 						}
-					} catch (Exception ex) {
+					/*} catch (Exception ex) {
 						System.out.println(ex.getMessage());
 
 						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
-					}
+					}*/
 				}
 			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
+				ex.printStackTrace();
 
-				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
+				logger.error("Unable to create. A Member with name {} already exist", pseudonym);
+				return new ResponseEntity(new MemberErrorType("the email is not validate totototot"), HttpStatus.NOT_FOUND);
 
 			}
 

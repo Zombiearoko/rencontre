@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -131,6 +132,9 @@ public class InternetSurferController {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	/**
 	 * Methode de cryptographie
@@ -481,7 +485,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setAcademicDatingInformation(null);
@@ -688,7 +692,7 @@ public class InternetSurferController {
 								member.setAge(age);
 								member.setEmailAdress(emailAdress);
 								member.setPhoneNumber(phoneNumber);
-								member.setPassword(password);
+								member.setPassword(bCryptPasswordEncoder.encode(password));
 								// member.setPicture(fileName);
 								member.setFriendlyDatingInformatio(null);
 								member.setAcademicDatingInformation(null);
@@ -888,7 +892,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setProfessionalMeetingInformation(null);
@@ -1079,7 +1083,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setAcademicDatingInformation(null);
 							member.setProfessionalMeetingInformation(null);
@@ -1199,6 +1203,8 @@ public class InternetSurferController {
 		System.out.println("-------------------------------");
 		System.out.println("-------------------------------");
 		System.out.println(phoneNumber);
+		System.out.println("-------------------------------");
+		System.out.println(birthDate);
 		System.out.println("-------------------------------");
 
 		long numberMember = memberRepository.count() + 1;
@@ -1418,7 +1424,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setAcademicDatingInformation(null);
@@ -1625,7 +1631,7 @@ public class InternetSurferController {
 								member.setAge(age);
 								member.setEmailAdress(emailAdress);
 								member.setPhoneNumber(phoneNumber);
-								member.setPassword(password);
+								member.setPassword(bCryptPasswordEncoder.encode(password));
 								// member.setPicture(fileName);
 								member.setFriendlyDatingInformatio(null);
 								member.setAcademicDatingInformation(null);
@@ -1785,7 +1791,7 @@ public class InternetSurferController {
 					}
 				} else {
 
-					try {
+					//try {
 
 						// ChooseMeeting chooseMeetingBd
 						// =chooseMeetingRepository.findByIdChooseMeeting(idChoose);
@@ -1799,7 +1805,7 @@ public class InternetSurferController {
 
 							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 							Date date = null;
-
+							System.out.println(birthDate);
 							date = dateFormat.parse(birthDate);
 							System.out.println("Date parsée : " + date);
 
@@ -1825,7 +1831,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setProfessionalMeetingInformation(null);
@@ -1873,20 +1879,20 @@ public class InternetSurferController {
 							}
 
 						}
-					} catch (Exception ex) {
+					/*} catch (Exception ex) {
 						System.out.println(ex.getMessage());
 
 						logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
 						return new ResponseEntity(new MemberErrorType("the email is not validate"),
 								HttpStatus.NOT_FOUND);
 
-					}
+					}*/
 				}
 			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
+				ex.printStackTrace();
 
-				logger.error("Unable to create. A Member with name {} already exist", member.getPseudonym());
-				return new ResponseEntity(new MemberErrorType("the email is not validate"), HttpStatus.NOT_FOUND);
+				logger.error("Unable to create. A Member with name {} already exist", pseudonym);
+				return new ResponseEntity(new MemberErrorType("the email is not validate totototot"), HttpStatus.NOT_FOUND);
 
 			}
 
@@ -1913,9 +1919,8 @@ public class InternetSurferController {
 
 				if (memberRepository.findByPseudonym(pseudonym) != null) {
 
-					// ChooseMeeting chooseMeetingBd =
-					// chooseMeetingRepository.findByIdChooseMeeting(idChoose);
-					if (chooseMeetingRepository.findByIdChooseMeeting(idChoose) != null) {
+					ChooseMeeting chooseMeetingBd = chooseMeetingRepository.findByIdChooseMeeting(idChoose);
+					if (chooseMeetingBd != null) {
 
 						return new ResponseEntity(
 								new MemberErrorType("the email and pseudonym are already created in this type meeting"),
@@ -2017,7 +2022,7 @@ public class InternetSurferController {
 							member.setAge(age);
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
-							member.setPassword(password);
+							member.setPassword(bCryptPasswordEncoder.encode(password));
 							// member.setPicture(fileName);
 							member.setAcademicDatingInformation(null);
 							member.setProfessionalMeetingInformation(null);

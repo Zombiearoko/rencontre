@@ -232,59 +232,53 @@ public class MemberController {
 		String password = requestConnexion.getParameter("password");
 		Member user = memberRepository.findByPseudonym(pseudonym);
 		System.out.println(user.getRoles());
-		
-		  if (user == null) { 
-			  login = "You have been logged out successfully.";
-			  return new ResponseEntity( new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
-		  HttpStatus.NOT_FOUND); 
-			  } else { //UserDetailsServices use = new UserDetailsServices(); System.out.println(pseudonym); 
-				  UserDetails  users = use.loadUserByUsername(pseudonym); System.out.println(users);
-		  
-		  login = "You have been logged  in  successfully."; //String name= authentication.getName(); 
-		  //System.out.println(name+ "username de la personne connectee");
-		 // System.out.println(principal.getName());
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
-					new UsernamePasswordAuthenticationToken(
-							users, password, users.getAuthorities());
-			authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-		 return new ResponseEntity<UserDetails>(users, HttpStatus.OK); }
-		 
-		//UserDetails userDetails = use.loadUserByUsername(pseudonym);
-	
 
-		
+		if (user == null) {
+			login = "You have been logged out successfully.";
+			return new ResponseEntity(
+					new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
+					HttpStatus.NOT_FOUND);
+		} else { // UserDetailsServices use = new UserDetailsServices();
+					// System.out.println(pseudonym);
+			UserDetails users = use.loadUserByUsername(pseudonym);
+			System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+					users.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authToken);
 
-		/*if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			logger.debug(String.format("Auto login %s successfully!", pseudonym));
-			return new ResponseEntity<String>(pseudonym, HttpStatus.OK);
-		}*/
-	
+			login = "You have been logged  in  successfully.";
+			return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
+		}
+
+		// String name= authentication.getName();
+		// System.out.println(name+ "username de la personne connectee");
+		// System.out.println(principal.getName());
+		/*
+		 * UsernamePasswordAuthenticationToken
+		 * usernamePasswordAuthenticationToken = new
+		 * UsernamePasswordAuthenticationToken( users, password,
+		 * users.getAuthorities()); //authenticationManager.authenticate(
+		 * usernamePasswordAuthenticationToken); if
+		 * (usernamePasswordAuthenticationToken.isAuthenticated()) {
+		 * SecurityContextHolder.getContext().setAuthentication(
+		 * usernamePasswordAuthenticationToken); logger.debug(String.format(
+		 * " login %s successfully!", pseudonym)); return new
+		 * ResponseEntity<String>(pseudonym, HttpStatus.OK); }
+		 */
 
 	}
 
-	// @Autowired
-	// private IAuthenticationFacade authenticationFacade;
-	/*
-	 * @SuppressWarnings("unchecked")
-	 * 
-	 * @RequestMapping(value = "/retrieve", method = RequestMethod.GET) public
-	 * Authentication retrieve(String error, String logout, Authentication
-	 * authenticationg, Principal principale,HttpServletRequest request) {
-	 * 
-	 * // Authentication authentication =
-	 * authenticationFacade.getAuthentication(); return
-	 * SecurityContextHolder.getContext().getAuthentication();
-	 * 
-	 * }
-	 */
-	// @Autowired
-	// private IAuthenticationFacade authenticationFacade;
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
-	public String retrieve(String error, String logout, Authentication authenticationg, Principal principal,
+	public Object retrieve(String error, String logout, Authentication authenticationg, Principal principal,
 			HttpServletRequest request) {
-		return principal.getName();
+		Object userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("je suis en session Saphir " + userDetails);
+		if (userDetails instanceof UserDetails) {
+			return ((UserDetails) userDetails).getUsername();
+		}
+
+		return userDetails;
 
 	}
 

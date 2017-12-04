@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -49,7 +50,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
-//import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -81,10 +88,11 @@ import com.bocobi2.rencontre.model.Status;
 import com.bocobi2.rencontre.model.Testimony;
 import com.bocobi2.rencontre.model.Town;
 import com.bocobi2.rencontre.model.TypeMeeting;
-
+import com.bocobi2.rencontre.model.UserDetailsServices;
 import com.bocobi2.rencontre.repositories.ChooseMeetingRepository;
 import com.bocobi2.rencontre.repositories.ConversationRepository;
 import com.bocobi2.rencontre.repositories.FriendlyRepository;
+//import com.bocobi2.rencontre.repositories.IAuthenticationFacade;
 import com.bocobi2.rencontre.repositories.MemberBufferRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 import com.bocobi2.rencontre.repositories.MessageRepository;
@@ -101,6 +109,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
 @CrossOrigin(origins = "*")
+@Scope("session")
 @RestController
 @RequestMapping("/rencontre/Member")
 
@@ -111,7 +120,7 @@ public class MemberController {
 
 	@Autowired
 	MemberRepository memberRepository;
-	
+
 	@Autowired
 	HttpSession httpSession;
 
@@ -147,6 +156,9 @@ public class MemberController {
 
 	@Autowired
 	FriendlyRepository freindlyRepository;
+
+	@Autowired
+	UserDetailsServices use;
 
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
@@ -207,39 +219,74 @@ public class MemberController {
 		return user;
 	}
 
-	/*
-	 * @RequestMapping("/resource") public ResponseEntity<Member> home(
-	 * UserDetails userDetails, HttpServletRequest request) {
-	 * 
-	 * String pseudonym = request.getParameter("pseudonym"); String password =
-	 * request.getParameter("password"); String meetingName =
-	 * request.getParameter("meetingName");
-	 * System.out.println("-------------------------------");
-	 * System.out.println(pseudonym);
-	 * System.out.println("-------------------------------");
-	 * 
-	 * System.out.println("-------------------------------");
-	 * System.out.println(password);
-	 * 
-	 * //Member members = member.findOne("{#: #}", Member.PSEUDONYM,
-	 * userDetails.getPseudonym).as(Member.class); Authentication auth =
-	 * SecurityContextHolder.getContext().getAuthentication();
-	 * 
-	 * //Member members = memberRepository.findOne("{#: #}",
-	 * userDetails.getPseudonym); String name = auth.getName(); Member members =
-	 * memberRepository.findByPseudonym(name); String status = "Connected";
-	 * Status statusDB = statusRepository.findByStatusName(status);
-	 * members.setStatus(statusDB);
-	 * members.setMeetingNameConnexion(meetingName);
-	 * 
-	 * return new ResponseEntity<Member>(members, HttpStatus.OK); }
-	 */
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ResponseEntity<?> login(String error, Principal principal, String logout,
+			HttpServletRequest requestConnexion, Authentication authentication) {
+		String login = null;
+
+		String pseudonym = requestConnexion.getParameter("pseudonym");
+		String password = requestConnexion.getParameter("password");
+		Member user = memberRepository.findByPseudonym(pseudonym);
+		System.out.println(user.getRoles());
+
+		if (user == null) {
+			login = "You have been logged out successfully.";
+			return new ResponseEntity(
+					new MemberErrorType("Member with " + "pseudonym " + pseudonym + " doest not exist."),
+					HttpStatus.NOT_FOUND);
+		} else { // UserDetailsServices use = new UserDetailsServices();
+					// System.out.println(pseudonym);
+			UserDetails users = use.loadUserByUsername(pseudonym);
+			System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+					users.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authToken);
+
+			login = "You have been logged  in  successfully.";
+			return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
+		}
+
+		// String name= authentication.getName();
+		// System.out.println(name+ "username de la personne connectee");
+		// System.out.println(principal.getName());
+		/*
+		 * UsernamePasswordAuthenticationToken
+		 * usernamePasswordAuthenticationToken = new
+		 * UsernamePasswordAuthenticationToken( users, password,
+		 * users.getAuthorities()); //authenticationManager.authenticate(
+		 * usernamePasswordAuthenticationToken); if
+		 * (usernamePasswordAuthenticationToken.isAuthenticated()) {
+		 * SecurityContextHolder.getContext().setAuthentication(
+		 * usernamePasswordAuthenticationToken); logger.debug(String.format(
+		 * " login %s successfully!", pseudonym)); return new
+		 * ResponseEntity<String>(pseudonym, HttpStatus.OK); }
+		 */
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
+	public Object retrieve(String error, String logout, Authentication authenticationg, Principal principal,
+			HttpServletRequest request) {
+		Object userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("je suis en session Saphir " + userDetails);
+		if (userDetails instanceof UserDetails) {
+			return ((UserDetails) userDetails).getUsername();
+		}
+
+		return userDetails;
+
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/connexion", method = RequestMethod.POST)
 	public ResponseEntity<?> connexionMemberPost(HttpServletRequest requestConnexion) {
 
-		//HttpSession session = requestConnexion.getSession();
+		// HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -263,7 +310,8 @@ public class MemberController {
 					member.setMeetingNameConnexion(meetingName);
 					memberRepository.save(member);
 					httpSession.setAttribute("MEMBER", member);
-					//session.setAttribute("Member", member);
+
+					// session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
 					httpSession.invalidate();
@@ -294,7 +342,7 @@ public class MemberController {
 	@RequestMapping(value = "/connexion", method = RequestMethod.GET)
 	public ResponseEntity<?> connexionMemberGet(HttpServletRequest requestConnexion) {
 
-		//HttpSession session = requestConnexion.getSession();
+		// HttpSession session = requestConnexion.getSession();
 		// String connexionResult;
 		// recuperation des champs de connexion
 		String pseudonym = requestConnexion.getParameter("pseudonym");
@@ -356,48 +404,48 @@ public class MemberController {
 	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
 
 		// HttpSession sessionMember = request.getSession();
-				// Member member = (Member) sessionMember.getAttribute("Member");
-				String pseudonymMember = request.getParameter("pseudonym");
-				try {
-					Member member = memberRepository.findByPseudonym(pseudonymMember);
-					String pseudonym = member.getPseudonym();
+		// Member member = (Member) sessionMember.getAttribute("Member");
+		String pseudonymMember = request.getParameter("pseudonym");
+		try {
+			Member member = memberRepository.findByPseudonym(pseudonymMember);
+			String pseudonym = member.getPseudonym();
 
-					List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
-					TypeMeeting typeMeeting;
-					TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
-					TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
-					TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
-					TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
+			List<TypeMeeting> listTypeMeeting = new ArrayList<TypeMeeting>();
+			TypeMeeting typeMeeting;
+			TypeMeeting datingMeeting = typeMeetingRepository.findByMeetingName("Amoureuse");
+			TypeMeeting professionnalMeeting = typeMeetingRepository.findByMeetingName("Professionnelle");
+			TypeMeeting friendlyMeeting = typeMeetingRepository.findByMeetingName("Amicale");
+			TypeMeeting schoolMeeting = typeMeetingRepository.findByMeetingName("Academique");
 
-					if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
+			if (chooseMeetingRepository.exists(pseudonym + datingMeeting.getId())) {
 
-						typeMeeting = datingMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = datingMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
+			}
+			if (chooseMeetingRepository.exists(pseudonym + professionnalMeeting.getId())) {
 
-						typeMeeting = professionnalMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = professionnalMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
+			}
+			if (chooseMeetingRepository.exists(pseudonym + friendlyMeeting.getId())) {
 
-						typeMeeting = friendlyMeeting;
-						listTypeMeeting.add(typeMeeting);
+				typeMeeting = friendlyMeeting;
+				listTypeMeeting.add(typeMeeting);
 
-					}
-					if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
-						typeMeeting = schoolMeeting;
-						listTypeMeeting.add(typeMeeting);
-					}
+			}
+			if (chooseMeetingRepository.exists(pseudonym + schoolMeeting.getId())) {
+				typeMeeting = schoolMeeting;
+				listTypeMeeting.add(typeMeeting);
+			}
 
-					return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
+			return new ResponseEntity<List<TypeMeeting>>(listTypeMeeting, HttpStatus.OK);
 
-				} catch (Exception ex) {
-					logger.error("Member doesn't exist.");
-					return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
-				}
+		} catch (Exception ex) {
+			logger.error("Member doesn't exist.");
+			return new ResponseEntity(new MemberErrorType("Member doesn't exist"), HttpStatus.NOT_FOUND);
+		}
 
 	}
 
@@ -466,8 +514,8 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		//HttpSession session = request.getSession();
-		//Member member = (Member) session.getAttribute("Member");
+		// HttpSession session = request.getSession();
+		// Member member = (Member) session.getAttribute("Member");
 		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);
@@ -496,8 +544,8 @@ public class MemberController {
 		System.out.println(status);
 		// String pseudonym = request.getParameter("pseudonym");
 
-		//HttpSession session = request.getSession();
-		//Member member = (Member) session.getAttribute("Member");
+		// HttpSession session = request.getSession();
+		// Member member = (Member) session.getAttribute("Member");
 		Member member = (Member) httpSession.getAttribute("Member");
 
 		// Member member = memberRepository.findByPseudonym(pseudonym);

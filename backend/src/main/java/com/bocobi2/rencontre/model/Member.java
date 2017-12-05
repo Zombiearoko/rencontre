@@ -19,6 +19,7 @@ public class Member extends InternetSurfer implements UserDetails {
 	@Indexed
 	private String pseudonym;
 	private String password;
+	private String passwordSec;
 	private String registrationDate;
 	private String phoneNumber;
 	private String numberPicture;
@@ -64,7 +65,7 @@ public class Member extends InternetSurfer implements UserDetails {
 
 	}
 
-	public Member(String pseudonym, String password, String registrationDate, String phoneNumber, String birthDate,
+	public Member(String pseudonym, String password,String passwordSec, String registrationDate, String phoneNumber, String birthDate,
 			String gender, String picture, AcademicDatingInformation academicDatingInformation,
 			FriendlyDatingInformation friendlyDatingInformatio,
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
@@ -74,6 +75,7 @@ public class Member extends InternetSurfer implements UserDetails {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
+		this.passwordSec = passwordSec;
 		this.registrationDate = registrationDate;
 		this.phoneNumber = phoneNumber;
 		this.birthDate = birthDate;
@@ -111,6 +113,16 @@ public class Member extends InternetSurfer implements UserDetails {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	
+	
+
+	public String getPasswordSec() {
+		return passwordSec;
+	}
+
+	public void setPasswordSec(String passwordSec) {
+		this.passwordSec = passwordSec;
 	}
 
 	/**

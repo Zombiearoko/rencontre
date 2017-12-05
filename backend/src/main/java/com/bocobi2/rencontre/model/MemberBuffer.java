@@ -15,6 +15,7 @@ public class MemberBuffer extends InternetSurfer {
 	@Indexed
 	private String pseudonym;
 	private String password;
+	private String passwordSec;
 	private String registrationDate;
 	private String phoneNumber;
 	private String birthDate;
@@ -64,7 +65,7 @@ public class MemberBuffer extends InternetSurfer {
 	
 
 
-	public MemberBuffer(String pseudonym, String password, String registrationDate, String phoneNumber, String birthDate,
+	public MemberBuffer(String pseudonym, String password,String passwordSec, String registrationDate, String phoneNumber, String birthDate,
 			String gender, String picture, AcademicDatingInformation academicDatingInformation,
 			FriendlyDatingInformation friendlyDatingInformatio,
 			ProfessionalMeetingInformation professionalMeetingInformation, DatingInformation datingInformation,
@@ -73,6 +74,7 @@ public class MemberBuffer extends InternetSurfer {
 		super();
 		this.pseudonym = pseudonym;
 		this.password = password;
+		this.passwordSec = passwordSec;
 		this.registrationDate = registrationDate;
 		this.phoneNumber = phoneNumber;
 		this.birthDate = birthDate;
@@ -137,6 +139,13 @@ public class MemberBuffer extends InternetSurfer {
 
 
 
+	public String getPasswordSec() {
+		return passwordSec;
+	}
+
+	public void setPasswordSec(String passwordSec) {
+		this.passwordSec = passwordSec;
+	}
 
 
 

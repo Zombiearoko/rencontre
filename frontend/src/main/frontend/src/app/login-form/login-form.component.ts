@@ -115,7 +115,7 @@ import { Meeting } from '../_models/meeting';
 @Component({
     moduleId: module.id,
     templateUrl: 'login-form.component.html',
-    styleUrls: ['./login-form.component.css', '../../bootstrap/css/bootstrap.css'],
+    styleUrls: ['./login-form.component.css', '../../bootstrap/css/bootstrap.css', '../../font-awesome-4.7.0/css/font-awesome.css'],
     providers: [AlertService, AuthenticationService],
     entryComponents: [HomeComponent]
 })

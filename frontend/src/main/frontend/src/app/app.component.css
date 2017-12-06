@@ -1,4 +1,4 @@
-body,
+   /* body,
 html {
     width: 100%;
     height: 100%;
@@ -29,9 +29,9 @@ h6 {
     text-align: center;
     color: #f8f8f8;
     /* background: url(./../img/intro-bg.jpg) no-repeat center center; */
-    background-size: cover;
-}
-
+     /* background-size: cover;
+} 
+ 
 .intro-message {
     position: relative;
     padding-top: 20%;
@@ -108,10 +108,10 @@ h6 {
 
 .banner {
     padding: 100px 0;
-    color: #f8f8f8;
+    color: #f8f8f8; */
     /* background: url(./../img/banner-bg.jpg) no-repeat center center; */
-    background-size: cover;
-}
+    /* background-size: cover;
+} 
 
 .banner h2 {
     margin: 0;
@@ -167,9 +167,9 @@ p.copyright {
 
 .separator {
     height: 70px;
-}
+} */
 
-.separators {
+/* .separators {
     height: 30px;
 }
 
@@ -204,19 +204,9 @@ p.copyright {
     margin: 0px;
     line-height: 35px;
     cursor: pointer;
-    /*
-    .collapsed{
-       .arrow:before{
-                 font-family: FontAwesome;
-                 content: "\f053";
-                 display: inline-block;
-                 padding-left:10px;
-                 padding-right: 10px;
-                 vertical-align: middle;
-                 float:right;
-            }
-     }
-*/
+    
+   
+
 }
 
 .nav-side-menu ul :not(collapsed) .arrow:before,
@@ -328,9 +318,9 @@ p.copyright {
     .nav-side-menu .menu-list .menu-content {
         display: block;
     }
-}
+} */
 
-body {
+ /* body {
     margin: 0px;
     padding: 0px;
 }
@@ -341,7 +331,7 @@ body {
 
 .clear-both {
     clear: both;
-}
+} 
 
 .content-aside {
     width: 30%;
@@ -369,4 +359,18 @@ a {
 
 .help-block {
     font-size: 12px;
+}   
+ .myCols{
+	text-align: center;
+} 
+ul{
+	list-style-type: none;
+    padding-left: 0;
+    line-height: 1.7;
+
 }
+ul>li {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 0;
+}  */

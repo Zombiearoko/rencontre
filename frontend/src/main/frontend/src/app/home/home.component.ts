@@ -9,7 +9,7 @@ import { MemberService, StatusService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'home.component.html',
-    styleUrls: ['./home.css', '../../bootstrap/css/bootstrap.css']
+    styleUrls: ['./home.css', '../../bootstrap/css/bootstrap.css', '../../font-awesome-4.7.0/css/font-awesome.css']
 })
 
 export class HomeComponent implements OnInit {
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
         //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
         //  console.log("meetings", this.meetings);
       }
-
+     
     ngOnInit() {
         //    this.loadAllMembers();
         this.loadAllStatuss();

@@ -172,14 +172,11 @@ public class InternetSurferController {
 		for (int i = 0; i < name.length(); i++) {
 			int c = name.charAt(i) ^ 48;
 			char crypteC = (char) c;
-			if (crypteC == '\\') {
+			/*if (crypteC == '\\') {
 				crypte = crypte + "\\" + crypteC;
-			} else if (crypteC == '^') {
-				crypteC = name.charAt(i);
-				crypte = crypte + crypteC;
-			}
+			
+			}*/
 			crypte = crypte + crypteC;
-			// }
 
 		}
 
@@ -385,6 +382,7 @@ public class InternetSurferController {
 							member.setEmailAdress(memberBD.getEmailAdress());
 							member.setPhoneNumber(memberBD.getPhoneNumber());
 							member.setPassword(memberBD.getPassword());
+							member.setPasswordSec(memberBD.getPasswordSec());
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 							member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
@@ -486,6 +484,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setAcademicDatingInformation(null);
@@ -603,6 +602,7 @@ public class InternetSurferController {
 							member.setEmailAdress(memberBD.getEmailAdress());
 							member.setPhoneNumber(memberBD.getPhoneNumber());
 							member.setPassword(memberBD.getPassword());
+							member.setPasswordSec(memberBD.getPasswordSec());
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 							member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
@@ -693,6 +693,7 @@ public class InternetSurferController {
 								member.setEmailAdress(emailAdress);
 								member.setPhoneNumber(phoneNumber);
 								member.setPassword(bCryptPasswordEncoder.encode(password));
+								member.setPasswordSec(cryptographe(password));
 								// member.setPicture(fileName);
 								member.setFriendlyDatingInformatio(null);
 								member.setAcademicDatingInformation(null);
@@ -804,6 +805,7 @@ public class InternetSurferController {
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
+						member.setPasswordSec(memberBD.getPasswordSec());
 						// member.setPicture(fileName);
 						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
@@ -893,6 +895,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setProfessionalMeetingInformation(null);
@@ -998,6 +1001,7 @@ public class InternetSurferController {
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
+						member.setPasswordSec(memberBD.getPasswordSec());
 						// member.setPicture(fileName);
 						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
 						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
@@ -1084,6 +1088,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setAcademicDatingInformation(null);
 							member.setProfessionalMeetingInformation(null);
@@ -1324,6 +1329,7 @@ public class InternetSurferController {
 							member.setEmailAdress(memberBD.getEmailAdress());
 							member.setPhoneNumber(memberBD.getPhoneNumber());
 							member.setPassword(memberBD.getPassword());
+							member.setPasswordSec(memberBD.getPasswordSec());
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 							member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
@@ -1425,6 +1431,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setAcademicDatingInformation(null);
@@ -1542,6 +1549,7 @@ public class InternetSurferController {
 							member.setEmailAdress(memberBD.getEmailAdress());
 							member.setPhoneNumber(memberBD.getPhoneNumber());
 							member.setPassword(memberBD.getPassword());
+							member.setPasswordSec(memberBD.getPasswordSec());
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 							member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
@@ -1632,6 +1640,7 @@ public class InternetSurferController {
 								member.setEmailAdress(emailAdress);
 								member.setPhoneNumber(phoneNumber);
 								member.setPassword(bCryptPasswordEncoder.encode(password));
+								member.setPasswordSec(cryptographe(password));
 								// member.setPicture(fileName);
 								member.setFriendlyDatingInformatio(null);
 								member.setAcademicDatingInformation(null);
@@ -1743,6 +1752,7 @@ public class InternetSurferController {
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
+						member.setPasswordSec(memberBD.getPasswordSec());
 						// member.setPicture(fileName);
 						member.setFriendlyDatingInformatio(memberBD.getFriendlyDatingInformatio());
 						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
@@ -1832,6 +1842,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setFriendlyDatingInformatio(null);
 							member.setProfessionalMeetingInformation(null);
@@ -1937,6 +1948,7 @@ public class InternetSurferController {
 						member.setEmailAdress(memberBD.getEmailAdress());
 						member.setPhoneNumber(memberBD.getPhoneNumber());
 						member.setPassword(memberBD.getPassword());
+						member.setPasswordSec(memberBD.getPasswordSec());
 						// member.setPicture(fileName);
 						member.setAcademicDatingInformation(memberBD.getAcademicDatingInformation());
 						member.setProfessionalMeetingInformation(memberBD.getProfessionalMeetingInformation());
@@ -2023,6 +2035,7 @@ public class InternetSurferController {
 							member.setEmailAdress(emailAdress);
 							member.setPhoneNumber(phoneNumber);
 							member.setPassword(bCryptPasswordEncoder.encode(password));
+							member.setPasswordSec(cryptographe(password));
 							// member.setPicture(fileName);
 							member.setAcademicDatingInformation(null);
 							member.setProfessionalMeetingInformation(null);
@@ -2090,6 +2103,7 @@ public class InternetSurferController {
 		}
 		return new ResponseEntity(new MemberErrorType("the type of meeting is not available"), HttpStatus.NOT_FOUND);
 	}
+
 
 	/**
 	 * end registration
@@ -2295,6 +2309,7 @@ public class InternetSurferController {
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
 				member.setPassword(memberBuffer.getPassword());
+				member.setPasswordSec(memberBuffer.getPasswordSec());
 				member.setPicture(memberBuffer.getPicture());
 				member.setStatus(statusMember);
 				member.setDatingInformation(memberBuffer.getDatingInformation());
@@ -2319,6 +2334,7 @@ public class InternetSurferController {
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
 				member.setPassword(memberBuffer.getPassword());
+				member.setPasswordSec(memberBuffer.getPasswordSec());
 				member.setPicture(memberBuffer.getPicture());
 				member.setStatus(statusMember);
 				member.setDatingInformation(memberDB.getDatingInformation());
@@ -2342,6 +2358,7 @@ public class InternetSurferController {
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
 				member.setPassword(memberBuffer.getPassword());
+				member.setPasswordSec(memberBuffer.getPasswordSec());
 				member.setPicture(memberBuffer.getPicture());
 				member.setStatus(statusMember);
 				member.setDatingInformation(memberDB.getDatingInformation());
@@ -2365,6 +2382,7 @@ public class InternetSurferController {
 				member.setGender(memberBuffer.getGender());
 				member.setPhoneNumber(memberBuffer.getPhoneNumber());
 				member.setPassword(memberBuffer.getPassword());
+				member.setPasswordSec(memberBuffer.getPasswordSec());
 				member.setPicture(memberBuffer.getPicture());
 				member.setStatus(statusMember);
 				member.setDatingInformation(memberDB.getDatingInformation());
@@ -2387,6 +2405,7 @@ public class InternetSurferController {
 			member.setGender(memberBuffer.getGender());
 			member.setPhoneNumber(memberBuffer.getPhoneNumber());
 			member.setPassword(memberBuffer.getPassword());
+			member.setPasswordSec(memberBuffer.getPasswordSec());
 			member.setPicture(memberBuffer.getPicture());
 			member.setStatus(statusMember);
 			member.setDatingInformation(memberBuffer.getDatingInformation());

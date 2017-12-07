@@ -14,15 +14,18 @@ public class Role {
 	private String name;
 	@DBRef
 	private Set<Member> users;
+	@DBRef
+	private Set<Administrator> admin;
 
 	public Role() {
 
 	}
 
-	public Role(String name, Set<Member> users) {
+	public Role(String name, Set<Member> users,  Set<Administrator> admin) {
 
 		this.name = name;
 		this.users = users;
+		this.admin = admin;
 	}
 
 	public String getId() {
@@ -48,5 +51,15 @@ public class Role {
 	public void setUsers(Set<Member> users) {
 		this.users = users;
 	}
+
+	public Set<Administrator> getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Set<Administrator> admin) {
+		this.admin = admin;
+	}
+	
+	
 
 }

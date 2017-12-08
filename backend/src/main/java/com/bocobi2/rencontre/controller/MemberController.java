@@ -13,8 +13,10 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Session;
@@ -452,54 +454,62 @@ public class MemberController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public String logoutMemberPost(HttpServletRequest request, HttpServletResponse response) {
-
+	public Map<String, String> logoutMemberPost(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
 		try {
 			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
 			Member member = memberRepository.findByPseudonym(userDetails);
 			Status status = statusRepository.findByStatusName("disconnected");
 			member.setStatus(status);
 			member.setMeetingNameConnexion(null);
-
+			
+		
+			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null) {
 
 				memberRepository.save(member);
 				new SecurityContextLogoutHandler().logout(request, response, auth);
-
-				return "session " + userDetails + "suprimee";
+				message.put("Message", "succes");
+				return message;
 			}
 		} catch (Exception ex) {
-			return "session pas suprimee";
+			message.put("Message", "failed");
+			return message;
 		}
-		return "session pas suprimee";
-
+		message.put("Message", "failed");
+		return message;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logoutMemberGet(HttpServletRequest request, HttpServletResponse response) {
-
+	public Map<String, String> logoutMemberGet(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
 		try {
 			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
 			Member member = memberRepository.findByPseudonym(userDetails);
 			Status status = statusRepository.findByStatusName("disconnected");
 			member.setStatus(status);
 			member.setMeetingNameConnexion(null);
-
+			
+		
+			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null) {
 
 				memberRepository.save(member);
 				new SecurityContextLogoutHandler().logout(request, response, auth);
-
-				return "session " + userDetails + "suprimee";
+				message.put("Message", "succes");
+				return message;
 			}
 		} catch (Exception ex) {
-			return "session pas suprimee";
+			message.put("Message", "failed");
+			return message;
 		}
-		return "session pas suprimee";
-
+		message.put("Message", "failed");
+		return message;
 	}
 
 	/*

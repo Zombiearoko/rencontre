@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -309,8 +311,9 @@ public class AdministratorController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/logoutAdministrator", method = RequestMethod.POST)
-	public String logoutAdministratorPost(HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, String> logoutAdministratorPost(HttpServletRequest request, HttpServletResponse response) {
 
+		Map<String,String> message= new HashMap<>();
 		try {
 			
 
@@ -319,19 +322,22 @@ public class AdministratorController {
 
 				new SecurityContextLogoutHandler().logout(request, response, auth);
 
-				return "session suprimee";
+				message.put("Message", "succes");
+				return message;
 			}
 		} catch (Exception ex) {
-			return "session pas suprimee";
+			message.put("Message", "failed");
+			return message;
 		}
-		return "session pas suprimee";
-
+		message.put("Message", "failed");
+		return message;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/logoutAdministrator", method = RequestMethod.GET)
-	public String logoutAdministratorGet(HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, String> logoutAdministratorGet(HttpServletRequest request, HttpServletResponse response) {
 
+		Map<String,String> message= new HashMap<>();
 		try {
 			
 
@@ -340,13 +346,15 @@ public class AdministratorController {
 
 				new SecurityContextLogoutHandler().logout(request, response, auth);
 
-				return "session suprimee";
+				message.put("Message", "succes");
+				return message;
 			}
 		} catch (Exception ex) {
-			return "session pas suprimee";
+			message.put("Message", "failed");
+			return message;
 		}
-		return "session pas suprimee";
-
+		message.put("Message", "failed");
+		return message;
 	}
 	
 	

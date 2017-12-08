@@ -32,11 +32,12 @@ export class HomeComponent implements OnInit {
   public Filter(value: string) {
         console.log('status donne', value);
         this.statusName = value;
-        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName='+value;
+        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName='+this.statusName;
     
         this.http.get(url).subscribe((resp) => {
           this.results = resp['results'];
           this.collectionJson = resp.json();
+           console.log("collection stautus", this.collectionJson);
         });
         //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
         //  console.log("meetings", this.meetings);
@@ -51,7 +52,7 @@ export class HomeComponent implements OnInit {
     private loadAllStatuss() {
         this.statusService.getAll().subscribe(statuss => { this.statuss = statuss; });
         console.log("statuss", this.statuss);
-    }
+      }
 
     private deleteMember(id: number) {
         this.memberService.delete(id).subscribe(() => { this.loadAllMembers() });

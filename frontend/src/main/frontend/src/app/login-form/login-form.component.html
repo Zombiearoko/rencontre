@@ -39,72 +39,73 @@
       </nav>
    -->
 
-<body>
-
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
            </button>
-                <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
 
-                    <li><a class="menuLink" href="/rencotre"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home</a>
-                    </li>
-                    <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-tasks"></span> Register</a>
-                    </li>
-                    <li class="active"><a class="menuLink" href="/login-form"><span class="fa fa-user fa-fw"></span> Login Member</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
+                <li><a class="menuLink" href="/rencotre"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home</a>
+                </li>
+                <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-tasks"></span> Register</a>
+                </li>
+                <li class="active"><a class="menuLink" href="/login-form"><span class="fa fa-user fa-fw"></span> Login Member</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
 
-                    <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-tasks"></span> About</a>
-                    </li>
+                <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-tasks"></span> About</a>
+                </li>
 
-                </ul>
-            </div>
+            </ul>
         </div>
     </div>
+</div>
+<hr>
+<!--/.nav-collapse -->
+<div class="row">
 
-    <!--/.nav-collapse -->
+    <!-- <body class="col-sm-8 col-sm-offset-2"> -->
+    <body class="col-lg-8">
+        <!-- Page Content -->
 
-    <!-- Page Content -->
+        <div class="container ">
+            <div class="cadre">
+                <div class="col-md-6 col-md-offset-1 ">
+                    <div class="tagline-upper text-center text-heading text-shadow text-yellow mt-5 d-none d-lg-block">Login</div>
+                    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
 
-    <div class="container ">
-        <div class="cadre">
-            <div class="col-md-6 col-md-offset-1 ">
-                <h2>Login</h2>
-                <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !pseudonym.valid }">
+                            <!-- <label for="pseudonym">Pseudo</label> -->
+                            <!-- class="glyphicon glyphicon-tasks -->
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                <input type="text" class="form-control" name="pseudonym" (change)="Filter($event.target.value)" [(ngModel)]="model.pseudonym"
+                                    #pseudonym="ngModel" placeholder="pseudo" required />
+                                <div *ngIf="f.submitted && !pseudonym.valid" class="help-block">pseudonym is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                            <!-- <label for="password">Password</label> -->
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder=" Password "
+                                    required />
+                                <div *ngIf="f.submitted && !password.valid" class="help-block">passeword is required</div>
+                            </div>
+                        </div>
 
-                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !pseudonym.valid }">
-                        <!-- <label for="pseudonym">Pseudo</label> -->
-                        <!-- class="glyphicon glyphicon-tasks -->
-                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span> 
-                            <input type="text" class="form-control" name="pseudonym" (change)="Filter($event.target.value)" [(ngModel)]="model.pseudonym"
-                                #pseudonym="ngModel" placeholder="pseudo" required />
-                            <div *ngIf="f.submitted && !pseudonym.valid" class="help-block">pseudonym is required</div>
-                         </div> 
-                    </div>
-                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
-                        <!-- <label for="password">Password</label> -->
-                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span> 
-                            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder=" Password "
-                                required />
-                            <div *ngIf="f.submitted && !password.valid" class="help-block">passeword is required</div>
-                         </div> 
-                    </div>
-
-                    <!-- showing only for meeting after giving pseudo -->
-                    <span *ngIf="pseudonym.valid">
+                        <!-- showing only for meeting after giving pseudo -->
+                        <span *ngIf="pseudonym.valid">
                                 
                         <div class="form-group">
                             <label for="meetingName">Select the Meeting Name</label>
@@ -120,18 +121,18 @@
 
                         </div>
                      </span>
-                    <div class="form-group">
-                        <button [disabled]="loading" class="btn btn-primary">Login</button>
-                        <button [routerLink]="['/member-registration']" class="btn btn-primary">Register</button>
-                    </div>
+                        <div class="form-group">
+                            <button [disabled]="loading" class="btn btn-primary">Login</button>
+                            <button [routerLink]="['/member-registration']" class="btn btn-primary">Register</button>
+                        </div>
 
 
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
 
-    </div>
-    <!-- <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+        </div>
+        <!-- <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
                 <div class="form-group">
                     
                         <label for="pseudonym"  >Pseudo</label>
@@ -158,22 +159,22 @@
                     <a [routerLink]="['../member-session']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
                     </a> -->
 
-    <!-- <button type="submit" class="btn btn-primary">Submit<span [routerLink]="['/member-session']"></span></button> -->
-    <!-- <a [routerLink]="['/home']" class="btn btn-link">Cancel</a> -->
-    <!-- <a [routerLink]="['../member-session']">-->
-    <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>    -->
-    <!-- <a [routerLink]="['/member-session']" class="btn btn-link">Submit</a> -->
+        <!-- <button type="submit" class="btn btn-primary">Submit<span [routerLink]="['/member-session']"></span></button> -->
+        <!-- <a [routerLink]="['/home']" class="btn btn-link">Cancel</a> -->
+        <!-- <a [routerLink]="['../member-session']">-->
+        <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>    -->
+        <!-- <a [routerLink]="['/member-session']" class="btn btn-link">Submit</a> -->
 
-    <!-- </a>   -->
-    <!-- <button class="btn btn-danger ">Leave</button> -->
+        <!-- </a>   -->
+        <!-- <button class="btn btn-danger ">Leave</button> -->
 
-    <!-- </div> -->
-    <!-- </form> -->
+        <!-- </div> -->
+        <!-- </form> -->
 
 
-    <!-- <p>Form value: {{ clientForm.value | json }}</p>
+        <!-- <p>Form value: {{ clientForm.value | json }}</p>
             <p>Form status: {{ clientForm.status | json }}</p> -->
-<!-- 
+        <!-- 
             <div class="row">
                     <div class="col-sm-3 myCols">
                         <img class="img-circle" src="assets/img/carousel-1.jpg" alt="Generic placeholder image" width="140" height="140">
@@ -214,4 +215,13 @@
                         </ul>
                     </div>
                 </div> -->
-</body>
+            </body>
+    <div class="col-lg-4">
+        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+        <div class="aside-menu">Merci pour votre fidélité sur notre site; pour vous connecter un type de rencontre auquel vous y
+            êtes déjà inscrit, il vous suffit de renseigner votre login, mot de passe et en fin de selectionner le type de
+            rencontre
+            <h4> passer un bon moment sur notre plateforme</h4>
+        </div>
+    </div>
+</div>

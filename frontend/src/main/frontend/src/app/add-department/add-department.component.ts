@@ -7,7 +7,7 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-import { AlertService, RegionService,DepartmentService } from '../_services/index';
+import { AlertService, RegionService, DepartmentService } from '../_services/index';
 import { Region } from '../_models/region';
 import { Department } from '../_models/department';
 
@@ -58,38 +58,49 @@ export class AddDepartmentComponent implements OnInit {
 
   //getting region when selected
   public Filter(value: Region) {
-    console.log("valeur entré",value);
+    console.log("valeur entré", value);
     this.region = value;
   }
 
-  onSubmit(post){
+  onSubmit(post) {
     this.loadAllDepartments();
     var j = 0;
-  
-    for (var i = 0; i < this.departments.length; i++) {
-      if (this.departments[i].departmentName == post.departmentName)
-        j++;
-    }
-  
-    if (j == 0) {
+    if (this.departments == null) {
       this.departmentName = post.departmentName;
       const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + this.departmentName + '&regionName=' + this.region;
-  
-      this.http.get(urlD).subscribe((resp)=>{
+
+      this.http.get(urlD).subscribe((resp) => {
         this.results = resp['results'];
         this.collectionJson = resp.json();
-      console.log("pour la collection department",this.collectionJson);
+        console.log("pour la collection department", this.collectionJson);
         this.loadAllDepartments();
       });
-  
-      
     }
- 
     else {
-      alert("désolé! Ce Departement existe déja ");
+      for (var i = 0; i < this.departments.length; i++) {
+        if (this.departments[i].departmentName == post.departmentName)
+          j++;
+      }
 
+      if (j == 0) {
+        this.departmentName = post.departmentName;
+        const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + this.departmentName + '&regionName=' + this.region;
+
+        this.http.get(urlD).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log("pour la collection department", this.collectionJson);
+          this.loadAllDepartments();
+        });
+
+
+      }
+
+      else {
+        alert("désolé! Ce Departement existe déja ");
+
+      }
     }
-
 
   }
   ngOnInit() {

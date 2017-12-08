@@ -68,14 +68,7 @@ export class AddTownComponent implements OnInit {
   onSubmit(post) {
     this.loadAllTowns();
     var j = 0;
-
-    for (var i = 0; i < this.towns.length; i++) {
-      if (this.towns[i].townName == post.townName)
-        j++;
-    }
-
-    if (j == 0) {
-
+    if (this.towns == null) {
       this.townName = post.townName;
       const urlT = 'http://localhost:8091/rencontre/Administrator/addTown?townName=' + this.townName + '&countryName=' + this.borough;
 
@@ -86,13 +79,32 @@ export class AddTownComponent implements OnInit {
         this.loadAllTowns();
       });
     }
-
-
     else {
-      alert("désolé! Cet Arrondissemnt existe déja ");
+      for (var i = 0; i < this.towns.length; i++) {
+        if (this.towns[i].townName == post.townName)
+          j++;
+      }
 
+      if (j == 0) {
+
+        this.townName = post.townName;
+        const urlT = 'http://localhost:8091/rencontre/Administrator/addTown?townName=' + this.townName + '&countryName=' + this.borough;
+
+        this.http.get(urlT).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log("pour la collection town", this.collectionJson);
+          this.loadAllTowns();
+        });
+      }
+
+
+
+      else {
+        alert("désolé! Cet Arrondissemnt existe déja ");
+
+      }
     }
-
   }
 
 

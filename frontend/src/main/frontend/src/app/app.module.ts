@@ -35,6 +35,7 @@ import { MemberRegister1Component } from './member-register1/member-register1.co
 import { AddStatusComponent } from './add-status/add-status.component';
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
 import { RencotreComponent } from './rencotre/index';
+import { AdminRegistrationComponent } from './src/app/admin-registration/admin-registration.component';
 
 
 
@@ -76,7 +77,8 @@ import { RencotreComponent } from './rencotre/index';
     MemberRegister1Component,
     AddStatusComponent,
     ConfimrAccountComponent,
-    RencotreComponent
+    RencotreComponent,
+    AdminRegistrationComponent
   ],
 
   providers: [

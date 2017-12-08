@@ -29,7 +29,9 @@
 
   <div class="row-fluid">
     <h4 class="pull-right index">
-      <font color="white">Welcome </font><span class="statusName">{{currentMember.pseudonym}}! </span></h4>
+      <font color="white">Welcome </font></h4>
+      <!-- <font color="white">Welcome </font><span class="statusName">{{currentMember.pseudonym}}! </span></h4> -->
+      
     <div class="pull-left index">
 
       <select class="statusName" (change)="Filter($event.target.value)" id="statusName" name="statusName">
@@ -41,7 +43,7 @@
 
       </div>
     <div class="btn-group close">
-      <a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> User</a>
+      <a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> {{currentMember.pseudonym}}!</a>
       <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
           <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
         </a>

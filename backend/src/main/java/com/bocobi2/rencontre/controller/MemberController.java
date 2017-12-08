@@ -13,8 +13,10 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Session;
@@ -23,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
@@ -59,6 +62,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -447,6 +451,67 @@ public class MemberController {
 
 	}
 
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public Map<String, String> logoutMemberPost(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
+		try {
+			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+			Member member = memberRepository.findByPseudonym(userDetails);
+			Status status = statusRepository.findByStatusName("disconnected");
+			member.setStatus(status);
+			member.setMeetingNameConnexion(null);
+			
+		
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+
+				memberRepository.save(member);
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				message.put("Message", "succes");
+				return message;
+			}
+		} catch (Exception ex) {
+			message.put("Message", "failed");
+			return message;
+		}
+		message.put("Message", "failed");
+		return message;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public Map<String, String> logoutMemberGet(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
+		try {
+			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+			Member member = memberRepository.findByPseudonym(userDetails);
+			Status status = statusRepository.findByStatusName("disconnected");
+			member.setStatus(status);
+			member.setMeetingNameConnexion(null);
+			
+		
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+
+				memberRepository.save(member);
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				message.put("Message", "succes");
+				return message;
+			}
+		} catch (Exception ex) {
+			message.put("Message", "failed");
+			return message;
+		}
+		message.put("Message", "failed");
+		return message;
+	}
+
 	/*
 	 * end connexion
 	 */
@@ -457,7 +522,7 @@ public class MemberController {
 	/*
 	 * version Post
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/returnTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
 

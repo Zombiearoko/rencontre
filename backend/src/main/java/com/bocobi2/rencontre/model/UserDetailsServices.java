@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bocobi2.rencontre.repositories.AdministratorRepository;
 import com.bocobi2.rencontre.repositories.MemberRepository;
 
 @Component
@@ -23,6 +24,9 @@ public class UserDetailsServices  implements UserDetailsService  {
 
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	AdministratorRepository administratorRepository;
 
 
 	public UserDetails loadUserByMember(Member member) throws UsernameNotFoundException {
@@ -52,6 +56,21 @@ public class UserDetailsServices  implements UserDetailsService  {
 
 		        return new org.springframework.security.core.userdetails.User(memberRepository.findByPseudonym(pseudonym).getPseudonym(), 
 		        		memberRepository.findByPseudonym(pseudonym).getPassword(), grantedAuthorities);
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsernameA(String pseudonym) throws UsernameNotFoundException {
+		System.out.println(pseudonym+" donne pardon");
+		//Member user = memberRepository.findByPseudonym(pseudonym);
+				System.out.println(administratorRepository.findByLoginAdmin(pseudonym)+"toototot");
+		        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		        for (Role role : administratorRepository.findByLoginAdmin(pseudonym).getRoles()){
+		            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		        }
+
+		        return new org.springframework.security.core.userdetails.User(administratorRepository.findByLoginAdmin(pseudonym).getLoginAdmin(), 
+		        		administratorRepository.findByLoginAdmin(pseudonym).getPasswordAdmin(), grantedAuthorities);
 	}
 
 }

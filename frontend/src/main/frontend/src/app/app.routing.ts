@@ -18,6 +18,8 @@ import { SessionAdminComponent } from './login-admin/session-admin/session-admin
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
 import { RencotreComponent } from './rencotre/rencotre.component';
 import { AuthGuard } from './_guards/index';
+import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
+
 
 const appRoutes: Routes = [
     { path: 'confimr-account', component: ConfimrAccountComponent },
@@ -41,6 +43,7 @@ const appRoutes: Routes = [
     { path: 'login-admin', component: LoginAdminComponent },
     { path: 'about', component: AboutComponent },
     { path: 'session-admin', component: SessionAdminComponent },
+    { path: 'admin-registration', component: AdminRegistrationComponent },
 
     // otherwise redirect to rencotre
     { path: '**', redirectTo: '' }

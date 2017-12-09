@@ -1,4 +1,5 @@
 export * from './member';
+export * from './administrator';
 export * from './country';
 export * from './region';
 export * from './department';

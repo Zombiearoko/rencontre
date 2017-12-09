@@ -205,33 +205,47 @@ export class AddRegionComponent implements OnInit {
   onSubmit(post) {
     this.loadAllRegions();
     var j = 0;
+    if (this.regions == null) {
+      // this.regionName = post.regionName;
+      const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName=' + post.regionName + '&countryName=' + this.country;
 
-    for (var i = 0; i < this.regions.length; i++) {
-      if (this.regions[i].regionName == post.regionName)
-        j++;
-    }
-
-    if (j == 0) {
-      this.regionName = post.regionName;
-      const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName=' + this.regionName + '&countryName=' + this.country;
-  
       this.http.get(urlR).subscribe((resp) => {
         this.results = resp['results'];
         this.collectionJson = resp.json();
         console.log("pour la collection region", this.collectionJson);
         this.loadAllRegions();
       });
-  
-      
+
     }
-
-
     else {
-      alert("désolé! Cette Region existe déja ");
+
+      for (var i = 0; i < this.regions.length; i++) {
+        if (this.regions[i].regionName == post.regionName)
+          j++;
+      }
+
+      if (j == 0) {
+        this.regionName = post.regionName;
+        const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName=' + this.regionName + '&countryName=' + this.country;
+
+        this.http.get(urlR).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log("pour la collection region", this.collectionJson);
+          this.loadAllRegions();
+        });
+
+
+      }
+
+
+      else {
+        alert("désolé! Cette Region existe déja ");
+
+      }
+
 
     }
-
-    
   }
   ngOnInit() {
     this.loadAllCountries();

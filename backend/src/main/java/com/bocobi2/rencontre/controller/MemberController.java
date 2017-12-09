@@ -13,8 +13,10 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Session;
@@ -23,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
@@ -57,6 +60,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -160,12 +166,28 @@ public class MemberController {
 	@Autowired
 	UserDetailsServices use;
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	public MemberController(SimpMessagingTemplate webSocket) {
 		this.webSocket = webSocket;
 	}
 
 	private String imageFileId = "";
 	private String FOLDER = "/home/saphir/Images/style/";
+
+	/*
+	 * Methode decryptographe
+	 */
+	public static String decryptographe(String password) {
+		String aCrypter = "";
+		for (int i = 0; i < password.length(); i++) {
+			int c = password.charAt(i) ^ 48;
+			aCrypter = aCrypter + (char) c;
+		}
+
+		return aCrypter;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/savePicture", method = RequestMethod.POST)
@@ -240,14 +262,39 @@ public class MemberController {
 					HttpStatus.NOT_FOUND);
 		} else { // UserDetailsServices use = new UserDetailsServices();
 					// System.out.println(pseudonym);
-			UserDetails users = use.loadUserByUsername(pseudonym);
-			System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
-					users.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authToken);
+			String pass = user.getPassword();
+			System.out.println(pass);
+			String passD = bCryptPasswordEncoder.encode(password);
 
-			login = "You have been logged  in  successfully.";
-			return new ResponseEntity<UserDetails>(users, HttpStatus.OK);
+			// if (!BCrypt.checkpw(password, user.getPassword())) {
+
+			// }
+
+			// Hacher un mot de passe
+			String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+			System.out.println(hashed);
+
+			// Tester si un mot de passe est identique à un autre
+			if (BCrypt.checkpw(password, hashed))
+				System.out.println("It matches");
+			else
+				System.out.println("It does not match");
+
+			System.out.println(BCrypt.gensalt());
+			System.out.println(BCrypt.hashpw(password, BCrypt.gensalt()));
+			if (BCrypt.hashpw(password, pass) != BCrypt.gensalt()) {
+				return new ResponseEntity(new MemberErrorType("The password of Member  " + pseudonym + " is invalide."),
+						HttpStatus.NOT_FOUND);
+			} else {
+				UserDetails users = use.loadUserByUsername(pseudonym);
+				System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+						users.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+
+				login = "You have been logged  in  successfully.";
+				return new ResponseEntity<Member>(user, HttpStatus.OK);
+			}
 		}
 
 		// String name= authentication.getName();
@@ -272,11 +319,12 @@ public class MemberController {
 	@RequestMapping(value = "/retrieve", method = RequestMethod.GET)
 	public Object retrieve(String error, String logout, Authentication authenticationg, Principal principal,
 			HttpServletRequest request) {
-		Object userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
 		System.out.println("je suis en session Saphir " + userDetails);
-		if (userDetails instanceof UserDetails) {
-			return ((UserDetails) userDetails).getUsername();
-		}
+		/*
+		 * if (userDetails instanceof UserDetails) { return ((UserDetails)
+		 * userDetails).getUsername(); }
+		 */
 
 		return userDetails;
 
@@ -303,25 +351,30 @@ public class MemberController {
 			Member member = new Member();
 			member = memberRepository.findByPseudonym(pseudonym);
 			if (member != null) {
-				if (member.getPassword().equals(password)) {
+				String pass = decryptographe(member.getPasswordSec());
+				if (pass.equals(password)) {
 					String status = "Connected";
 					Status statusDB = statusRepository.findByStatusName(status);
 					member.setStatus(statusDB);
 					member.setMeetingNameConnexion(meetingName);
+					UserDetails users = use.loadUserByUsername(pseudonym);
+					System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+							users.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(authToken);
 					memberRepository.save(member);
-					httpSession.setAttribute("MEMBER", member);
+					// httpSession.setAttribute("MEMBER", member);
 
 					// session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
-					httpSession.invalidate();
 					logger.error("Member with password {} not found.", password);
 					return new ResponseEntity(
 							new MemberErrorType("Member with " + "password " + password + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
-				logger.error("Member with password {} not found.", pseudonym);
+				logger.error("Member {} not found.", pseudonym);
 				return new ResponseEntity(
 						new MemberErrorType("Member with " + "pseudonym " + pseudonym + " not found."),
 						HttpStatus.NOT_FOUND);
@@ -359,23 +412,32 @@ public class MemberController {
 			Member member = new Member();
 			member = memberRepository.findByPseudonym(pseudonym);
 			if (member != null) {
-				if (member.getPassword().equals(password)) {
+				String pass = decryptographe(member.getPasswordSec());
+				System.out.println(member.getPasswordSec());
+				System.out.println(decryptographe(member.getPasswordSec()));
+				if (pass.equals(password)) {
 					String status = "Connected";
 					Status statusDB = statusRepository.findByStatusName(status);
 					member.setStatus(statusDB);
 					member.setMeetingNameConnexion(meetingName);
+					UserDetails users = use.loadUserByUsername(pseudonym);
+					System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+							users.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(authToken);
 					memberRepository.save(member);
-					httpSession.setAttribute("Member", member);
+					// httpSession.setAttribute("MEMBER", member);
+
+					// session.setAttribute("Member", member);
 					return new ResponseEntity<Member>(member, HttpStatus.OK);
 				} else {
-					httpSession.invalidate();
 					logger.error("Member with password {} not found.", password);
 					return new ResponseEntity(
 							new MemberErrorType("Member with " + "password " + password + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
-				logger.error("Member with password {} not found.", pseudonym);
+				logger.error("Member {} not found.", pseudonym);
 				return new ResponseEntity(
 						new MemberErrorType("Member with " + "pseudonym " + pseudonym + " not found."),
 						HttpStatus.NOT_FOUND);
@@ -389,6 +451,67 @@ public class MemberController {
 
 	}
 
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public Map<String, String> logoutMemberPost(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
+		try {
+			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+			Member member = memberRepository.findByPseudonym(userDetails);
+			Status status = statusRepository.findByStatusName("disconnected");
+			member.setStatus(status);
+			member.setMeetingNameConnexion(null);
+			
+		
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+
+				memberRepository.save(member);
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				message.put("Message", "succes");
+				return message;
+			}
+		} catch (Exception ex) {
+			message.put("Message", "failed");
+			return message;
+		}
+		message.put("Message", "failed");
+		return message;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public Map<String, String> logoutMemberGet(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String,String> message= new HashMap<>();
+		try {
+			String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+			Member member = memberRepository.findByPseudonym(userDetails);
+			Status status = statusRepository.findByStatusName("disconnected");
+			member.setStatus(status);
+			member.setMeetingNameConnexion(null);
+			
+		
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+
+				memberRepository.save(member);
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				message.put("Message", "succes");
+				return message;
+			}
+		} catch (Exception ex) {
+			message.put("Message", "failed");
+			return message;
+		}
+		message.put("Message", "failed");
+		return message;
+	}
+
 	/*
 	 * end connexion
 	 */
@@ -399,7 +522,7 @@ public class MemberController {
 	/*
 	 * version Post
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/returnTypeMeeting", method = RequestMethod.POST)
 	public ResponseEntity<List<TypeMeeting>> returnTypeMeetingPost(HttpServletRequest request) {
 
@@ -516,9 +639,10 @@ public class MemberController {
 
 		// HttpSession session = request.getSession();
 		// Member member = (Member) session.getAttribute("Member");
-		Member member = (Member) httpSession.getAttribute("Member");
+		// Member member = (Member) httpSession.getAttribute("Member");
 
-		// Member member = memberRepository.findByPseudonym(pseudonym);
+		String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+		Member member = memberRepository.findByPseudonym(userDetails);
 		System.out.println(member);
 		member.setStatus(status);
 		memberRepository.save(member);
@@ -546,9 +670,10 @@ public class MemberController {
 
 		// HttpSession session = request.getSession();
 		// Member member = (Member) session.getAttribute("Member");
-		Member member = (Member) httpSession.getAttribute("Member");
+		// Member member = (Member) httpSession.getAttribute("Member");
 
-		// Member member = memberRepository.findByPseudonym(pseudonym);
+		String userDetails = SecurityContextHolder.getContext().getAuthentication().getName();
+		Member member = memberRepository.findByPseudonym(userDetails);
 		System.out.println(member);
 		member.setStatus(status);
 		memberRepository.save(member);

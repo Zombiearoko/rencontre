@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
     selector: 'app-login-admin',
     moduleId: module.id,
     templateUrl: './login-admin.component.html',
-    styleUrls: ['./login-admin.component.css', '../../bootstrap/css/bootstrap.css'],
+    styleUrls: ['./login-admin.component.css', '../../bootstrap/css/bootstrap.css', '../../font-awesome-4.7.0/css/font-awesome.css'],
     providers: [AlertService, AuthenticationService],
     entryComponents: [MemberSessionComponent]
 })
@@ -40,7 +40,7 @@ export class LoginAdminComponent implements OnInit {
         this.authenticationService.logoutAdmin();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/session-admin';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login-admin';
         //    this.router.navigateByUrl('/login-form');
     }
 

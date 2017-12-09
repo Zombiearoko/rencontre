@@ -15,7 +15,7 @@ import { Country } from '../_models/country';
   selector: 'app-member-session',
   moduleId: module.id,
   templateUrl: './member-session.component.html',
-  styleUrls: ['./member-session.component.css', '../../bootstrap/css/bootstrap.css']
+  styleUrls: ['./member-session.component.css', '../../bootstrap/css/bootstrap.css', '../../font-awesome-4.7.0/css/font-awesome.css']
 })
 export class MemberSessionComponent implements OnInit {
   @Input('group')

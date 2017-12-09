@@ -159,6 +159,18 @@ export class RestProvider {
         .do((res: Response) => console.log('de rest:',res.json()))
         .map((res: Response) => res.json());
     }
+
+     // for status name when login
+  public getAllStatus() {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    
+     const urlD = 'http://localhost:8091/rencontre/Administrator/listAllStatus';
+                  
+      return  this.http.post(urlD, options)
+        .do((res: Response) => console.log('de rest:',res.json()))
+        .map((res: Response) => res.json());
+    }
     // liste les region dun pays
 
     public getAllRegionByCountry(countryName) {

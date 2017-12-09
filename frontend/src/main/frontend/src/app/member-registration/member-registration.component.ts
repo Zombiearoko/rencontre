@@ -23,7 +23,7 @@ import { ConfimrAccountComponent } from './confimr-account/confimr-account.compo
 @Component({
   selector: 'app-member-registration',
   templateUrl: './member-registration.component.html',
-  styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css'],
+  styleUrls: ['./member-registration.component.css', '../../bootstrap/css/bootstrap.css', '../../font-awesome-4.7.0/css/font-awesome.css'],
   entryComponents: [ConfimrAccountComponent]
 })
 export class MemberRegistrationComponent implements OnInit {

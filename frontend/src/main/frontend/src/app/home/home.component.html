@@ -7,13 +7,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-           </button>
+      </button>
       <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
 
-        <li class="active"><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
+        <li class="active"><a class="menuLink" href=""><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home</a>
         </li>
         <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-cog"></span> About</a>
         </li>
@@ -28,19 +28,37 @@
   </div>
 
   <div class="row-fluid">
-    <h4 class="pull-right index">
-      <font color="white">Welcome </font><span class="statusName">{{currentMember.pseudonym}}! </span></h4>
-    <h4 class="pull-left index">
+
+    <div class="pull-left index">
 
       <select class="statusName" (change)="Filter($event.target.value)" id="statusName" name="statusName">
                     
                     <option *ngFor="let currentStatus of statuss" 
                     > {{currentStatus.statusName}}
                     </option>
-                </select>
+       </select>
 
-    </h4>
+    </div>
+    <div class="pull-right index">
+      <h4>
+        <font color="white">Welcome </font>
+      </h4>
+      <div class="btn-group close">
+        <a class="btn btn-danger" href="#"><i class="fa fa-user fa-fw"></i> {{currentMember.pseudonym}}!</a>
+        <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
+       <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+    </a>
+        <ul class="dropdown-menu">
+          <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+          <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+          <li><a href="/login-form"><i class="fa fa-ban fa-fw"></i> logout</a></li>
+          <li class="divider"></li>
+          <li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>
+        </ul>
+      </div>
 
+      <!-- <font color="white">Welcome </font><span class="statusName">{{currentMember.pseudonym}}! </span></h4> -->
+    </div>
   </div>
 </div>
 
@@ -53,52 +71,48 @@
 
 <body>
 
-
-
   <div class="container">
-    <div class="row">
-      <div class="col-lg-8">
-        <carousel class="text-center">
-          <slide>
-            <img class="img-main-carousol" src="assets/img/slide-1.jpg" alt="First slide">
-            <div class="carousel-caption">
-              <h3>First slide label</h3>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div>
-          </slide>
-          <slide>
-            <img class="img-main-carousol" src="assets/img/amour1.jpg" alt="Second slide">
-            <div class="carousel-caption">
-              <h3>Second slide label</h3>
-              <p>Find a true love, in our web site.</p>
-            </div>
-          </slide>
-          <slide>
-            <img class="img-main-carousol" src="assets/img/acade.jpg" alt="Third slide">
-            <div class="carousel-caption">
-              <h3>Third slide label</h3>
-              <p>Meet more friend make live easy.</p>
-            </div>
-          </slide>
-          <slide>
-            <img class="img-main-carousol" src="assets/img/prof.jpg" alt="Fourth slide">
-            <div class="carousel-caption">
-              <h3>Fourth slide label</h3>
-              <p>Tell me about your expertise.</p>
-            </div>
-          </slide>
-        </carousel>
-      </div>
-      <div class="col-lg-2">
+    <carousel class="text-center">
+      <slide>
+        <img class="img-main-carousol" src="assets/img/slide-1.jpg" alt="First slide">
+        <div class="carousel-caption">
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </div>
+      </slide>
+      <slide>
+        <img class="img-main-carousol" src="assets/img/amour1.jpg" alt="Second slide">
+        <div class="carousel-caption">
+          <h3>Second slide label</h3>
+          <p>Find a true love, in our web site.</p>
+        </div>
+      </slide>
+      <slide>
+        <img class="img-main-carousol" src="assets/img/acade.jpg" alt="Third slide">
+        <div class="carousel-caption">
+          <h3>Third slide label</h3>
+          <p>Meet more friend make live easy.</p>
+        </div>
+      </slide>
+      <slide>
+        <img class="img-main-carousol" src="assets/img/prof.jpg" alt="Fourth slide">
+        <div class="carousel-caption">
+          <h3>Fourth slide label</h3>
+          <p>Tell me about your expertise.</p>
+        </div>
+      </slide>
+    </carousel>
+
+    <!-- <div class="col-lg-2">
           <form id="qform" class="navbar-form pull-left" role="search">
               <input type="text" class="form-control" placeholder="Search" />
             </form>
-      </div>
-    </div>
-
-
-
+      </div> -->
   </div>
+
+
+
+
   <!-- /.container -->
 
 </body>

@@ -2,9 +2,15 @@
     background-color: transparence;
     opacity: 0.25;
 } */
+.aside-menu{
+    color:  #383737;
+}
 .cadre {
     
     font-weight: bold;
     color:#ffffff;
    
+}
+ .myCols{
+	text-align: center;
 }

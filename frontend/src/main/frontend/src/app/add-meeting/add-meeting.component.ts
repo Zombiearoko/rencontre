@@ -49,8 +49,8 @@ export class AddMeetingComponent implements OnInit {
     this.loadAllMeetings();
     var j = 0;
     if (this.meetings == null) {
-      this.meetingName = post.meetingName;
-      const urlD = 'http://localhost:8091/rencontre/Administrator/typeMeeting?meetingName=' + this.meetingName;
+      // this.meetingName = post.meetingName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/typeMeeting?meetingName=' + post.meetingName;
 
       this.http.get(urlD).subscribe((resp) => {
         this.results = resp['results'];

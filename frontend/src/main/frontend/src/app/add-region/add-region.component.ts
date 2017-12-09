@@ -206,8 +206,8 @@ export class AddRegionComponent implements OnInit {
     this.loadAllRegions();
     var j = 0;
     if (this.regions == null) {
-      this.regionName = post.regionName;
-      const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName=' + this.regionName + '&countryName=' + this.country;
+      // this.regionName = post.regionName;
+      const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion?regionName=' + post.regionName + '&countryName=' + this.country;
 
       this.http.get(urlR).subscribe((resp) => {
         this.results = resp['results'];

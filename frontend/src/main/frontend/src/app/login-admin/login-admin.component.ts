@@ -40,7 +40,7 @@ export class LoginAdminComponent implements OnInit {
         this.authenticationService.logoutAdmin();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/session-admin';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login-admin';
         //    this.router.navigateByUrl('/login-form');
     }
 

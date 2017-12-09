@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Response, HttpModule, Http } from '@angular/http';
+import { RestProvider } from '../../providers/rest/rest';
 
 import { Member } from '../_models/index';
 import { Status } from '../_models/status';
@@ -22,37 +23,44 @@ export class HomeComponent implements OnInit {
     private collectionJson: object;
 
 
-    constructor(private http: Http, private memberService: MemberService, private statusService: StatusService) {
+    constructor(private http: Http, private memberService: MemberService,
+        private statusService: StatusService,
+        private rest: RestProvider, ) {
         this.currentMember = JSON.parse(localStorage.getItem('currentMember'));
         console.log("heooooohomets", this.currentMember.pseudonym);
         this.currentStatus = JSON.parse(localStorage.getItem('currentStatus'));
     }
 
     //getting meeting type when selected
-  public Filter(value: string) {
+    public Filter(value: string) {
         console.log('status donne', value);
         this.statusName = value;
-        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName='+this.statusName;
-    
+        const url = 'http://localhost:8091/rencontre/Member/changeStatus?statusName=' + this.statusName;
+
         this.http.get(url).subscribe((resp) => {
-          this.results = resp['results'];
-          this.collectionJson = resp.json();
-           console.log("collection stautus", this.collectionJson);
+            this.results = resp['results'];
+            this.collectionJson = resp.json();
+            console.log("collection stautus", this.collectionJson);
         });
         //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
         //  console.log("meetings", this.meetings);
-      }
-     
+    }
+
     ngOnInit() {
         //    this.loadAllMembers();
         this.loadAllStatuss();
 
     }
 
+   
+    // private loadAllStatuss() {
+    //     this.statusService.getAll().subscribe(statuss => { this.statuss = statuss; });
+    //     console.log("statuss", this.statuss);
+    // }
     private loadAllStatuss() {
-        this.statusService.getAll().subscribe(statuss => { this.statuss = statuss; });
+        this.rest.getAllStatus().subscribe(statuss => { this.statuss = statuss; });
         console.log("statuss", this.statuss);
-      }
+    }
 
     private deleteMember(id: number) {
         this.memberService.delete(id).subscribe(() => { this.loadAllMembers() });

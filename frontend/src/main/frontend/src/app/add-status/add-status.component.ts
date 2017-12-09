@@ -50,15 +50,14 @@ export class AddStatusComponent implements OnInit {
     this.loadAllStatuss();
     var j = 0;
     if (this.statuss == null) {
-      this.statusName = post.statusName;
-      const urlD = 'http://localhost:8091/rencontre/Administrator/addStatus?statusName=' + this.statusName;
+      // this.statusName = post.statusName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/addStatus?statusName=' + post.statusName;
 
       this.http.get(urlD).subscribe((resp) => {
         this.results = resp['results'];
         this.collectionJson = resp.json();
         console.log("pour la collection status", this.collectionJson);
-
-        
+        this.loadAllStatuss();
       });
     }
     else {

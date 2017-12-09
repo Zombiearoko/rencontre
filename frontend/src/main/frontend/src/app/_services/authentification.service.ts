@@ -64,6 +64,7 @@ export class AuthenticationService {
         const urlR = 'http://localhost:8091/rencontre/Administrator/addRegion';
         const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment';
         const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough';
+        const urlout = 'http://localhost:8091/rencontre/Member/logout';
 
         return this.http.post(urlC, object, options)
             .do((res: Response) => console.log(res.json()))
@@ -122,11 +123,35 @@ export class AuthenticationService {
 
     logout() {
         // remove member from local storage to log user out
-        localStorage.removeItem('currentMember');
+        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+        const options = new RequestOptions({ headers: headers1 });
+
+        const url = 'http://localhost:8091/rencontre/Member/logout';
+        return this.http.post(url, options)
+            .do((res: Response) => console.log(res.json()))
+            //.map((res: Response ) => res.json());
+            //ajouté a partir dici
+            .map((res: Response) => {
+                localStorage.removeItem('currentMember');
+            });
+
+
     }
 
     logoutAdmin() {
         // remove member from local storage to log user out
-        localStorage.removeItem('currentAdministrator');
+        // remove member from local storage to log user out
+        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+        const options = new RequestOptions({ headers: headers1 });
+
+        const url = 'http://localhost:8091/rencontre/Administrator/logoutAdministrator';
+        return this.http.post(url, options)
+            .do((res: Response) => console.log(res.json()))
+            //.map((res: Response ) => res.json());
+            //ajouté a partir dici
+            .map((res: Response) => {
+            localStorage.removeItem('currentAdministrator');
+            });
+
     }
 }

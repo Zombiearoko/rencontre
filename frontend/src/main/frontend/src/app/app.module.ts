@@ -19,6 +19,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { AlertService, AuthenticationService, MemberService, CountryService, RegionService, DepartmentService, BoroughService, TownService, MeetingService, StatusService} from './_services/index';
+import { AdministratorService} from './_services/administrator.services';
 import { HomeComponent } from './home/index';
 import { MemberSessionComponent } from './member-session/member-session.component';
 import { LoginAdminComponent } from './login-admin/login-admin.component';
@@ -35,7 +36,7 @@ import { MemberRegister1Component } from './member-register1/member-register1.co
 import { AddStatusComponent } from './add-status/add-status.component';
 import { ConfimrAccountComponent } from './member-registration/confimr-account/confimr-account.component';
 import { RencotreComponent } from './rencotre/index';
-import { AdminRegistrationComponent } from './src/app/admin-registration/admin-registration.component';
+import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 
 
 
@@ -93,7 +94,8 @@ import { AdminRegistrationComponent } from './src/app/admin-registration/admin-r
     BoroughService,
     TownService,
     MeetingService,
-    StatusService
+    StatusService,
+    AdministratorService
   ],
   bootstrap: [AppComponent]
 })

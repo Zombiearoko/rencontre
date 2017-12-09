@@ -87,8 +87,7 @@ export class AddTownComponent implements OnInit {
 
       if (j == 0) {
 
-        this.townName = post.townName;
-        const urlT = 'http://localhost:8091/rencontre/Administrator/addTown?townName=' + this.townName + '&countryName=' + this.borough;
+        const urlT = 'http://localhost:8091/rencontre/Administrator/addTown?townName=' + post.townName + '&countryName=' + this.borough;
 
         this.http.get(urlT).subscribe((resp) => {
           this.results = resp['results'];

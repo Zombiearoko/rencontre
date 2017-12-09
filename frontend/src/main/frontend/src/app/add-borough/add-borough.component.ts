@@ -66,13 +66,14 @@ export class AddBoroughComponent implements OnInit {
     this.loadAllBoroughs();
     var j = 0;
     if (this.departments == null) {
-      this.boroughName = post.boroughName;
-      const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName=' + this.boroughName + '&departmentName=' + this.department;
+      // this.boroughName = post.boroughName;
+      const urlB = 'http://localhost:8091/rencontre/Administrator/addBorough?boroughName=' + post.boroughName + '&departmentName=' + this.department;
 
       this.http.get(urlB).subscribe((resp) => {
         this.results = resp['results'];
         this.collectionJson = resp.json();
         console.log("pour la collection borough", this.collectionJson);
+        // actualisation de la liste des arrondissemen
         this.loadAllBoroughs();
       });
     }

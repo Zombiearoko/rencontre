@@ -66,8 +66,8 @@ export class AddDepartmentComponent implements OnInit {
     this.loadAllDepartments();
     var j = 0;
     if (this.departments == null) {
-      this.departmentName = post.departmentName;
-      const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + this.departmentName + '&regionName=' + this.region;
+      // this.departmentName = post.departmentName;
+      const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + post.departmentName + '&regionName=' + this.region;
 
       this.http.get(urlD).subscribe((resp) => {
         this.results = resp['results'];

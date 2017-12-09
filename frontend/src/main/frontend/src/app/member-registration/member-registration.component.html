@@ -1,87 +1,74 @@
 <!-- Fixed navbar -->
-
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              </button>
-            <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
-                </li>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+               </button>
+                <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
+            </div>
+            <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add Item</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/add-region">region</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/add-department">department</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/member-session">Add Country</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="add-borough">Add Borough</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/add-town">Add Town</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/add-meeting">Add Meeting</a>
-
-                        </div>
+    
+                    <li><a class="menuLink" href="/rencotre"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home</a>
+                    </li>
+                    <li class="active" ><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-tasks"></span> New Account</a>
+                    </li>
+                    <li><a class="menuLink" href="/login-form"><span class="fa fa-user fa-fw"></span> Login Member</a>
                     </li>
                 </ul>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logAdmin</a>
-                </li>
-                <li class="active"><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
-                </li>
-                <li><a class="menuLink" href=""><span class="glyphicon glyphicon-star-empty"></span> Home</a>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav navbar-right">
+    
+                    <li><a class="menuLink" href="/about"><span class="glyphicon glyphicon-tasks"></span> About</a>
+                    </li>
+    
+                </ul>
+            </div>
         </div>
-        <!--/.nav-collapse -->
     </div>
-</div>
+    <hr>
+    <!--/.nav-collapse -->
 <div class="page-header">
     <!-- <font color="orange">
         <h3 class="text-center text-lg text-uppercase my-0"> Merci de bien vouloir vous attribuer un compte sur la plateforme de rencontre diversifiée
 
         </h3>
     </font> -->
-    <div class="tagline-upper text-center text-heading text-shadow text-white mt-5 d-none d-lg-block">Creer un compte</div>
-    <div class="tagline-lower text-center text-expanded text-shadow text-uppercase text-black mb-5 d-none d-lg-block">Amicale | Académique | Amoureuse | Professionnelle</div>
-
+    <font color="black">
+    <div class="tagline-upper col-lg-8 text-heading text-shadow mt-5 d-none d-lg-block">Creer un compte</div>
+    </font>
+    <div class="tagline-lower col-lg-8 text-expanded text-shadow text-uppercase text-black mb-5 d-none d-lg-block">Amicale | Académique | Amoureuse | Professionnelle</div>
+<hr>
 </div>
+<hr>
 
-<body>
-    <!-- Header -->
+<div class="row">
 
+    <!-- <body class="col-sm-8 col-sm-offset-2"> -->
 
-    <div class="container-fluid">
-        <div class="cadre">
+    <body class="col-lg-8">
+        <div class="container-fluid">
+            <div class="cadre">
 
-            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+                <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
-                <div class="form-group">
-                    <label for="choix">Déja un compte sur notre site?</label>
+                    <div class="form-group">
+                        <label for="choix">Déja un compte sur notre site?</label>
 
-                    <select class="form-control" formControlName="choix" [(ngModel)]="model.choix" (change)="FilterChoix($event.target.value)"
-                        name="choix">
+                        <select class="form-control" formControlName="choix" [(ngModel)]="model.choix" (change)="FilterChoix($event.target.value)"
+                            name="choix">
                                             <option [ngValue]="">
                                             </option>
                                             <option>oui</option>
                                             <option>non</option>
                                 </select>
 
-                </div>
-                <!-- pseodo -->
-                <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'oui' && !clientForm.controls.birthDate1.valid && !clientForm.controls.pseudonym.valid) || (!clientForm.controls.meetingName.valid && model.choix == 'oui')">
+                    </div>
+                    <!-- pseodo -->
+                    <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'oui' && !clientForm.controls.birthDate1.valid && !clientForm.controls.pseudonym.valid) || (!clientForm.controls.meetingName.valid && model.choix == 'oui')">
                         <div class="form-group">
                                 <label for="pseudonym1">choisir pseudo si vous êtes deja inscrit a un type de rencontre</label>
                                
@@ -96,7 +83,7 @@
                                     
                         </div>
                 </span>
-                <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'non' && !clientForm.controls.birthDate1.valid && (!clientForm.controls.pseudonym1.valid || model.pseudonym1 == 'non')) || clientForm.controls.meetingName.valid">
+                    <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'non' && !clientForm.controls.birthDate1.valid && (!clientForm.controls.pseudonym1.valid || model.pseudonym1 == 'non')) || clientForm.controls.meetingName.valid">
                                             
                         <div class="form-group">
                             <label for="pseudonym">Pseudo</label>
@@ -109,8 +96,8 @@
                         </div>
                     </span>
 
-                <!-- age  -->
-                <span *ngIf="clientForm.controls.choix.valid && (clientForm.controls.pseudonym.valid || clientForm.controls.pseudonym1.valid)">
+                    <!-- age  -->
+                    <span *ngIf="clientForm.controls.choix.valid && (clientForm.controls.pseudonym.valid || clientForm.controls.pseudonym1.valid)">
                         
                 <div class="form-group">
 
@@ -122,7 +109,7 @@
                 </div>
                 </span>
 
-                <!-- <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'oui'  && !clientForm.controls.birthDate1.valid) || (!clientForm.controls.meetingName.valid && model.choix == 'oui')">
+                    <!-- <span *ngIf="(clientForm.controls.choix.valid && model.choix == 'oui'  && !clientForm.controls.birthDate1.valid) || (!clientForm.controls.meetingName.valid && model.choix == 'oui')">
                     <div class="form-group">
                             <label for="birthDate1">déja un membre? choisissez votre age</label>
                            
@@ -136,7 +123,7 @@
                             
                     </div>
             </span> -->
-                <span *ngIf="clientForm.controls.birthDate.valid">
+                    <span *ngIf="clientForm.controls.birthDate.valid">
                 <div class="form-group">
                     <label for="meetingName">Select the Meeting Name</label>
                     <select class="form-control" formControlName="meetingName" name="meetingName" [(ngModel)]="model.meetingName" (change)="FilterM($event.target.value)">
@@ -151,8 +138,8 @@
                 </div>
             </span>
 
-                <!-- showing only for Amicale -->
-                <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amicale' ">
+                    <!-- showing only for Amicale -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amicale' ">
                         
                     <div class="form-group">
 
@@ -166,8 +153,8 @@
                     </div>
                 </span>
 
-                <!-- showing only  for Academique and Professionnelle firstName,lastName,levelStudy; -->
-                <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' || clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
+                    <!-- showing only  for Academique and Professionnelle firstName,lastName,levelStudy; -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' || clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
                         
                     <div class="form-group">
 
@@ -201,8 +188,8 @@
 
                     </div>
                 </span>
-                <!-- showing only for Academique -->
-                <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' ">
+                    <!-- showing only for Academique -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Academique' ">
                     
                     <div class="form-group">
                         
@@ -215,8 +202,8 @@
                     </div>
                 </span>
 
-                <!-- showing only for profession -->
-                <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
+                    <!-- showing only for profession -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Professionnelle' ">
                         
                     <div class="form-group">
 
@@ -231,8 +218,8 @@
 
 
 
-                <!-- showing when selected Amoureuse meeting name  fatherName,motherName,country,region,department,borough,town et concession -->
-                <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amoureuse' ">
+                    <!-- showing when selected Amoureuse meeting name  fatherName,motherName,country,region,department,borough,town et concession -->
+                    <span *ngIf="clientForm.controls.meetingName.valid && model.meetingName == 'Amoureuse' ">
                         <div class="form-group">
 
                             <input type="text" class="form-control" formControlName="fatherName" [(ngModel)]="model.fatherName" name="fatherName" id="fatherName" placeholder=" your fatherName hier "
@@ -330,9 +317,9 @@
                         </div>
                     
                 </span>
-                <!-- collectionJson?.length != 2" -->
-                <!-- <span *ngIf="((model.confirmPassword == '') || !(model.password == model.confirmPassword) && (!clientForm.controls.pseudonym.valid)) "> -->
-                <span *ngIf="(clientForm.controls.choix.valid && (model.choix == 'non')) ">
+                    <!-- collectionJson?.length != 2" -->
+                    <!-- <span *ngIf="((model.confirmPassword == '') || !(model.password == model.confirmPassword) && (!clientForm.controls.pseudonym.valid)) "> -->
+                    <span *ngIf="(clientForm.controls.choix.valid && (model.choix == 'non')) ">
                                 
                     <div class="form-group">
                         <label for="gender">choice your gender</label>
@@ -377,33 +364,41 @@
                         </div>
                     </div>
                 </span>
-                <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
-                <div class="form-group">
-                    <label for="picture">Example file input</label>
-                    <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
-                </div>
+                    <!-- *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched" -->
+                    <div class="form-group">
+                        <label for="picture">Example file input</label>
+                        <input type="file" formControlName="customerPicture" id="picture" #customerPicture>
+                    </div>
 
 
 
 
-                <div>
+                    <div>
 
-                    <button class="btn btn-primary " type="submit" [disabled]="((model.gender == '' || model.phoneNumber == '' || model.emailAdress == '' || model.password == '' || model.confirmPassword == '') && (model.choix == 'non')) || (model.gender != '' && model.phoneNumber != '' && model.emailAdress != '' && model.password!= '' && model.confirmPassword != '' && model.password != model.confirmPassword) || (!clientForm.controls.meetingName.valid)">Submit</button>
+                        <button class="btn btn-primary " type="submit" [disabled]="((model.gender == '' || model.phoneNumber == '' || model.emailAdress == '' || model.password == '' || model.confirmPassword == '') && (model.choix == 'non')) || (model.gender != '' && model.phoneNumber != '' && model.emailAdress != '' && model.password!= '' && model.confirmPassword != '' && model.password != model.confirmPassword) || (!clientForm.controls.meetingName.valid)">Submit</button>
 
-                    <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid && model.password != model.confirmPassword">Submit</button>  -->
+                        <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid && model.password != model.confirmPassword">Submit</button>  -->
 
-                    <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+                        <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
 
 
-                </div>
-            </form>
-            <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p>
+                    </div>
+                </form>
+                <p>Form value: {{ clientForm.value | json }}</p>
+                <p>Form status: {{ clientForm.status | json }}</p>
+
+            </div>
 
         </div>
-
+    </body>
+    <div class="col-lg-4">
+        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+        <div class="aside-menu">Merci pour votre fidélité sur notre site; pour vous connecter un type de rencontre auquel vous y êtes déjà inscrit,
+            il vous suffit de renseigner votre login, mot de passe et en fin de selectionner le type de rencontre
+            <h4> passer un bon moment sur notre plateforme</h4>
+        </div>
     </div>
-</body>
+</div>
 <!-- <div class="clear-both"></div>
 <aside class="banner">
 

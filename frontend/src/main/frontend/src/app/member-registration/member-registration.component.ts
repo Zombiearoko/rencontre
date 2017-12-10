@@ -181,6 +181,7 @@ this.model.pseudonym=value;
 
     console.log('pseudo donne', this.model.pseudonym);
     if (this.choix == 'oui') {
+      console.log('tous les membres');
       const url = 'http://localhost:8091/rencontre/Administrator/listAllMember';
       this.http.get(url).subscribe((resp) => {
         this.results = resp['results'];
@@ -258,7 +259,7 @@ this.model.pseudonym=value;
     this.http.get(url).subscribe((resp) => {
       this.results = resp['results'];
       this.collectionJson = resp.json();
-
+      console.log('hehe les meeting');
       console.log(this.collectionJson);
     });
     //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });

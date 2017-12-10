@@ -213,7 +213,7 @@ public class AdministratorController {
 				String pass = decryptographe(administrator.getPasswordSec());
 				if (pass.equals(passwordAdmin)) {
 					
-					UserDetails users = use.loadUserByUsername(loginAdmin);
+					UserDetails users = use.loadUserByUsernameA(loginAdmin);
 					System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
 					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
 							users.getAuthorities());
@@ -275,7 +275,7 @@ public class AdministratorController {
 					String pass = decryptographe(administrator.getPasswordSec());
 					if (pass.equals(passwordAdmin)) {
 						
-						UserDetails users = use.loadUserByUsername(loginAdmin);
+						UserDetails users = use.loadUserByUsernameA(loginAdmin);
 						System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
 						UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
 								users.getAuthorities());

@@ -101,10 +101,12 @@ public class AdministratorController {
 	RoleRepository roleRepository;
 	
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	UserDetailsServices use;
 	
 	@Autowired
-	UserDetailsServices use;
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
 
 	
 	

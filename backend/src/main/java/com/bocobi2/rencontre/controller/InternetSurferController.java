@@ -409,7 +409,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -510,7 +510,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -622,7 +622,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -712,7 +712,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
@@ -825,7 +825,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -915,7 +915,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
@@ -1021,7 +1021,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -1108,7 +1108,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
@@ -1356,7 +1356,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -1457,7 +1457,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -1569,7 +1569,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -1659,7 +1659,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
@@ -1772,7 +1772,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -1862,7 +1862,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 
@@ -1968,7 +1968,7 @@ public class InternetSurferController {
 							msg.setSentDate(new Date());
 
 							Transport transport = session.getTransport("smtp");
-							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+							transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 							transport.sendMessage(msg, msg.getAllRecipients());
 							transport.close();
 
@@ -2055,7 +2055,7 @@ public class InternetSurferController {
 								msg.setSentDate(new Date());
 
 								Transport transport = session.getTransport("smtp");
-								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "meilleure");
+								transport.connect("smtp.gmail.com", "saphirmfogo@gmail.com", "best1234");
 								transport.sendMessage(msg, msg.getAllRecipients());
 								transport.close();
 

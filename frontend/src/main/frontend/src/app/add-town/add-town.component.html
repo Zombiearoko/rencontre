@@ -1,27 +1,21 @@
 <!-- Fixed navbar -->
 <app-nav-admin></app-nav-admin>
 <!--/.nav-collapse -->
-<div class="page-header">
-  <font color="black">
-    <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Ajouter une Ville</h2>
-  </font>
-</div>
+<div class="row">
 
-<body>
+  <body class="col-lg-8">
 
-  <!-- Page Content -->
+    <div class="container">
+      <div class="cadre">
+        <div class="col-md-6 col-md-offset-1" id="form">
+          <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add an town</h2>
+          <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
+            <div class="form-group">
+              <label for="regionName">Select Arrondissement</label>
 
-  <div class="container-fluid">
-
-    <div class="cadre ">
-      <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-
-        <div class="form-group">
-          <label for="regionName">Select Arrondissement</label>
-
-          <select [(ngModel)]="selectedBorough" class="form-control" (change)="Filter($event.target.value)" formControlName="boroughNameN"
-            name="selectB">
+              <select [(ngModel)]="selectedBorough" class="form-control" (change)="Filter($event.target.value)" formControlName="boroughNameN"
+                name="selectB">
                         <option [ngValue]="">
                         </option>
                         <option *ngFor="let currentBorough of boroughs" 
@@ -29,32 +23,32 @@
                         </option>
            </select>
 
-        </div>
+            </div>
 
 
 
-        <div class="form-group">
+            <div class="form-group">
 
-          <label for="townName">Village</label>
-
-
-          <input type="text" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName" name="townName" id="townName" placeholder=" add town hier "
-          />
+              <label for="townName">Village</label>
 
 
-
-          <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-          <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
-
-        </div>
-        <div>
-          <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-          <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+              <input type="text" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName" name="townName"
+                id="townName" placeholder=" add town hier " />
 
 
-        </div>
-      </form>
-      <!-- <p>Form value: {{ clientForm.value | json }}</p>
+
+              <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+              <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>
+
+            </div>
+            <div>
+              <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+              <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+            </div>
+          </form>
+          <!-- <p>Form value: {{ clientForm.value | json }}</p>
       <p>Form status: {{ clientForm.status | json }}</p> -->
 
 
@@ -62,20 +56,27 @@
 
 
 
-      <h2>You submitted the following town:</h2>
-      <div class="row">
-        <h3>ville:
-          <font color="red">{{ collectionJson.townName }}</font>
-        </h3>
+          <h2>You submitted the following town:</h2>
+          <div class="row">
+            <h3>ville:
+              <font color="red">{{ collectionJson.townName }}</font>
+            </h3>
+          </div>
+
+          <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
+
+
+
+
+        </div>
       </div>
+    </div>
 
-      <button class="btn btn-primary" (click)="submitted=false">Update</button>
-
-
-
-
-
+  </body>
+  <div class="col-lg-4">
+    <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+    <div class="aside-menu">Pour selectionner un arrondissement auquel vous voudriez creer un village , ensuite renseignez le nom du village dans
+      le champs suivant.
     </div>
   </div>
-
-</body>
+</div>

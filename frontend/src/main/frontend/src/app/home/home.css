@@ -5,10 +5,17 @@
     color:green;
 }
 .statusName{
-color: orange;
+color: green;
 }
-/* .img-main-carousol{
-    max-height: 500px;
+ .img-main-carousol{
+    width: 1200px;
+    height: 300px;
     margin: 0 auto;
     position: center;
-} */
+} 
+.footer-copyright{
+	background-color: #383737;
+	padding-top:3px;
+	padding-bottom:3px;
+	text-align: center;
+}

@@ -9,17 +9,19 @@
 </div>
 <!-- Page Content -->
 
-<body>
-    <div class="container-fluid">
+<div class="row">
 
-        <div class="cadre ">
-            <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+    <body class="col-lg-8">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="cadre ">
+                    <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
 
-                <div class="form-group">
-                    <label for="regionName">Select Department</label>
+                        <div class="form-group">
+                            <label for="regionName">Select Department</label>
 
-                    <select class="form-control" (change)="Filter($event.target.value)" formControlName="departmentNameN" name="selectD">
+                            <select class="form-control" (change)="Filter($event.target.value)" formControlName="departmentNameN" name="selectD">
                         <option [ngValue]="">
                         </option>
                         <option *ngFor="let currentDepartment of departments" 
@@ -28,44 +30,52 @@
                      </select>
 
 
-                </div>
+                        </div>
 
 
-                <div class="form-group">
+                        <div class="form-group">
 
-                    <label for="boroughName">Arrondissement</label>
-
-
-                    <input type="text" class="form-control" formControlName="boroughName" name="boroughName" id="boroughName" placeholder=" add borough hier "
-                    />
+                            <label for="boroughName">Arrondissement</label>
 
 
-
-                    <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-                    <div class="alert" *ngIf="!clientForm.controls.boroughName.valid && clientForm.controls.boroughName.touched">{{titleAlert}}</div>
-
-                </div>
-                <div>
-                    <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                    <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+                            <input type="text" class="form-control" formControlName="boroughName" name="boroughName" id="boroughName" placeholder=" add borough hier "
+                            />
 
 
-                </div>
-            </form>
-            <!-- <p>Form value: {{ clientForm.value | json }}</p>
+
+                            <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+                            <div class="alert" *ngIf="!clientForm.controls.boroughName.valid && clientForm.controls.boroughName.touched">{{titleAlert}}</div>
+
+                        </div>
+                        <div>
+                            <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+                            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+                        </div>
+                    </form>
+                    <!-- <p>Form value: {{ clientForm.value | json }}</p>
             <p>Form status: {{ clientForm.status | json }}</p> -->
 
 
-            <h2>You submitted the following borough:</h2>
-            <div class="row">
-                <h3>Arrondissement: {{ collectionJson.boroughName }}
-                </h3>
+                    <h2>You submitted the following borough:</h2>
+                    <div class="row">
+                        <h3>Arrondissement: {{ collectionJson.boroughName }}
+                        </h3>
+                    </div>
+
+                    <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
+
+
+                </div>
             </div>
-
-            <button class="btn btn-primary" (click)="submitted=false">Update</button>
-
-
         </div>
-
+    </body>
+    <div class="col-lg-4">
+        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+        <div class="aside-menu">selectionner un departement auquel vous voudriez ajouter un arrondissement , ensuite renseignez le nom de l'arrondissement
+            à ajouter dans le champs suivant.
+            <h4> passer un bon moment sur notre plateforme</h4>
+        </div>
     </div>
-</body>
+</div>

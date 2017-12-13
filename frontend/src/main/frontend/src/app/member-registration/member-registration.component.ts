@@ -415,7 +415,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+            this.alertService.success('Registration successful for Amicale, please check your email to confirm your account before login', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
             this.router.navigate(['/rencotre']);
@@ -446,7 +446,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for Amicale, please check your account to confirm your account before login', true);
+            this.alertService.success('Registration successful for Amicale, please check your email to confirm your account before login', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.model.emailAdress]);
             this.router.navigate(['/rencotre']);
@@ -484,7 +484,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+            this.alertService.success('Registration successful for Academique, please check your email to confirm your account before login ', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -515,7 +515,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for Academique, please check your account to confirm your account before login ', true);
+            this.alertService.success('Registration successful for Academique, please check your email to confirm your account before login ', true);
             // alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -555,7 +555,7 @@ this.model.pseudonym=value;
 
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+            this.alertService.success('Registration successful for professional, please check your email to confirm your account before login', true);
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -587,7 +587,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-            this.alertService.success('Registration successful for professional, please check your account to confirm your account before login', true);
+            this.alertService.success('Registration successful for professional, please check your email to confirm your account before login', true);
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -626,7 +626,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);              
+              this.alertService.success('Registration successful for Amoureuse, please check your email to confirm your account before login', true);              
             alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);
@@ -659,7 +659,7 @@ this.model.pseudonym=value;
           }
           else {
             //  if(resp.status==1){
-              this.alertService.success('Registration successful for Amoureuse, please check your account to confirm your account before login', true);
+              this.alertService.success('Registration successful for Amoureuse, please check your email to confirm your account before login', true);
               alert("Ravi de vous compter parmi nous consulter votre boite e-mail pour confirmer votre inscription");
             // this.router.navigate(['/confimr-account/' + this.pseudonym]);
             this.router.navigate(['/rencotre']);

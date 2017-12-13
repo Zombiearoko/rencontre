@@ -69,6 +69,7 @@ h2{
   color: #000000;
 }
 
+
 .tagline-upper {
   font-size: 5rem;
   font-weight: 700;
@@ -122,5 +123,27 @@ hr.divider {
    color:#000000;
 }
  .myCols{
-	text-align: center;
+  /* font-size: 16px; */
+  text-align: center;
+  text-justify: auto;
+  color: #ffffff;
+  padding-bottom: 5px;
 }
+
+.titre{
+  color:#000000;
+}
+.image{
+ border-color:#277777;
+}
+
+/* .cont{
+  font-size: 16px;
+  line-height: 16px;
+  height: 32px;
+  overflow: hidden;
+}
+.show{
+  overflow: visible;
+  height: auto;
+} */

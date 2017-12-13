@@ -12,8 +12,8 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
-                </li>
+                <!-- <li><a class="menuLink" href="/login-form"><span class="glyphicon glyphicon-compressed"></span> Login Member</a>
+                </li> -->
                 <li><a class="menuLink" href="/rencotre"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home</a>
                 </li>
 
@@ -24,7 +24,7 @@
 
                 <li class="active"><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logout Admin</a>
                 </li>
-                <li><a class="menuLink" href="/member-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
+                <li><a class="menuLink" href="/admin-registration"><span class="glyphicon glyphicon-cog"></span>New Account</a>
                 </li>
 
                 <form id="qform" class="navbar-form pull-left" role="search">
@@ -36,52 +36,60 @@
     </div>
 </div>
 
-<body>
-    <!-- containe -->
-    <div class="container">
-        <div class="cadre">
-            <div class="col-md-6 col-md-offset-1" id="form">
-                <h2>Login</h2>
-                <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-                    <div class="form-group">
+<div class="row">
 
-                        <!-- <label for="loginAdmin">Pseudo</label> -->
-                        <div class="cols-lg-8">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-compressed"></i></span>
-                                <input type="text" class="form-control" formControlName="loginAdmin" name="loginAdmin" id="loginAdmin" placeholder=" pseudo admin "
-                                />
+    <body class="col-lg-8">
+        <div class="container">
+            <div class="cadre">
+
+                <div class="col-md-6 col-md-offset-1" id="form">
+                    <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block">Login</h2>
+                    <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+                        <div class="form-group">
+
+                            <!-- <label for="loginAdmin">Pseudo</label> -->
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-compressed"></i></span>
+                                    <input type="text" class="form-control" formControlName="loginAdmin" name="loginAdmin" id="loginAdmin" placeholder=" pseudo admin "
+                                    />
+                                </div>
+                            </div>
+
+                            <div [hidden]="clientForm.controls.loginAdmin.valid|| clientForm.controls.loginAdmin.pristine" class="alert alert-danger">
+                                Pseudo is a required field</div>
+                            <div class="alert" *ngIf="!clientForm.controls.loginAdmin.valid && clientForm.controls.loginAdmin.touched">{{titleAlert}}</div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <!-- <label for="passwordAdmin">passwordAdmin</label> -->
+                            <div class="cols-lg-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                    <input type="passwordAdmin" class="form-control" formControlName="passwordAdmin" name="passwordAdmin" id="passwordAdmin"
+                                        placeholder=" password" />
+                                </div>
                             </div>
                         </div>
 
-                        <div [hidden]="clientForm.controls.loginAdmin.valid|| clientForm.controls.loginAdmin.pristine" class="alert alert-danger">
-                            Pseudo is a required field</div>
-                        <div class="alert" *ngIf="!clientForm.controls.loginAdmin.valid && clientForm.controls.loginAdmin.touched">{{titleAlert}}</div>
-
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="passwordAdmin">passwordAdmin</label> -->
-                        <div class="cols-lg-8">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                                <input type="passwordAdmin" class="form-control" formControlName="passwordAdmin" name="passwordAdmin" id="passwordAdmin"
-                                    placeholder=" " />
-                            </div>
+                        <div class="form-group">
+                            <button [disabled]="loading" class="btn btn-primary">Login</button>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <button [disabled]="loading" class="btn btn-primary">Login</button>
-                    </div>
-                </form>
+                    </form>
 
 
-                <p>Form value: {{ clientForm.value | json }}</p>
-                <p>Form status: {{ clientForm.status | json }}</p>
+                    <!-- <p>Form value: {{ clientForm.value | json }}</p>
+                    <p>Form status: {{ clientForm.status | json }}</p> -->
 
+                </div>
             </div>
-        </div>
 
+        </div>
+    </body>
+    <div class="col-lg-4">
+        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+        <div class="aside-menu">Merci ...
+        </div>
     </div>
-</body>
+</div>

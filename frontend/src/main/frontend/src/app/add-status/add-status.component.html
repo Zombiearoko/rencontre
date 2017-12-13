@@ -9,56 +9,66 @@
 
 <!-- Page Content -->
 
-<body>
+<div class="row">
 
+  <body class="col-lg-8">
 
-  <div class="container-fluid">
-    <div class="cadre">
-
-      <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-        <div class="form-group">
-
-          <label for="statusName">Add Status</label>
-
-
-          <input type="text" class="form-control" formControlName="statusName" name="statusName" id="statusName" placeholder=" add status hier "
-          />
+    <div class="container">
+      <div class="cadre">
+        <div class="col-md-6 col-md-offset-1" id="form">
+          <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add an status</h2>
+          <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
+            <div class="form-group">
 
 
 
-          <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
-          <div class="alert" *ngIf="!clientForm.controls.statusName.valid && clientForm.controls.statusName.touched">{{titleAlert}}</div>
+
+              <input type="text" class="form-control" formControlName="statusName" name="statusName" id="statusName" placeholder=" add status name "
+              />
+
+
+
+              <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
+              <div class="alert" *ngIf="!clientForm.controls.statusName.valid && clientForm.controls.statusName.touched">{{titleAlert}}</div>
+
+            </div>
+            <div>
+              <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
+              <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+
+
+            </div>
+          </form>
+
+
+          <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
+          <h2>You submitted the following status:</h2>
+
+
+          <!-- <h3>Status: {{ collectionJson.statusName }}
+          </h3> -->
+
+          <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
+
+          <!-- <h3>All registered satuss:</h3>
+          <ul>
+            <li *ngFor="let currentStatus of statuss">
+              {{currentStatus.statusName}}
+              <a (click)="deleteStatus(currentStatus.id)">Delete</a> 
+            </li>
+          </ul>  -->
+
+
+
 
         </div>
-        <div>
-          <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-          <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
-
-
-        </div>
-      </form>
-     
-
-      <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-      <h2>You submitted the following status:</h2>
-
-
-      <!-- <h3>Status: {{ collectionJson.statusName }}
-      </h3> -->
-
-      <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
-
-       <!-- <h3>All registered satuss:</h3>
-      <ul>
-        <li *ngFor="let currentStatus of statuss">
-          {{currentStatus.statusName}}
-           <a (click)="deleteStatus(currentStatus.id)">Delete</a> 
-        </li>
-      </ul>  -->
-
-
-
-
+      </div>
+    </div>
+  </body>
+  <div class="col-lg-4">
+    <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+    <div class="aside-menu">Pour selectionner un arrondissement auquel vous voudriez creer un village , ensuite renseignez le nom du village dans
+      le champs suivant.
     </div>
   </div>
-</body>
+</div>

@@ -28,14 +28,8 @@
 
 
             <div class="form-group">
-
-              <label for="townName">Village</label>
-
-
               <input type="text" class="form-control" (change)="FilterT($event.target.value)" formControlName="townName" name="townName"
-                id="townName" placeholder=" add town hier " />
-
-
+                id="townName" placeholder=" add town name " />
 
               <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
               <div class="alert" *ngIf="!clientForm.controls.townName.valid && clientForm.controls.townName.touched">{{titleAlert}}</div>

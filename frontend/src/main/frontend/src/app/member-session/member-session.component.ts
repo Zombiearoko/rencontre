@@ -61,16 +61,8 @@ export class MemberSessionComponent implements OnInit {
   onSubmit(post) {
     this.loadAllCountries();
     var j = 0;
-
-    for (var i = 0; i < this.countries.length; i++) {
-      if (this.countries[i].countryName == post.countryName)
-        j++;
-    }
-
-    if (j == 0) {
-      this.countryName = post.countryName;
-
-      const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName=' + this.countryName;
+    if (this.countries == null) {
+      const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName=' + post.countryName;
 
       this.http.get(urlC).subscribe((resp) => {
         this.results = resp['results'];
@@ -78,16 +70,34 @@ export class MemberSessionComponent implements OnInit {
         console.log("pour la collection test", this.collectionJson);
         this.loadAllCountries();
       });
-     
     }
-
-
     else {
-      alert("Ce pays existe déja Entrez un pays non existant");
+      for (var i = 0; i < this.countries.length; i++) {
+        if (this.countries[i].countryName == post.countryName)
+          j++;
+      }
+
+      if (j == 0) {
+        this.countryName = post.countryName;
+
+        const urlC = 'http://localhost:8091/rencontre/Administrator/addCountry?countryName=' + this.countryName;
+
+        this.http.get(urlC).subscribe((resp) => {
+          this.results = resp['results'];
+          this.collectionJson = resp.json();
+          console.log("pour la collection test", this.collectionJson);
+          this.loadAllCountries();
+        });
+
+      }
+
+
+      else {
+        alert("Ce pays existe déja Entrez un pays non existant");
+
+      }
 
     }
-
-
 
     // console.log("look here please",this.countryName);
     // this.rest.postCountry(this.countryName)
@@ -106,7 +116,7 @@ export class MemberSessionComponent implements OnInit {
     //       this.submitted = true;
     //      });
 
-    }
+  }
 
   ngOnInit() {
     this.loadAllCountries();

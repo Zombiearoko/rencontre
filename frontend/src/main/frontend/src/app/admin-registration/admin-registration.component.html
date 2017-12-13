@@ -51,7 +51,7 @@
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                <input type="text" class="form-control" formControlName="loginAdmin" name="loginAdmin" id="loginAdmin" placeholder="login hier "
+                <input type="text" class="form-control" formControlName="loginAdmin" name="loginAdmin" id="loginAdmin" placeholder="login  "
                 />
                 <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                 <div class="alert" *ngIf="!clientForm.controls.loginAdmin.valid && clientForm.controls.loginAdmin.touched">{{titleAlert}}</div>
@@ -60,9 +60,9 @@
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                <input type="text" class="form-control" formControlName="passwordAdmin" name="passwordAdmin" id="passwordAdmin" placeholder=" password hier "
+                <input type="text" class="form-control" formControlName="passwordAdmin" name="passwordAdmin" id="passwordAdmin" placeholder=" password "
                 />
-
+                <div class="alert" *ngIf="!clientForm.controls.loginAdmin.valid && clientForm.controls.loginAdmin.touched">{{titleAlert}}</div>
               </div>
             </div>
             <div>

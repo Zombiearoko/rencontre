@@ -8,7 +8,7 @@ import { RestProvider } from '../../providers/rest/rest';
 
 import { Router } from '@angular/router';
 
-import { AlertService,AuthenticationService} from '../_services/index';
+import { AlertService, AuthenticationService } from '../_services/index';
 import { AdministratorService } from '../_services/administrator.services';
 import { Administrator } from '../_models/administrator';
 
@@ -58,40 +58,40 @@ export class AdminRegistrationComponent implements OnInit {
     // this.loadAllAdministrators();
     var j = 0;
     // if (this.administrators == null) {
-      const urlD = 'http://localhost:8091/rencontre/Administrator/addAdmin?login=' + post.loginAdmin + '&password=' + post.passwordAdmin;
+    const urlD = 'http://localhost:8091/rencontre/Administrator/addAdmin?login=' + post.loginAdmin + '&password=' + post.passwordAdmin;
 
-      this.http.get(urlD).subscribe((resp) => {
-        this.results = resp['results'];
-        this.collectionJson = resp.json();
-        console.log("pour la collection admin", this.collectionJson);
-        // pour actualiser la liste des admin
-        // this.loadAllAdministrators();
-      });
+    this.http.get(urlD).subscribe((resp) => {
+      this.results = resp['results'];
+      this.collectionJson = resp.json();
+      console.log("pour la collection admin", this.collectionJson);
+      // pour actualiser la liste des admin
+      // this.loadAllAdministrators();
+    });
     // }
     // else {
-      for (var i = 0; i < this.administrators.length; i++) {
-        if (this.administrators[i].loginAdmin == post.loginAdmin)
-          j++;
-      }
+    // for (var i = 0; i < this.administrators.length; i++) {
+    //   if (this.administrators[i].loginAdmin == post.loginAdmin)
+    //     j++;
+    // }
 
-      if (j == 0) {
-        const urlD = 'http://localhost:8091/rencontre/Administrator/addAdmin?login=' + post.loginAdmin + '&password=' + post.passwordAdmin;
-        
-              this.http.get(urlD).subscribe((resp) => {
-                this.results = resp['results'];
-                this.collectionJson = resp.json();
-                console.log("pour la collection admin", this.collectionJson);
-                // pour actualiser la liste des admin
-                // this.loadAllAdministrators();
-              });
+    // if (j == 0) {
+    //   const urlD = 'http://localhost:8091/rencontre/Administrator/addAdmin?login=' + post.loginAdmin + '&password=' + post.passwordAdmin;
+
+    //         this.http.get(urlD).subscribe((resp) => {
+    //           this.results = resp['results'];
+    //           this.collectionJson = resp.json();
+    //           console.log("pour la collection admin", this.collectionJson);
+    //           // pour actualiser la liste des admin
+    //           // this.loadAllAdministrators();
+    //         });
 
 
-      }
+    // }
 
-      else {
-        alert("désolé! Ce Departement existe déja ");
+    // else {
+    //   alert("désolé! Ce Departement existe déja ");
 
-      }
+    // }
     // }
 
   }
@@ -104,7 +104,7 @@ export class AdminRegistrationComponent implements OnInit {
   //   this.administratorService.getAll().subscribe(administrators => { this.administrators = administrators; });
   //   console.log("administrators", this.administrators);
   // }
- 
+
 
 }
 

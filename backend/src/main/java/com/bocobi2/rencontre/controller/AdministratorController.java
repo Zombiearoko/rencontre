@@ -13,7 +13,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +63,8 @@ public class AdministratorController {
 
 	public static final Logger logger = LoggerFactory.getLogger(AdministratorController.class);
 
+	// injection des interfaces de depots mongodb
+
 	@Autowired
 	AdministratorRepository administratorRepository;
 
@@ -90,46 +91,38 @@ public class AdministratorController {
 
 	@Autowired
 	TypeMeetingRepository typeMeetingRepository;
-	
+
 	@Autowired
 	StatusRepository statusRepository;
 
 	@Autowired
 	MemberRepository memberRepository;
-	
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	UserDetailsServices use;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	
 
-	
-	
-	
+	/*
+	 * Methode de chiffrement des second mot de passe
+	 */
 	public static String cryptographe(String name) {
 
 		String crypte = "";
 		for (int i = 0; i < name.length(); i++) {
 			int c = name.charAt(i) ^ 48;
 			char crypteC = (char) c;
-			/*if (crypteC == '\\') {
-				crypte = crypte + "\\" + crypteC;
-			
-			}*/
 			crypte = crypte + crypteC;
-
 		}
-
 		return crypte;
 	}
 
 	/*
-	 * Methode decryptographe
+	 * Methode de dechiffrement des mots de passes
 	 */
 	public static String decryptographe(String password) {
 		String aCrypter = "";
@@ -140,65 +133,60 @@ public class AdministratorController {
 
 		return aCrypter;
 	}
-	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	// Methodes pour ajouter un administrateur
+
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
 	public ResponseEntity<?> addAdminPost(HttpServletRequest request) {
-		
+
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
 		Role role = roleRepository.findByName("ROLE_ADMIN");
 		Set<Role> setRole = new HashSet<>();
 		setRole.add(role);
-		
+
 		Administrator admin = new Administrator();
 		admin.setLoginAdmin(login);
 		admin.setPasswordAdmin(bCryptPasswordEncoder.encode(password));
 		admin.setPasswordSec(cryptographe(password));
 		admin.setRoles(setRole);
 		administratorRepository.save(admin);
-		
-		return new ResponseEntity<Administrator>(admin,HttpStatus.OK);
+
+		return new ResponseEntity<Administrator>(admin, HttpStatus.OK);
 	}
-	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
 	public ResponseEntity<?> addAdmin(HttpServletRequest request) {
-		
+
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
 		Role role = roleRepository.findByName("ROLE_ADMIN");
 		Set<Role> setRole = new HashSet<>();
 		setRole.add(role);
-		
+
 		Administrator admin = new Administrator();
 		admin.setLoginAdmin(login);
 		admin.setPasswordAdmin(bCryptPasswordEncoder.encode(password));
 		admin.setPasswordSec(cryptographe(password));
 		admin.setRoles(setRole);
 		administratorRepository.save(admin);
-		
-		return new ResponseEntity<Administrator>(admin,HttpStatus.OK);
-	}	
-	
+
+		return new ResponseEntity<Administrator>(admin, HttpStatus.OK);
+	}
+
 	/**
-	 * connexion of the member
+	 *
 	 * 
 	 * cette methode permet de connecter un membre dans une session
 	 */
-	
+
 	/*
-	 * Version POST
+	 * Methodes pour la connexion d'un administrateur
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/administratorConnexion", method = RequestMethod.POST)
 	public ResponseEntity<?> administratorConnexionPost(HttpServletRequest requestConnexion) {
 
-		//HttpSession session = requestConnexion.getSession();
-		// String connexionResult;
-		// recuperation des champs de connexion
 		String loginAdmin = requestConnexion.getParameter("loginAdmin");
 		String passwordAdmin = requestConnexion.getParameter("passwordAdmin");
 		System.out.println("-------------------------------");
@@ -214,39 +202,35 @@ public class AdministratorController {
 			if (administrator != null) {
 				String pass = decryptographe(administrator.getPasswordSec());
 				if (pass.equals(passwordAdmin)) {
-					
+
 					UserDetails users = use.loadUserByUsernameA(loginAdmin);
 					System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
 					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
 							users.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(authToken);
-					
-					// httpSession.setAttribute("MEMBER", member);
 
-					// session.setAttribute("Member", member);
 					return new ResponseEntity<Administrator>(administrator, HttpStatus.OK);
 				} else {
-					logger.error("Member with password {} not found.", passwordAdmin);
+					logger.error("Administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
+							new MemberErrorType("Administrator with " + "password " + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
 				}
 			} else {
-				logger.error("administrator with password {} not found.", loginAdmin);
+				logger.error("Administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
 						new MemberErrorType(
-								"administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
+								"Administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
 
 			}
 		} catch (Exception ex) {
-			logger.error("Member with pseudonym {} not found.", loginAdmin);
+			logger.error("Administrator with pseudonym {} not found.", loginAdmin);
 			return new ResponseEntity(
 					new MemberErrorType(
-							"administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
+							"Administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
-		
 
 	}
 
@@ -257,67 +241,59 @@ public class AdministratorController {
 	@RequestMapping(value = "/administratorConnexion", method = RequestMethod.GET)
 	public ResponseEntity<?> administratorConnexionGet(HttpServletRequest requestConnexion) {
 
+		String loginAdmin = requestConnexion.getParameter("loginAdmin");
+		String passwordAdmin = requestConnexion.getParameter("passwordAdmin");
+		System.out.println("-------------------------------");
+		System.out.println(loginAdmin);
+		System.out.println("-------------------------------");
 
-			//HttpSession session = requestConnexion.getSession();
-			// String connexionResult;
-			// recuperation des champs de connexion
-			String loginAdmin = requestConnexion.getParameter("loginAdmin");
-			String passwordAdmin = requestConnexion.getParameter("passwordAdmin");
-			System.out.println("-------------------------------");
-			System.out.println(loginAdmin);
-			System.out.println("-------------------------------");
+		System.out.println("-------------------------------");
+		System.out.println(passwordAdmin);
+		// recherche du membre dans la base de donnees
+		try {
+			Administrator administrator = new Administrator();
+			administrator = administratorRepository.findByLoginAdmin(loginAdmin);
+			if (administrator != null) {
+				String pass = decryptographe(administrator.getPasswordSec());
+				if (pass.equals(passwordAdmin)) {
 
-			System.out.println("-------------------------------");
-			System.out.println(passwordAdmin);
-			// recherche du membre dans la base de donnees
-			try {
-				Administrator administrator = new Administrator();
-				administrator = administratorRepository.findByLoginAdmin(loginAdmin);
-				if (administrator != null) {
-					String pass = decryptographe(administrator.getPasswordSec());
-					if (pass.equals(passwordAdmin)) {
-						
-						UserDetails users = use.loadUserByUsernameA(loginAdmin);
-						System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
-						UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
-								users.getAuthorities());
-						SecurityContextHolder.getContext().setAuthentication(authToken);
-						
-						// httpSession.setAttribute("MEMBER", member);
+					UserDetails users = use.loadUserByUsernameA(loginAdmin);
+					System.out.println("Humm tu as reussi a me mettre en session tu es forte ma petite " + users);
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(users, null,
+							users.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(authToken);
 
-						// session.setAttribute("Member", member);
-						return new ResponseEntity<Administrator>(administrator, HttpStatus.OK);
-					} else {
-						logger.error("Member with password {} not found.", passwordAdmin);
-						return new ResponseEntity(
-								new MemberErrorType("Member with " + "password " + passwordAdmin + " not found."),
-								HttpStatus.NOT_FOUND);
-					}
+					return new ResponseEntity<Administrator>(administrator, HttpStatus.OK);
 				} else {
-					logger.error("administrator with password {} not found.", loginAdmin);
+					logger.error("Administrator with password {} not found.", passwordAdmin);
 					return new ResponseEntity(
-							new MemberErrorType(
-									"administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
+							new MemberErrorType("Administrator with " + "password " + passwordAdmin + " not found."),
 							HttpStatus.NOT_FOUND);
-
 				}
-			} catch (Exception ex) {
-				logger.error("Member with pseudonym {} not found.", loginAdmin);
+			} else {
+				logger.error("Administrator with password {} not found.", loginAdmin);
 				return new ResponseEntity(
 						new MemberErrorType(
-								"administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
+								"Administrator with " + "pseudonym " + "" + "" + loginAdmin + " not found."),
 						HttpStatus.NOT_FOUND);
-			}
 
+			}
+		} catch (Exception ex) {
+			logger.error("Administrator with pseudonym {} not found.", loginAdmin);
+			return new ResponseEntity(
+					new MemberErrorType(
+							"Administrator with " + "pseudonym" + " " + "" + "" + loginAdmin + " not found."),
+					HttpStatus.NOT_FOUND);
 		}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	}
+
+	// deconnexion de l'administrateur
 	@RequestMapping(value = "/logoutAdministrator", method = RequestMethod.POST)
 	public Map<String, String> logoutAdministratorPost(HttpServletRequest request, HttpServletResponse response) {
 
-		Map<String,String> message= new HashMap<>();
+		Map<String, String> message = new HashMap<>();
 		try {
-			
 
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null) {
@@ -325,23 +301,24 @@ public class AdministratorController {
 				new SecurityContextLogoutHandler().logout(request, response, auth);
 
 				message.put("Message", "succes");
+				logger.debug("Disconnection succes");
 				return message;
 			}
 		} catch (Exception ex) {
 			message.put("Message", "failed");
+			logger.error("Disconnection failed");
 			return message;
 		}
 		message.put("Message", "failed");
+		logger.error("Disconnection failed");
 		return message;
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/logoutAdministrator", method = RequestMethod.GET)
 	public Map<String, String> logoutAdministratorGet(HttpServletRequest request, HttpServletResponse response) {
 
-		Map<String,String> message= new HashMap<>();
+		Map<String, String> message = new HashMap<>();
 		try {
-			
 
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null) {
@@ -349,17 +326,19 @@ public class AdministratorController {
 				new SecurityContextLogoutHandler().logout(request, response, auth);
 
 				message.put("Message", "succes");
+				logger.debug("Disconnection succes");
 				return message;
 			}
 		} catch (Exception ex) {
 			message.put("Message", "failed");
+			logger.error("Disconnection failed");
 			return message;
 		}
 		message.put("Message", "failed");
+		logger.error("Disconnection failed");
 		return message;
 	}
-	
-	
+
 	/*
 	 * Methode d'ajout de status
 	 */
@@ -386,7 +365,7 @@ public class AdministratorController {
 		}
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/addStatus", method = RequestMethod.GET)
 	public ResponseEntity<?> addStatusGet(HttpServletRequest request) {
@@ -407,7 +386,6 @@ public class AdministratorController {
 
 	}
 
-	
 	/***
 	 * method add type of meeting
 	 */
@@ -568,6 +546,10 @@ public class AdministratorController {
 	}
 
 	/*
+	 * ajouter les departement
+	 */
+
+	/*
 	 * Version Post
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -622,6 +604,7 @@ public class AdministratorController {
 		}
 	}
 
+	// ajouter l'arrodissement
 	/*
 	 * Version Post
 	 */
@@ -708,6 +691,7 @@ public class AdministratorController {
 					HttpStatus.CONFLICT);
 		}
 	}
+	// Ajouter les villages
 
 	/*
 	 * Version Get
@@ -738,6 +722,7 @@ public class AdministratorController {
 		}
 	}
 
+	// Ajouter les concession
 	/*
 	 * Version POst
 	 */
@@ -766,53 +751,50 @@ public class AdministratorController {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	// Ajouter les roles
+
 	@RequestMapping(value = "/addRole", method = RequestMethod.POST)
 	public ResponseEntity<?> rolePost(HttpServletRequest request) {
-		
+
 		String name = request.getParameter("nameRole");
-		Role role=new Role();
-		
-		
-		if(name.equalsIgnoreCase("ROLE_USER")){
-			role .setName(name);
+		Role role = new Role();
+
+		if (name.equalsIgnoreCase("ROLE_USER")) {
+			role.setName(name);
 			role.setUsers(new HashSet<>(memberRepository.findAll()));
 			roleRepository.save(role);
-		}else if(name.equalsIgnoreCase("ROLE_ADMIN")){
-			role .setName(name);
+		} else if (name.equalsIgnoreCase("ROLE_ADMIN")) {
+			role.setName(name);
 			role.setAdmin(new HashSet<>(administratorRepository.findAll()));
 			roleRepository.save(role);
 		}
-		
-		//roleRepository.deleteAll();
-		
-		
-		return new ResponseEntity<Role>(role,HttpStatus.OK);
+
+		// roleRepository.deleteAll();
+
+		return new ResponseEntity<Role>(role, HttpStatus.OK);
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/addRole", method = RequestMethod.GET)
 	public ResponseEntity<?> roleGet(HttpServletRequest request) {
-		
+
 		String name = request.getParameter("nameRole");
-		Role role=new Role();
-		
-		
-		if(name.equalsIgnoreCase("ROLE_USER")){
-			role .setName(name);
+		Role role = new Role();
+
+		if (name.equalsIgnoreCase("ROLE_USER")) {
+			role.setName(name);
 			role.setUsers(new HashSet<>(memberRepository.findAll()));
 			roleRepository.save(role);
-		}else if(name.equalsIgnoreCase("ROLE_ADMIN")){
-			role .setName(name);
+		} else if (name.equalsIgnoreCase("ROLE_ADMIN")) {
+			role.setName(name);
 			role.setAdmin(new HashSet<>(administratorRepository.findAll()));
 			roleRepository.save(role);
 		}
-		
-		//roleRepository.deleteAll();
-		
-		
-		return new ResponseEntity<Role>(role,HttpStatus.OK);
+
+		// roleRepository.deleteAll();
+
+		return new ResponseEntity<Role>(role, HttpStatus.OK);
 	}
+
 	/*
 	 * List all country
 	 */
@@ -1102,7 +1084,7 @@ public class AdministratorController {
 			int yearCourante = calendarCourante.get(Calendar.YEAR);
 
 			int birthDate = yearCourante - year;
-			String birt= birthDate+"";
+			//String birt = birthDate + "";
 			// Integer birthDate = new Integer(birth);
 			System.out.println(birthDate);
 			List<TypeMeeting> listOfTypeMeeting = typeMeetingRepository.findAll();
@@ -1251,7 +1233,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Borough>>(listOfBorough, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllTown", method = RequestMethod.POST)
 	public ResponseEntity<List<Town>> listAllTownPost(HttpServletRequest request) {
@@ -1264,12 +1246,12 @@ public class AdministratorController {
 		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllStatus", method = RequestMethod.POST)
 	public ResponseEntity<List<Status>> listAllStatusPost(HttpServletRequest request) {
 
-		List<Status> listOfStatus= statusRepository.findAll();
+		List<Status> listOfStatus = statusRepository.findAll();
 
 		if (listOfStatus.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -1277,7 +1259,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Status>>(listOfStatus, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllTown", method = RequestMethod.GET)
 	public ResponseEntity<List<Town>> listAllTownGet(HttpServletRequest request) {
@@ -1290,7 +1272,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Town>>(listOfTown, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllConcession", method = RequestMethod.POST)
 	public ResponseEntity<List<Concession>> listAllConcessionPost(HttpServletRequest request) {
@@ -1303,7 +1285,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllConcession", method = RequestMethod.GET)
 	public ResponseEntity<List<Concession>> listAllConcessionGet(HttpServletRequest request) {
@@ -1316,12 +1298,12 @@ public class AdministratorController {
 		return new ResponseEntity<List<Concession>>(listOfConcession, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllStatus", method = RequestMethod.GET)
 	public ResponseEntity<List<Status>> listAllStatusGet(HttpServletRequest request) {
 
-		List<Status> listOfStatus= statusRepository.findAll();
+		List<Status> listOfStatus = statusRepository.findAll();
 
 		if (listOfStatus.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -1342,7 +1324,7 @@ public class AdministratorController {
 		return new ResponseEntity<List<Member>>(listOfMember, HttpStatus.OK);
 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/listAllMember", method = RequestMethod.GET)
 	public ResponseEntity<List<Member>> listAllMemberGet(HttpServletRequest request) {
@@ -1355,5 +1337,5 @@ public class AdministratorController {
 		return new ResponseEntity<List<Member>>(listOfMember, HttpStatus.OK);
 
 	}
-	
+
 }

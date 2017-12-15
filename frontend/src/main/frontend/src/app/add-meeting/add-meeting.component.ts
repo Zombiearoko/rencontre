@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 
 import { AlertService, MeetingService } from '../_services/index';
 import { Meeting } from '../_models/meeting';
+import { Administrator } from '../_models/administrator';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class AddMeetingComponent implements OnInit {
   public collectionJson = Object;
   submitted = false;
   public currentMeeting: Meeting;
+  currentAdministrator: Administrator
 
   public meeting: Meeting;
   public meetings: Meeting[] = [];
@@ -41,7 +43,8 @@ export class AddMeetingComponent implements OnInit {
       'meetingName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(55)])]
 
     });
-
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    console.log("heooooomeeting",this.currentAdministrator.loginAdmin);
     this.currentMeeting = JSON.parse(localStorage.getItem('currentMeeting'));
   }
 

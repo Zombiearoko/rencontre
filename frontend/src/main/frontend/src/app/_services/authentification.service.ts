@@ -5,16 +5,24 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 //pour test
 import 'rxjs/add/operator/do';
-
 import 'rxjs/add/operator/catch';
+
+import { Member } from '../_models/index';
+import { Administrator } from '../_models/administrator';
 
 @Injectable()
 export class AuthenticationService {
     public value: string;
     public valueC: string;
-
+    private results: [any];
+    private collectionJson: object;
+    currentMember: Member;
+    currentAdministrator: Administrator;
 
     constructor(private http: Http) {
+        this.currentMember = JSON.parse(localStorage.getItem('currentMember'));
+        this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+        // console.log("heooooohomets", this.currentMember.pseudonym);
 
     }
 
@@ -123,34 +131,42 @@ export class AuthenticationService {
 
     logout() {
         // remove member from local storage to log user out
-        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-        const options = new RequestOptions({ headers: headers1 });
+        // const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+        // const options = new RequestOptions({ headers: headers1 });
 
         const url = 'http://localhost:8091/rencontre/Member/logout';
-        return this.http.post(url, options)
-            .do((res: Response) => console.log(res.json()))
-            //.map((res: Response ) => res.json());
-            //ajouté a partir dici
-            .map((res: Response) => {
-                localStorage.removeItem('currentMember');
-            });
+        this.http.get(url).subscribe((resp) => {
+            this.results = resp['results'];
+            this.collectionJson = resp.json();
+            console.log('members log', this.collectionJson);
+            console.log("avant le remove current Member", this.currentMember);
+            // alert("bye mm");
+            localStorage.removeItem('currentMember');
+            this.currentMember = JSON.parse(localStorage.getItem('currentMember'));
+            console.log("après le remove current Member", this.currentMember);
 
 
+        }
+    );
     }
-
     logoutAdmin() {
         // remove member from local storage to log user out
         // remove member from local storage to log user out
-        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-        const options = new RequestOptions({ headers: headers1 });
+        // const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+        // const options = new RequestOptions({ headers: headers1 });
 
         const url = 'http://localhost:8091/rencontre/Administrator/logoutAdministrator';
-        return this.http.post(url, options)
-            .do((res: Response) => console.log(res.json()))
-            //.map((res: Response ) => res.json());
-            //ajouté a partir dici
-            .map((res: Response) => {
+        this.http.get(url).subscribe((resp) => {
+            this.results = resp['results'];
+            this.collectionJson = resp.json();
+            console.log('members log', this.collectionJson);
+            console.log("avant le remove currentAdministrator", this.currentAdministrator);
+            // alert("bye mm");
             localStorage.removeItem('currentAdministrator');
+            this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+            console.log("après le remove currentAdministrator", this.currentAdministrator);
+
+                localStorage.removeItem('currentAdministrator');
             });
 
     }

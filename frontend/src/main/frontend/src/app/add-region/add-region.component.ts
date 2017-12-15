@@ -147,7 +147,7 @@ import { Router } from '@angular/router';
 import { AlertService, CountryService, RegionService } from '../_services/index';
 import { Country } from '../_models/country';
 import { Region } from '../_models/region';
-// import {Country, Region} from '../_models/index';
+import {Administrator} from '../_models/administrator';
 
 
 
@@ -169,6 +169,7 @@ export class AddRegionComponent implements OnInit {
   submitted = false;
   public currentCountry: Country;
   public currentRegion: Region;
+  currentAdministrator:Administrator;
   public country: Country;
   public countries: Country[] = [];
   public regions: Region[] = [];
@@ -190,7 +191,8 @@ export class AddRegionComponent implements OnInit {
       'regionName': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])]
 
     });
-
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    console.log("heoooooregion",this.currentAdministrator.loginAdmin);
     this.currentCountry = JSON.parse(localStorage.getItem('currentCountry'));
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);

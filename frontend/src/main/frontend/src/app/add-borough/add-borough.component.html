@@ -1,20 +1,26 @@
 <!-- Fixed navbar -->
 <app-nav-admin></app-nav-admin>
 <!--/.nav-collapse -->
+<hr>
+<div class="navbar row-fluid footer-copyright ">
+    <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
 
-<div class="page-header">
-    <font color="black">
-        <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Ajouter un Arrondissement</h2>
-    </font>
+        Hello
+        <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
+
+    </div>
 </div>
-<!-- Page Content -->
+
 
 <div class="row">
 
     <body class="col-lg-8">
-        <div class="container-fluid">
-            <div class="container">
-                <div class="cadre ">
+
+        <div class="container">
+            <div class="cadre">
+                <div class="col-md-6 col-md-offset-1" id="form">
+                    <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add Borought</h2>
+
                     <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
 
 
@@ -44,30 +50,18 @@
                         </div>
                         <div>
                             <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>
-                            <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a>
+                            <!-- <a [routerLink]="['/login-form']"> <button class="btn btn-danger ">Leave</button></a> -->
 
 
                         </div>
                     </form>
-                    <!-- <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p> -->
-
-
-                    <h2>You submitted the following borough:</h2>
-                    <div class="row">
-                        <h3>Arrondissement: {{ collectionJson.boroughName }}
-                        </h3>
-                    </div>
-
-                    <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
-
 
                 </div>
             </div>
         </div>
     </body>
     <div class="col-lg-4">
-        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+        <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">Et comment?</div>
         <div class="aside-menu">selectionner un departement auquel vous voudriez ajouter un arrondissement , ensuite renseignez le nom de l'arrondissement
             à ajouter dans le champs suivant.
             <h4> passer un bon moment sur notre plateforme</h4>

@@ -1,12 +1,16 @@
 <!-- Fixed navbar -->
 <app-nav-admin></app-nav-admin>
-<!--/.nav-collapse -->
-<div class="page-header">
-  <font color="black">
-    <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block">Admin Rencontre Web site</h2>
-  </font>
-</div>
+<hr>
+<div class="navbar row-fluid footer-copyright ">
+    <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
 
+        Hello
+        <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
+
+    </div>
+</div>
+<!--/.nav-collapse -->
+<hr >
 <!-- Page Content -->
 
 <div class="row">
@@ -42,7 +46,7 @@
 
 
           <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-          <h2>You submitted the following status:</h2>
+          <!-- <h2>You submitted the following status:</h2> -->
 
 
           <!-- <h3>Status: {{ collectionJson.statusName }}
@@ -66,7 +70,7 @@
     </div>
   </body>
   <div class="col-lg-4">
-    <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
+    <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">Et comment?</div>
     <div class="aside-menu">Pour selectionner un arrondissement auquel vous voudriez creer un village , ensuite renseignez le nom du village dans
       le champs suivant.
     </div>

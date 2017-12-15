@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AlertService, RegionService, DepartmentService } from '../_services/index';
 import { Region } from '../_models/region';
 import { Department } from '../_models/department';
+import { Administrator } from '../_models/administrator';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class AddDepartmentComponent implements OnInit {
   submitted = false;
   public currentRegion: Region;
   public currentDepartment: Department;
+  currentAdministrator:Administrator;
   public region: Region;
   public regions: Region[] = [];
   public departments: Department[] = [];
@@ -50,7 +52,8 @@ export class AddDepartmentComponent implements OnInit {
       'departmentName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
 
     });
-
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    console.log("heooooodepartts",this.currentAdministrator.loginAdmin);
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     this.currentDepartment = JSON.parse(localStorage.getItem('currentDepartment'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);

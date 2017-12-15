@@ -25,12 +25,9 @@ const appRoutes: Routes = [
     { path: 'confimr-account', component: ConfimrAccountComponent },
     { path: 'rencotre', component: RencotreComponent },
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'home', component: HomeComponent },
-
+    // { path: 'home', component: HomeComponent },
     { path: 'login-form', component: LoginFormComponent },
     { path: 'member-registration', component: MemberRegistrationComponent },
-    
-    
     { path: 'member-register1', component: MemberRegister1Component },
     // { path: 'add-country', component: AddCountryComponent },add country=member-session
     { path: 'add-region', component: AddRegionComponent },

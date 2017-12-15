@@ -26,8 +26,7 @@ var appRoutes = [
     { path: '', component: index_4.HomeComponent, canActivate: [index_17.AuthGuard] },
     { path: 'login-form', component: index_2.LoginFormComponent },
     { path: 'member-registration', component: index_3.MemberRegistionComponent },
-    { path: 'home', component: index_4.HomeComponent },
-   
+    // { path: 'home', component: index_4.HomeComponent },
     { path: 'member-register1', component: index_6.MemberRegister1Component },
     // { path: 'add-country', component: AddCountryComponent },add country=member-session
     { path: 'add-region', component: index_7.AddRegionComponent },

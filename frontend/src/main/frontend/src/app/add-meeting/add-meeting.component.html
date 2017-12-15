@@ -1,24 +1,23 @@
 <!-- Fixed navbar -->
 <app-nav-admin></app-nav-admin>
 <!--/.nav-collapse -->
+<hr>
+<div class="navbar row-fluid footer-copyright ">
+    <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
 
-<div class="page-header">
-  <font color="black">
-    <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block">Admin Rencontre Web site</h2>
-  </font>
+        Hello
+        <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
+
+    </div>
 </div>
-
-<!-- Page Content -->
-<hr >
-
 <div class="row">
-
-  <body class="col-lg-8">
-
-    <div class="container">
-      <div class="cadre">
-        <div class="col-md-6 col-md-offset-1" id="form">
-          <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add an meeting type</h2>
+  
+      <body class="col-lg-8">
+  
+          <div class="container">
+              <div class="cadre">
+                  <div class="col-md-6 col-md-offset-1" id="form">
+                      <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add meeting type</h2>
 
           <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
             <div class="form-group">

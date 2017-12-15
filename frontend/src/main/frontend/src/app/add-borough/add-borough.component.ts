@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AlertService, DepartmentService, BoroughService } from '../_services/index';
 import { Department } from '../_models/department';
 import { Borough } from '../_models/borough';
+import { Administrator } from '../_models/administrator';
 
 
 
@@ -37,7 +38,7 @@ export class AddBoroughComponent implements OnInit {
   post: any;
   titleAlert: string = 'You must specify a borough';
   private results: [any];
-
+  currentAdministrator: Administrator;
 
   constructor(private departmentService: DepartmentService,
     private boroughService: BoroughService,
@@ -45,13 +46,13 @@ export class AddBoroughComponent implements OnInit {
     private router: Router,
     private alertService: AlertService) {
 
-
     this.clientForm = this.fb.group({
       'departmentNameN': [null, Validators.compose([Validators.required])],
       'boroughName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
 
     });
-
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    console.log("heoooooborougs", this.currentAdministrator.loginAdmin);
     this.currentDepartment = JSON.parse(localStorage.getItem('currentDepartment'));
     this.currentBorough = JSON.parse(localStorage.getItem('currentBorough'));
   }
@@ -106,6 +107,12 @@ export class AddBoroughComponent implements OnInit {
 
   }
   ngOnInit() {
+    // this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    // console.log("heoooooborougs", this.currentAdministrator.loginAdmin);
+    // if (this.currentAdministrator == null)
+    //   {
+    //   this.router.navigate(['/login-admin']);
+    // }
     this.loadAllDepartments();
     // this.getAll;
 

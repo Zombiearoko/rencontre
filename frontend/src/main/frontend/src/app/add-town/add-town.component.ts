@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { AlertService, BoroughService, TownService } from '../_services/index';
 import { Borough } from '../_models/borough';
 import { Town } from '../_models/town';
-// import {Country, Region} from '../_models/index';
+import {Administrator} from '../_models/administrator';
 
 
 
@@ -29,6 +29,7 @@ export class AddTownComponent implements OnInit {
   submitted = false;
   public currentBorough: Borough;
   public currentTown: Town;
+  currentAdministrator:Administrator;
   public borough: Borough;
   public boroughs: Borough[] = [];
   public towns: Town[] = [];
@@ -50,7 +51,8 @@ export class AddTownComponent implements OnInit {
       'townName': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])]
 
     });
-
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    console.log("heoooootown",this.currentAdministrator.loginAdmin);
     this.currentBorough = JSON.parse(localStorage.getItem('currentBorough'));
     this.currentTown = JSON.parse(localStorage.getItem('currentTown'));
   }

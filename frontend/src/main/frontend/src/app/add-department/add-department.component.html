@@ -57,13 +57,8 @@
 
                         <div class="form-group">
 
-                            <label for="departmentName">Department</label>
-
-
-                            <input type="text" class="form-control" formControlName="departmentName" name="departmentName" id="departmentName" placeholder=" add department hier "
+                            <input type="text" class="form-control" formControlName="departmentName" name="departmentName" id="departmentName" placeholder=" add department name "
                             />
-
-
 
                             <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                             <div class="alert" *ngIf="!clientForm.controls.departmentName.valid && clientForm.controls.departmentName.touched">{{titleAlert}}</div>

@@ -1,16 +1,65 @@
-<!-- Fixed navbar -->
- <app-nav-admin></app-nav-admin>  
-<!--/.nav-collapse -->
-<font color="black">
-    <div class="page-header">
+<!-- Fixed navbar navbar-default remplace par navbar-inverse pour le fond noir-->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  </button>
+            <a class="navbar-brand" href="/">Rencontres Diversifiées</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a class="menuLink" href="/rencotre"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Home </a>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add Item</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/add-region">Add region</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/add-department">Add department</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/session-admin">Add Country</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="add-borough">Add Borough</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/add-town">Add Town</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/add-meeting">Add Meeting</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/add-status">Add status</a>
 
-        <h1 class="text-center text-lg text-uppercase my-0">Welcome
-            <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
-        </h1>
+                    </div>
+                </li>
 
-        <h3 class="text-center text-lg text-uppercase my-0"> You're logged in Rencontre!!</h3>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><a class="menuLink" href="/login-admin"><span class="glyphicon glyphicon-tasks"></span> logout </a>
+                </li>
+                <li><a class="menuLink" href="/admin-registration"><span class="glyphicon glyphicon-cog"></span>sign up</a>
+                </li>
+
+            </ul>
+
+        </div>
+        <!--/.nav-collapse pour etoile <span class="glyphicon glyphicon-star-empty"></span> -->
     </div>
-</font>
+
+</div>
+<hr >
+<div class="navbar row-fluid footer-copyright ">
+    <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
+
+        Welcome
+        <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
+       
+    </div>
+</div>
+
 
 
 

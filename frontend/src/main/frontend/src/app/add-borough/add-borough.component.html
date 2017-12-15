@@ -35,13 +35,8 @@
 
                         <div class="form-group">
 
-                            <label for="boroughName">Arrondissement</label>
-
-
-                            <input type="text" class="form-control" formControlName="boroughName" name="boroughName" id="boroughName" placeholder=" add borough hier "
+                            <input type="text" class="form-control" formControlName="boroughName" name="boroughName" id="boroughName" placeholder=" add borough name "
                             />
-
-
 
                             <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                             <div class="alert" *ngIf="!clientForm.controls.boroughName.valid && clientForm.controls.boroughName.touched">{{titleAlert}}</div>

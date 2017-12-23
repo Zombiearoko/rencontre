@@ -147,9 +147,7 @@ import { Router } from '@angular/router';
 import { AlertService, CountryService, RegionService } from '../_services/index';
 import { Country } from '../_models/country';
 import { Region } from '../_models/region';
-import {Administrator} from '../_models/administrator';
-
-
+import { Administrator } from '../_models/administrator';
 
 @Component({
   selector: 'app-add-region',
@@ -163,13 +161,11 @@ export class AddRegionComponent implements OnInit {
   public countryName: string;
   public regionName: string;
   public collectionJson = Object;
-  // {
-  //   countryName:'test',
-  // }
+
   submitted = false;
   public currentCountry: Country;
   public currentRegion: Region;
-  currentAdministrator:Administrator;
+  currentAdministrator: Administrator;
   public country: Country;
   public countries: Country[] = [];
   public regions: Region[] = [];
@@ -191,8 +187,6 @@ export class AddRegionComponent implements OnInit {
       'regionName': [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])]
 
     });
-    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    console.log("heoooooregion",this.currentAdministrator.loginAdmin);
     this.currentCountry = JSON.parse(localStorage.getItem('currentCountry'));
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     // console.log("heoooooaddcountryts",this.currentCountry.countryName);
@@ -246,29 +240,21 @@ export class AddRegionComponent implements OnInit {
 
       }
 
-
     }
   }
   ngOnInit() {
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    
+        if (this.currentAdministrator == null) {
+          this.router.navigate(['/login-admin']);
+        }
+        else {
+          console.log("heoooooregions", this.currentAdministrator.loginAdmin);
+        }
     this.loadAllCountries();
-    // this.loadAllRegions()
-    // this.getAll;
 
   }
 
-
-  // private getAll() {
-  //   return this.http.get('http://localhost:8091/rencontre/Administrator/listAllCountry')
-  //    .do((res: Response) => console.log("les pays",res.json()))
-  //     .map((res: Response) => {
-
-  // // login successful if there's a jwt token in the response
-  // this.countries= res.json();
-  // //test
-  // console.log("hey les pays",this.countries);
-  // return this.countries;
-  // });
-  // }
   private loadAllCountries() {
     this.countryService.getAll().subscribe(countries => { this.countries = countries; });
   }

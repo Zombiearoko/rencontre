@@ -1,13 +1,7 @@
 <!-- Fixed navbar -->
 <app-nav-admin></app-nav-admin>
 <!--/.nav-collapse -->
-<!-- <section class="section-pub clear-left">
-        <div class="content-aside  col-lg-3">
 
-            <h3 class="pub">publicité </h3>
-
-        </div>
-    </section> -->
 <hr>
 <div class="navbar row-fluid footer-copyright ">
     <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
@@ -39,39 +33,13 @@
                                 <option *ngFor="let currentCountry of countries" 
                                 >{{currentCountry.countryName}}
                                 </option>
-                             </select>
-
-
+                            </select>
                         </div>
-                        <!-- Update to angular 4.X.X, there is a new way to mark an option selected:
-              <select [compareWith]="byId" [(ngModel)]="selectedItem">
-                <option *ngFor="let item of items" [ngValue]="item">{{item.name}}
-                </option>
-              </select>
-              
-              byId(item1: ItemModel, item2: ItemModel) {
-                return item1.id === item2.id;
-              }  -->
-
-                        <!-- <div class="form-group">
-
-                    <label for="countryNameN">recuperation country</label>
-                    <div class="cols-lg-8">
-                        <div class="input-group">
-                            <input type="text" class="form-control" formControlName="countryNameN" name="countryName" id="countryName" [formControl]="countryNameN"
-                            />
-                        </div>
-                    </div>
-
-                </div> -->
 
                         <div class="form-group">
-<!-- <label for="regionName">Region</label> -->
-
 
                             <input type="text" class="form-control" formControlName="regionName" name="regionName" id="regionName" placeholder=" add Region name "
                             />
-
 
                             <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
                             <div class="alert" *ngIf="!clientForm.controls.regionName.valid && clientForm.controls.regionName.touched">{{titleAlert}}</div>
@@ -84,8 +52,6 @@
 
                         </div>
                     </form>
-                    <!-- <p>Form value: {{ clientForm.value | json }}</p>
-                <p>Form status: {{ clientForm.status | json }}</p> -->
 
                     <h2>You submitted the following Region:</h2>
                     <div class="row">
@@ -93,21 +59,6 @@
                             <font color="red">{{ collectionJson.regionName }}</font>
                         </h3>
                     </div>
-
-                    <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
-
-
-                    <!-- <div class="col-md-6 col-md-offset-3">
-
-                <h3>All registered Regions:</h3>
-                <ul>
-                    <li *ngFor="let currentRegion of regions">
-                        {{currentRegion.regionName}}
-                        <a (click)="deleteCountry(currentCountry.id)">Delete</a>
-                    </li>
-                </ul>
-
-            </div> -->
 
                 </div>
             </div>

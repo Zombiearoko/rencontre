@@ -75,6 +75,7 @@
 <div class="row">
 
     <!-- <body class="col-sm-8 col-sm-offset-2"> -->
+
     <body class="col-lg-8">
         <!-- Page Content -->
 
@@ -85,10 +86,8 @@
                     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
 
                         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !pseudonym.valid }">
-                            <!-- <label for="pseudonym">Pseudo</label> -->
-                            <!-- class="glyphicon glyphicon-tasks -->
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                 <input type="text" class="form-control" name="pseudonym" (change)="Filter($event.target.value)" [(ngModel)]="model.pseudonym"
                                     #pseudonym="ngModel" placeholder="pseudo" required />
                                 <div *ngIf="f.submitted && !pseudonym.valid" class="help-block">pseudonym is required</div>
@@ -132,95 +131,12 @@
             </div>
 
         </div>
-        <!-- <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
-                <div class="form-group">
-                    
-                        <label for="pseudonym"  >Pseudo</label>
-                        <div class="cols-lg-8">
-                            <div class="input-group">
-                                <input type="text" class="form-control" formControlName="pseudonym" name="pseudonym" id="pseudonym" placeholder=" your login hier " />
-                            </div>
-                        </div>
-                        
-                          <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> 
-                         <div class="alert" *ngIf="!clientForm.controls.pseudonym.valid && clientForm.controls.pseudonym.touched">{{titleAlert}}</div>
-                         
-                </div>
-            
-            <div class="form-group">
-                <label for="password"  >PassWord</label>
-                <div class="cols-lg-8">
-                    <div class="input-group">
-                        <input type="password" class="form-control" formControlName="password" name="password" id="password" placeholder=" " />
-                    </div>
-                </div>
-            </div>
-                <div>
-                    <a [routerLink]="['../member-session']"> <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button> 
-                    </a> -->
 
-        <!-- <button type="submit" class="btn btn-primary">Submit<span [routerLink]="['/member-session']"></span></button> -->
-        <!-- <a [routerLink]="['/home']" class="btn btn-link">Cancel</a> -->
-        <!-- <a [routerLink]="['../member-session']">-->
-        <!-- <button class="btn btn-primary " type="submit" [disabled]="!clientForm.valid">Submit</button>    -->
-        <!-- <a [routerLink]="['/member-session']" class="btn btn-link">Submit</a> -->
-
-        <!-- </a>   -->
-        <!-- <button class="btn btn-danger ">Leave</button> -->
-
-        <!-- </div> -->
-        <!-- </form> -->
-
-
-        <!-- <p>Form value: {{ clientForm.value | json }}</p>
-            <p>Form status: {{ clientForm.status | json }}</p> -->
-        <!-- 
-            <div class="row">
-                    <div class="col-sm-3 myCols">
-                        <img class="img-circle" src="assets/img/carousel-1.jpg" alt="Generic placeholder image" width="140" height="140">
-                            
-                        <h5>Get started</h5>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Sign up</a></li>
-                            <li><a href="#">Downloads</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                            <img class="img-circle" src="assets/img/carousel-2.jpg" alt="Generic placeholder image" width="140" height="140">    
-                        <h5>About us</h5>
-                        <ul>
-                            <li><a href="#">Company Information</a></li>
-                            <li><a href="#">Contact us</a></li>
-                            <li><a href="#">Reviews</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                            <img class="img-circle" src="assets/img/carousel-3.jpg" alt="Generic placeholder image" width="140" height="140">    
-                        <h5>Support</h5>
-                        <ul>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Help desk</a></li>
-                            <li><a href="#">Forums</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3 myCols">
-                            <img class="img-circle" src="assets/img/carousel-4.jpg" alt="Generic placeholder image" width="140" height="140">
-                            
-                        <h5>Legal</h5>
-                        <ul>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div> -->
-            </body>
+    </body>
     <div class="col-lg-4">
         <div class="tagline-upper text-center text-heading text-shadow mt-5 d-none ">HI</div>
-        <div class="aside-menu">Merci pour votre fidélité sur notre site; pour vous connecter à un type de rencontre auquel vous y
-            êtes déjà inscrit, il vous suffit de renseigner votre login, mot de passe et en fin de selectionner le type de
-            rencontre
+        <div class="aside-menu">Merci pour votre fidélité sur notre site; pour vous connecter à un type de rencontre auquel vous y êtes déjà inscrit,
+            il vous suffit de renseigner votre login, mot de passe et en fin de selectionner le type de rencontre
             <h4> passer un bon moment sur notre plateforme</h4>
         </div>
     </div>

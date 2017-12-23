@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 import { AlertService, StatusService } from '../_services/index';
 import { Status } from '../_models/status';
-import { Administrator} from '../_models/administrator';
+import { Administrator } from '../_models/administrator';
 
 @Component({
   selector: 'app-add-status',
@@ -23,7 +23,7 @@ export class AddStatusComponent implements OnInit {
   public collectionJson = Object;
   submitted = false;
   public currentStatus: Status;
-  currentAdministrator:Administrator;
+  currentAdministrator: Administrator;
   public status: Status;
   public statuss: Status[] = [];
   loading = false;
@@ -42,8 +42,7 @@ export class AddStatusComponent implements OnInit {
       'statusName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(55)])]
 
     });
-    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    console.log("heooooostatus",this.currentAdministrator.loginAdmin);
+ 
     this.currentStatus = JSON.parse(localStorage.getItem('currentStatus'));
   }
 
@@ -89,11 +88,16 @@ export class AddStatusComponent implements OnInit {
       }
     }
 
-
-
-
   }
   ngOnInit() {
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+
+    if (this.currentAdministrator == null) {
+      this.router.navigate(['/login-admin']);
+    }
+    else {
+      console.log("heooooostatus", this.currentAdministrator.loginAdmin);
+    }
     this.loadAllStatuss();
 
   }

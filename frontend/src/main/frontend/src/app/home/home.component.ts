@@ -42,8 +42,7 @@ export class HomeComponent implements OnInit {
             this.collectionJson = resp.json();
             console.log("collection stautus", this.collectionJson);
         });
-        //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
-        //  console.log("meetings", this.meetings);
+
     }
 
     ngOnInit() {
@@ -52,7 +51,7 @@ export class HomeComponent implements OnInit {
 
     }
 
-   
+
     // private loadAllStatuss() {
     //     this.statusService.getAll().subscribe(statuss => { this.statuss = statuss; });
     //     console.log("statuss", this.statuss);

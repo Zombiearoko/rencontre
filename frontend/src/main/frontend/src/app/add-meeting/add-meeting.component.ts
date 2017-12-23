@@ -43,8 +43,7 @@ export class AddMeetingComponent implements OnInit {
       'meetingName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(55)])]
 
     });
-    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    console.log("heooooomeeting",this.currentAdministrator.loginAdmin);
+   
     this.currentMeeting = JSON.parse(localStorage.getItem('currentMeeting'));
   }
 
@@ -85,7 +84,6 @@ export class AddMeetingComponent implements OnInit {
 
       }
 
-
       else {
         alert("désolé! Cet type de rencontre existe déja ");
 
@@ -95,6 +93,14 @@ export class AddMeetingComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    
+        if (this.currentAdministrator == null) {
+          this.router.navigate(['/login-admin']);
+        }
+        else {
+          console.log("heooooomeeting", this.currentAdministrator.loginAdmin);
+        }
     this.loadAllMeetings();
 
   }

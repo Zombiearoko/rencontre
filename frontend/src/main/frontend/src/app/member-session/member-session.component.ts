@@ -99,23 +99,7 @@ export class MemberSessionComponent implements OnInit {
 
     }
 
-    // console.log("look here please",this.countryName);
-    // this.rest.postCountry(this.countryName)
-    // .subscribe((data) => {
-    //   console.log("pour errorooooo",data);
-    //     // set success message and pass true paramater to persist the message after redirecting to the login page
-    //     this.alertService.success('addsuccessful', true);
-    //     this.router.navigateByUrl('/member-session');
-    //     console.log("pour error",data);
-    // },
-    // error => {
-    //     this.alertService.error(error);
-    //     this.loading = false;
-    //       console.log("pour error",this.countryName);
-
-    //       this.submitted = true;
-    //      });
-
+    
   }
 
   ngOnInit() {
@@ -127,19 +111,6 @@ export class MemberSessionComponent implements OnInit {
   deleteCountry(id: number) {
     this.countryService.delete(id).subscribe(() => { this.loadAllCountries() });
   }
-
-  // private getAll() {
-  //   return this.http.get('http://localhost:8091/rencontre/Administrator/listAllCountry')
-  //    .do((res: Response) => console.log("les pays",res.json()))
-  //     .map((res: Response) => {
-
-  // // login successful if there's a jwt token in the response
-  // this.countries= res.json();
-  // //test
-  // console.log("hey les pays",this.countries);
-  // return this.countries;
-  // });
-  // }
   private loadAllCountries() {
     this.countryService.getAll().subscribe(countries => { this.countries = countries; });
   }

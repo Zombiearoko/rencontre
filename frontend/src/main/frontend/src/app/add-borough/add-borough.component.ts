@@ -51,8 +51,7 @@ export class AddBoroughComponent implements OnInit {
       'boroughName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
 
     });
-    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    console.log("heoooooborougs", this.currentAdministrator.loginAdmin);
+
     this.currentDepartment = JSON.parse(localStorage.getItem('currentDepartment'));
     this.currentBorough = JSON.parse(localStorage.getItem('currentBorough'));
   }
@@ -107,12 +106,14 @@ export class AddBoroughComponent implements OnInit {
 
   }
   ngOnInit() {
-    // this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    // console.log("heoooooborougs", this.currentAdministrator.loginAdmin);
-    // if (this.currentAdministrator == null)
-    //   {
-    //   this.router.navigate(['/login-admin']);
-    // }
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+
+    if (this.currentAdministrator == null) {
+      this.router.navigate(['/login-admin']);
+    }
+    else {
+      console.log("heoooooborougs", this.currentAdministrator.loginAdmin);
+    }
     this.loadAllDepartments();
     // this.getAll;
 

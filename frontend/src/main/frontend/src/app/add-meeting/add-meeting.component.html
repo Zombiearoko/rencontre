@@ -3,32 +3,27 @@
 <!--/.nav-collapse -->
 <hr>
 <div class="navbar row-fluid footer-copyright ">
-    <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
+  <div class="pull-right index text-center text-lg text-uppercase my-0 tagline-upper text-shadow mt-5 d-none">
 
-        Hello
-        <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
+    Hello
+    <font color="orange">{{currentAdministrator.loginAdmin}}!</font>
 
-    </div>
+  </div>
 </div>
 <div class="row">
-  
-      <body class="col-lg-8">
-  
-          <div class="container">
-              <div class="cadre">
-                  <div class="col-md-6 col-md-offset-1" id="form">
-                      <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add meeting type</h2>
+
+  <body class="col-lg-8">
+
+    <div class="container">
+      <div class="cadre">
+        <div class="col-md-6 col-md-offset-1" id="form">
+          <h2 class="tagline-upper text-center text-heading text-shadow mt-5 d-none d-lg-block"> Add meeting type</h2>
 
           <form (ngSubmit)="onSubmit(clientForm.value)" [formGroup]="clientForm" id="clientForm">
             <div class="form-group">
-              <!-- 
-          <label for="meetingName">Add Meeting</label> -->
-
 
               <input type="text" class="form-control" formControlName="meetingName" name="meetingName" id="meetingName" placeholder=" add meeting name "
               />
-
-
 
               <!-- <div [hidden]="clientForm.controls.pseudonym.valid|| clientForm.controls.pseudonym.pristine" class="alert alert-danger"> Pseudo is a required field</div> -->
               <div class="alert" *ngIf="!clientForm.controls.meetingName.valid && clientForm.controls.meetingName.touched">{{titleAlert}}</div>
@@ -41,30 +36,6 @@
 
             </div>
           </form>
-          <!-- <p>Form value: {{ clientForm.value | json }}</p>
-                      <p>Form status: {{ clientForm.status | json }}</p>
-                -->
-
-          <!-- <h1>Hi {{administrator.loginAdmin}}!</h1> -->
-          <!-- <h2>You submitted the following Meeting:</h2>
-
-
-          <h3>Meeting: {{ collectionJson.meetingName }}
-          </h3> -->
-
-          <!-- <button class="btn btn-primary" (click)="submitted=false">Update</button> -->
-
-          <!-- <h3>All registered Meetings:</h3>
-                      <ul>
-                        <li *ngFor="let currentMeeting of meetings">
-                          {{currentMeeting.meetingName}}
-                          <a (click)="deleteMeeting(currentMeeting.id)">Delete</a>
-                        </li>
-                      </ul> -->
-
-
-
-
         </div>
       </div>
     </div>

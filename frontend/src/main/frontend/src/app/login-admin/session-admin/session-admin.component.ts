@@ -9,18 +9,25 @@ import { Administrator } from '../../_models/administrator';
   moduleId: module.id,
   templateUrl: './session-admin.component.html',
   styleUrls: ['./session-admin.component.css'],
-  
+
 })
 export class SessionAdminComponent implements OnInit {
   currentAdministrator: Administrator;
   administrators: Administrator[] = [];
 
-  constructor() {
-      this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-      console.log("heooooohomets",this.currentAdministrator.loginAdmin);
+  constructor(private router: Router, ) {
+
   }
 
   ngOnInit() {
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+
+    if (this.currentAdministrator == null) {
+      this.router.navigate(['/login-admin']);
+    }
+    else {
+      console.log("heooooocountrys", this.currentAdministrator.loginAdmin);
+    }
   }
 
 }

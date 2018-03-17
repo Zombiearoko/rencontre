@@ -21,6 +21,16 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a class="menuLink" href=""><span class="glyphicon glyphicon-tasks"></span> Blog</a>
         </li>
+        <form class="navbar-form navbar-left" action="/action_page.php">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
       </ul>
     </div>
   </div>
@@ -45,22 +55,19 @@
     <span class="statusName">
       Welcome
     </span>
-    <div class="btn-group close">
-      <a class="btn btn-danger" href="#"><i class="fa fa-user fa-fw"></i> {{currentMember.pseudonym}}!</a>
-      <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
-           <span class="fa fa-caret-down" title="member option"></span>
-        </a>
+    <div class="dropdown active">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i> {{currentMember.pseudonym}}
+        <span class="fa fa-caret-down"></span></a>
       <ul class="dropdown-menu">
         <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
         <li><a href="/login-form"><i class="fa fa-ban fa-fw"></i> logout</a></li>
         <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-        
+
         <li class="divider"></li>
         <li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>
       </ul>
     </div>
 
-    <!-- <font color="white">Welcome </font><span class="statusName">{{currentMember.pseudonym}}! </span></h4> -->
   </div>
 </div>
 
@@ -100,19 +107,14 @@
         </div>
       </slide>
       <slide>
-          <img class="img-main-carousol" src="assets/img/prof2.PNG" alt="Fourth slide">
-          <div class="carousel-caption">
-            <h3>Fourth slide label</h3>
-            <p>Tell me about your expertise.</p>
-          </div>
-        </slide>
+        <img class="img-main-carousol" src="assets/img/prof2.PNG" alt="Fourth slide">
+        <div class="carousel-caption">
+          <h3>Fourth slide label</h3>
+          <p>Tell me about your expertise.</p>
+        </div>
+      </slide>
     </carousel>
 
-    <!-- <div class="col-lg-2">
-          <form id="qform" class="navbar-form pull-left" role="search">
-              <input type="text" class="form-control" placeholder="Search" />
-            </form>
-      </div> -->
   </div>
 
 

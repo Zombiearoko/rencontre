@@ -48,12 +48,6 @@ export class MemberRegister1Component implements OnInit {
   //getting country when selected
   public Filter(value: Date) {
 
-
-    // var ageDifMs = Date.now() - this.age.getTime();  
-    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    // this.date =Math.abs(ageDate.getUTCFullYear() - 1970);
-    // alert(date);
-
     console.log('age donne', value);
     this.age = value;
     const url = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=' + this.age;
@@ -64,8 +58,7 @@ export class MemberRegister1Component implements OnInit {
 
       console.log(this.collectionJson);
     });
-    //  this.rest.getAllByDate(this.age).subscribe(meetings => { this.meetings = meetings; });
-    //  console.log("meetings", this.meetings);
+    
   }
   onSubmit(post) {
 

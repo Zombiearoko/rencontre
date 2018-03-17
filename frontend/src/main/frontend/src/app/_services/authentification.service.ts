@@ -22,7 +22,6 @@ export class AuthenticationService {
     constructor(private http: Http) {
         this.currentMember = JSON.parse(localStorage.getItem('currentMember'));
         this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-        // console.log("heooooohomets", this.currentMember.pseudonym);
 
     }
 
@@ -130,10 +129,6 @@ export class AuthenticationService {
 
 
     logout() {
-        // remove member from local storage to log user out
-        // const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-        // const options = new RequestOptions({ headers: headers1 });
-
         const url = 'http://localhost:8091/rencontre/Member/logout';
         this.http.get(url).subscribe((resp) => {
             this.results = resp['results'];
@@ -147,14 +142,9 @@ export class AuthenticationService {
 
 
         }
-    );
+        );
     }
     logoutAdmin() {
-        // remove member from local storage to log user out
-        // remove member from local storage to log user out
-        // const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-        // const options = new RequestOptions({ headers: headers1 });
-
         const url = 'http://localhost:8091/rencontre/Administrator/logoutAdministrator';
         this.http.get(url).subscribe((resp) => {
             this.results = resp['results'];
@@ -166,8 +156,8 @@ export class AuthenticationService {
             this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
             console.log("après le remove currentAdministrator", this.currentAdministrator);
 
-                localStorage.removeItem('currentAdministrator');
-            });
+            localStorage.removeItem('currentAdministrator');
+        });
 
     }
 }

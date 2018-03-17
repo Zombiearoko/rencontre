@@ -24,13 +24,11 @@ export class AddDepartmentComponent implements OnInit {
   public regionName: string;
   public departmentName: string;
   public collectionJson = Object;
-  // {
-  //   countryName:'test',
-  // }
+
   submitted = false;
   public currentRegion: Region;
   public currentDepartment: Department;
-  currentAdministrator:Administrator;
+  currentAdministrator: Administrator;
   public region: Region;
   public regions: Region[] = [];
   public departments: Department[] = [];
@@ -39,27 +37,21 @@ export class AddDepartmentComponent implements OnInit {
   titleAlert: string = 'You must specify a Department';
   private results: [any];
 
-
   constructor(private regionService: RegionService,
     private departmentService: DepartmentService,
     public fb: FormBuilder, private http: Http,
     private router: Router,
     private alertService: AlertService) {
 
-
     this.clientForm = this.fb.group({
       'regionNameN': [null, Validators.compose([Validators.required])],
       'departmentName': [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(20)])]
 
     });
-    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
-    console.log("heooooodepartts",this.currentAdministrator.loginAdmin);
+
     this.currentRegion = JSON.parse(localStorage.getItem('currentRegion'));
     this.currentDepartment = JSON.parse(localStorage.getItem('currentDepartment'));
-    // console.log("heoooooaddcountryts",this.currentCountry.countryName);
   }
-
-  //getting region when selected
   public Filter(value: Region) {
     console.log("valeur entré", value);
     this.region = value;
@@ -69,7 +61,6 @@ export class AddDepartmentComponent implements OnInit {
     this.loadAllDepartments();
     var j = 0;
     if (this.departments == null) {
-      // this.departmentName = post.departmentName;
       const urlD = 'http://localhost:8091/rencontre/Administrator/addDepartment?departmentName=' + post.departmentName + '&regionName=' + this.region;
 
       this.http.get(urlD).subscribe((resp) => {
@@ -107,6 +98,14 @@ export class AddDepartmentComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.currentAdministrator = JSON.parse(localStorage.getItem('currentAdministrator'));
+    
+        if (this.currentAdministrator == null) {
+          this.router.navigate(['/login-admin']);
+        }
+        else {
+          console.log("heooooodeparts", this.currentAdministrator.loginAdmin);
+        }
     this.loadAllRegions();
 
   }

@@ -25,14 +25,8 @@ export class RestProvider {
   public getHello(title, body) {
     let headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
     let options = new RequestOptions({ headers: headers1 });
-
-    /*  let url = 'http://localhost:8091/hello' + '?name=' + name + '&surname=' + surname;
-     let url2 = '/api/hello' + '?name=' + name + '&surname=' + surname; */
     let url3 = "https://jsonplaceholder.typicode.com/post";
-    //alert("toto 2"); 
-    // return this.http.post(url3, options)
-    //   .do((res: Response) => console.log(res.json()))
-    //   .map((res: Response) => res.json());
+
   }
   public getUser() {
     let headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
@@ -42,19 +36,12 @@ export class RestProvider {
     return this.http.post(url, options)
       .do((res: Response) => console.log(res.json()))
       .map((res: Response) => res.json());
-    // let url= "http://jsonplaceholder.typicode.com/posts";
-
-    // return  this.http.get(url)
-    //  .do((res: Response) => console.log(res.json()))
-    //   .map((res: Response) => res.json());
-
-
   }
 
-  public postAccount(pseudonym, birthDate, gender, emailAdress, phoneNumber, password, 
+  public postAccount(pseudonym, birthDate, gender, emailAdress, phoneNumber, password,
     confirmPassword, name, meetingName, firstName,
-     lastName, schoolName, levelStudy, profession, 
-     countryName, regionName, departmentName, boroughName, townName,concessionName) {
+    lastName, schoolName, levelStudy, profession,
+    countryName, regionName, departmentName, boroughName, townName, concessionName) {
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({ headers: headers1 });
     const object = {
@@ -78,16 +65,16 @@ export class RestProvider {
       regionName: regionName,
       departmentName: departmentName,
       boroughName: boroughName,
-      townName:townName,
-      concessionName:concessionName,
+      townName: townName,
+      concessionName: concessionName,
 
     };
-    const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym + '&birthDate=' + birthDate + '&gender=' + gender 
-    + '&emailAdress=' + emailAdress + '&phoneNumber=' 
-    + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + '&name=' + name 
-    + '&meetingName=' + meetingName+ '&firstName=' + firstName+ '&lastName=' + lastName+ '&schoolName=' 
-    + schoolName+ '&levelStudy=' + levelStudy+ '&profession=' + profession+ '&countryName=' + countryName
-    + '&regionName=' + regionName+ '&departmentName=' + departmentName+ '&boroughName=' + boroughName+ '&townName=' + townName+ '&concessionName=' + concessionName;
+    const url = 'http://localhost:8091/rencontre/InternetSurfer/registration?pseudonym=' + pseudonym + '&birthDate=' + birthDate + '&gender=' + gender
+      + '&emailAdress=' + emailAdress + '&phoneNumber='
+      + phoneNumber + '&password=' + password + '&confirmPassword=' + confirmPassword + '&name=' + name
+      + '&meetingName=' + meetingName + '&firstName=' + firstName + '&lastName=' + lastName + '&schoolName='
+      + schoolName + '&levelStudy=' + levelStudy + '&profession=' + profession + '&countryName=' + countryName
+      + '&regionName=' + regionName + '&departmentName=' + departmentName + '&boroughName=' + boroughName + '&townName=' + townName + '&concessionName=' + concessionName;
     const url2 = 'https://jsonplaceholder.typicode.com/posts';
     const urlSaph = 'http://192.168.8.105:8091/rencontre/Member/registration';
     const urlInno = 'http://localhost:8092/customer/addCustomer';
@@ -118,7 +105,7 @@ export class RestProvider {
   public getAccount() {
 
   }
-// get meeting by birthdate
+  // get meeting by birthdate
   public getAllByDate(date: Date) {
     // return this.http.get('http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=' + date, this.jwt()).map((response: Response) => response.json());
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
@@ -138,155 +125,110 @@ export class RestProvider {
   public getAll() {
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({ headers: headers1 });
-                 
-     const urlD = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=1987-08-22';
-                  
-      return  this.http.post(urlD, options)
-        .do((res: Response) => console.log(res.json()))
-        .map((res: Response) => res.json());
-    }
 
-    // for meeting name when login
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listTypeMeeting?bithDate=1987-08-22';
+
+    return this.http.post(urlD, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
+
+  // for meeting name when login
   public getAllByPeudo(pseudonym) {
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({ headers: headers1 });
     const object = {
       pseudonym: pseudonym,
     };
-     const urlD = 'http://localhost:8091/rencontre/Member/returnTypeMeeting?pseudonym='+pseudonym;
-                  
-      return  this.http.post(urlD, object, options)
-        .do((res: Response) => console.log('de rest:',res.json()))
-        .map((res: Response) => res.json());
-    }
+    const urlD = 'http://localhost:8091/rencontre/Member/returnTypeMeeting?pseudonym=' + pseudonym;
 
-     // for status name when login
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log('de rest:', res.json()))
+      .map((res: Response) => res.json());
+  }
+
+  // for status name when login
   public getAllStatus() {
     const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({ headers: headers1 });
-    
-     const urlD = 'http://localhost:8091/rencontre/Administrator/listAllStatus';
-                  
-      return  this.http.post(urlD, options)
-        .do((res: Response) => console.log('de rest:',res.json()))
-        .map((res: Response) => res.json());
-    }
-    // liste les region dun pays
 
-    public getAllRegionByCountry(countryName) {
-      const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-      const options = new RequestOptions({ headers: headers1 });
-      const object = {
-        countryName: countryName,
-      };
-       const urlD = 'http://localhost:8091/rencontre/Administrator/listRegion?countryName='+countryName;
-                    
-        return  this.http.post(urlD, object, options)
-          .do((res: Response) => console.log(res.json()))
-          .map((res: Response) => res.json());
-      }
-// liste les departement dune region
-      public getAllDepartmentByRegion(regionName) {
-        const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-        const options = new RequestOptions({ headers: headers1 });
-        const object = {
-          regionName: regionName,
-        };
-         const urlD = 'http://localhost:8091/rencontre/Administrator/listDepartment?regionName='+regionName;
-                      
-          return  this.http.post(urlD, object, options)
-            .do((res: Response) => console.log(res.json()))
-            .map((res: Response) => res.json());
-        }
-// liste les arrondissement dun departement
-        public getAllBoroughByDepartment(departmentName) {
-          const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-          const options = new RequestOptions({ headers: headers1 });
-          const object = {
-            department: departmentName,
-          };
-           const urlD = 'http://localhost:8091/rencontre/Administrator/listBorough?departmentName='+departmentName;
-                        
-            return  this.http.post(urlD, object, options)
-              .do((res: Response) => console.log(res.json()))
-              .map((res: Response) => res.json());
-          }
-          // liste les villes dun arrondissemnt
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listAllStatus';
 
-          public getAllTownByBorough(boroughName) {
-            const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-            const options = new RequestOptions({ headers: headers1 });
-            const object = {
-              boroughName: boroughName,
-            };
-             const urlD = 'http://localhost:8091/rencontre/Administrator/listTown?BoroughName='+boroughName;
-                          
-              return  this.http.post(urlD,object,options)
-                .do((res: Response) => console.log(res.json()))
-                .map((res: Response) => res.json());
-            }
-// liste les concessins dune vill
-            public getAllConcessionByTown(townName) {
-              const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
-              const options = new RequestOptions({ headers: headers1 });
-              const object = {
-                townName: townName,
-              };
-               const urlD = 'http://localhost:8091/rencontre/Administrator/listConcession?townName='+townName;
-                            
-                return  this.http.post(urlD,object, options)
-                  .do((res: Response) => console.log(res.json()))
-                  .map((res: Response) => res.json());
-              }
-  
-   
-  //       //for login
-  //       public postLoginMember(pseudonym, password) {
-  //         const headers1 =  new Headers({ 'Access-Control-Allow-Origin': '*' });
-  //   const options = new RequestOptions({  headers: headers1 });
+    return this.http.post(urlD, options)
+      .do((res: Response) => console.log('de rest:', res.json()))
+      .map((res: Response) => res.json());
+  }
+  // liste les region dun pays
 
-  //         const object = {
-  //           pseudonym: pseudonym,
-  //           password: password,
-  //          };
+  public getAllRegionByCountry(countryName) {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    const object = {
+      countryName: countryName,
+    };
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listRegion?countryName=' + countryName;
+
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
+  // liste les departement dune region
+  public getAllDepartmentByRegion(regionName) {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    const object = {
+      regionName: regionName,
+    };
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listDepartment?regionName=' + regionName;
+
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
+  // liste les arrondissement dun departement
+  public getAllBoroughByDepartment(departmentName) {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    const object = {
+      department: departmentName,
+    };
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listBorough?departmentName=' + departmentName;
+
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
+  // liste les villes dun arrondissemnt
+
+  public getAllTownByBorough(boroughName) {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    const object = {
+      boroughName: boroughName,
+    };
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listTown?BoroughName=' + boroughName;
+
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
+  // liste les concessins dune vill
+  public getAllConcessionByTown(townName) {
+    const headers1 = new Headers({ 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({ headers: headers1 });
+    const object = {
+      townName: townName,
+    };
+    const urlD = 'http://localhost:8091/rencontre/Administrator/listConcession?townName=' + townName;
+
+    return this.http.post(urlD, object, options)
+      .do((res: Response) => console.log(res.json()))
+      .map((res: Response) => res.json());
+  }
 
 
-  //         const url ='http://localhost:8091/rencontre/Member/Connexion?pseudonym='+pseudonym+'&password='+password;
-  //         const url2 = 'https://jsonplaceholder.typicode.com/posts';
-  //       return  this.http.post(url, object, options)
-  //                 .do((res: Response ) => console.log(res.json()))
-  //                  //.map((res: Response ) => res.json());
-  //                   //ajouté a partir dici
-  //                 .map((res: Response) => {
-  //                   // login successful if there's a jwt token in the response
-  //                   let member = res.json();
-  //                   if (member && member.token) {
-  //                       // store member details and jwt token in local storage to keep user logged in between page refreshes
-  //                     localStorage.setItem('currentMember', JSON.stringify(member));
-  //                     //let value: string = localStorage.getItem("currentMember");
-  //                     this.memberData = localStorage.getItem("currentMember");
 
-  //                         this.memberToken= this.memberData.token;
-  //                         alert(this.memberToken);
-  //                         console.log("for rest",this.memberToken.token);
-
-
-  //                   }
-
-  //                   return member;
-  //               });
-  //               //jusquici
-
-  //   }
-
-  //   //for logout
-
-  //   logout() {
-  //     // remove member from local storage to log user out
-  //     localStorage.removeItem('currentMember');
-  // }
-
-    }
+}
 
 
 

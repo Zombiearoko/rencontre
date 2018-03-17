@@ -54,7 +54,7 @@ public class HelloController {
 		return param;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/good", method = RequestMethod.GET)
 	//public ModelAndView helloWorld( ModelMap model ) {
 	public String helloWorld( HttpServletRequest model ) {
 		customerRepository.deleteAll();

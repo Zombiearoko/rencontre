@@ -19,7 +19,7 @@ import com.bocobi2.rencontre.repositories.MemberRepository;
 
 @Component
 @Service
-public class UserDetailsServices  implements UserDetailsService  {
+public class UserDetailsServices implements UserDetailsService  {
 	
 
 	@Autowired

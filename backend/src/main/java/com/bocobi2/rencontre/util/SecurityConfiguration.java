@@ -12,11 +12,16 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import com.bocobi2.rencontre.model.UserDetailsServices;
+
+//import com.bocobi2.rencontre.model.UserDetailsServices;
 
 @Configuration
 //@EnableWebSecurity
@@ -38,19 +43,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
+	 @Override
+	    protected void configure(HttpSecurity http) throws Exception {
 
-				.httpBasic().and()
-				.authorizeRequests()
-				/* .antMatchers("rencontre/InternetSurfer").hasRole(role) */
-				.antMatchers("/rencontre/**", "/registration").permitAll().anyRequest().authenticated().and()
-				.formLogin().loginPage("/login").permitAll()
-				.and().logout().permitAll().and()
+	        http.csrf().disable();
 
-				.csrf().disable();
-	}
+	        
+	       
+	    }
 
 	private CsrfTokenRepository csrfTokenRepository() {
 		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
@@ -58,13 +58,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return repository;
 	}
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsServices).passwordEncoder(bCryptPasswordEncoder());
-	}
+	
 
-	/*@Bean
+	@Bean
 	public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
 		return super.userDetailsService();
-	}*/
+	}
+	
+
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userDetailsServices);
+    }
+
+    
+
+   
 }
